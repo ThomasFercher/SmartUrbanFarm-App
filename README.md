@@ -6,5 +6,5 @@ A mobile App using Flutter
 
 Nice
 
-![](images/sgs_1.png)
+<img src="images/sgs_1.png" width="300">
 
