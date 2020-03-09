@@ -26,8 +26,11 @@ class MyApp extends StatelessWidget {
         accentColor: accentColor_d,
         primaryColor: backgroundColor_d,
         canvasColor: backgroundColor_d,
-        primaryTextTheme: Typography(platform: TargetPlatform.iOS).white,
-        textTheme: Typography(platform: TargetPlatform.iOS).white,
+        textTheme: TextTheme(
+          headline: TextStyle(color: accentColor),
+          title: TextStyle(color: accentColor),
+          subhead: TextStyle(color: accentColor),
+        ),
       ),
       home: LoadingScreen(
         w: MyHomePage(title: 'Smart Grow System'),
@@ -47,11 +50,22 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int index = 0;
 
-  List<Widget> tabs = [
-    new Text("Home"),
-    new Text("Gallery"),
-    new Text("Options"),
-  ];
+  Widget getTab(context, index) {
+    return [
+      new Text(
+        "Home",
+        style: Theme.of(context).textTheme.subhead,
+      ),
+      new Text(
+        "Gallery",
+        style: Theme.of(context).textTheme.subhead,
+      ),
+      new Text(
+        "Options",
+        style: Theme.of(context).textTheme.subhead,
+      ),
+    ].elementAt(index);
+  }
 
   void setIndex(int i) {
     setState(() {
@@ -69,11 +83,14 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(
+          widget.title,
+          style: Theme.of(context).textTheme.title,
+        ),
         // backgroundColor: backgroundColor,
       ),
       body: Center(
-        child: tabs.elementAt(index),
+        child: getTab(context, index),
       ),
       bottomNavigationBar: Container(
         padding: EdgeInsets.only(left: 5, right: 5),
@@ -92,12 +109,13 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5),
               child: GNav(
                   gap: 8,
-                  activeColor: primaryColor,
+                  activeColor: isDark(context) ? accentColor : primaryColor,
                   color: isDark(context) ? Colors.white12 : Colors.black12,
                   iconSize: 28,
                   padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                   duration: Duration(milliseconds: 800),
-                  tabBackgroundColor: accentColor,
+                  tabBackgroundColor:
+                      isDark(context) ? primaryColor : accentColor,
                   tabs: [
                     GButton(
                       icon: LineIcons.home,
