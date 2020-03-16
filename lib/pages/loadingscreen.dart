@@ -6,7 +6,6 @@ class LoadingScreen extends StatefulWidget {
   final Widget w;
   LoadingScreen({this.w});
 
-
   @override
   _LoadingScreenState createState() => new _LoadingScreenState(afterLoading: w);
 }
@@ -21,7 +20,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
       seconds: 3,
       navigateAfterSeconds: afterLoading,
       image: new Image.asset('assets/logo_small.png'),
-     // backgroundColor: Colors.white,
+      backgroundColor: isDark(context) ? backgroundColor_d : backgroundColor,
       photoSize: 150.0,
       loaderColor: primaryColor,
     );

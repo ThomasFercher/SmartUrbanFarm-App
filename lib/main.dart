@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:sgs/pages/home.dart';
 import 'package:sgs/pages/loadingscreen.dart';
 import 'styles.dart';
 
@@ -11,14 +12,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Smart Grow System',
+    //  title: 'Smart Grow System',
       theme: ThemeData(
         brightness: Brightness.light,
         primarySwatch: Colors.green,
         primaryColor: primaryColor,
         accentColor: accentColor,
         primaryTextTheme: Typography(platform: TargetPlatform.iOS).white,
-        textTheme: Typography(platform: TargetPlatform.iOS).black,
+        textTheme: TextTheme(
+          //headline: TextStyle(color: accentColor),
+          //title: TextStyle(color: accentColor),
+          // subhead: TextStyle(color: accentColor),
+          subtitle: TextStyle(color: Colors.white),
+          display4: TextStyle(color: primaryColor, fontSize: 50.0),
+        ),
       ),
       darkTheme: ThemeData(
         brightness: Brightness.dark,
@@ -30,6 +37,8 @@ class MyApp extends StatelessWidget {
           headline: TextStyle(color: accentColor),
           title: TextStyle(color: accentColor),
           subhead: TextStyle(color: accentColor),
+          subtitle: TextStyle(color: Colors.white),
+           display4: TextStyle(color: accentColor, fontSize: 50.0),
         ),
       ),
       home: LoadingScreen(
@@ -52,10 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget getTab(context, index) {
     return [
-      new Text(
-        "Home",
-        style: Theme.of(context).textTheme.subhead,
-      ),
+      new Home(),
       new Text(
         "Gallery",
         style: Theme.of(context).textTheme.subhead,
@@ -73,31 +79,26 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  bool isDark(context) {
-    return MediaQuery.of(context).platformBrightness == Brightness.light
-        ? false
-        : true;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: isDark(context) ? backgroundColor_d : backgroundColor,
+        elevation: 0,
         title: Text(
           widget.title,
           style: Theme.of(context).textTheme.title,
         ),
-        // backgroundColor: backgroundColor,
+        
       ),
       body: Center(
         child: getTab(context, index),
       ),
       bottomNavigationBar: Container(
         padding: EdgeInsets.only(left: 5, right: 5),
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(30)),
         child: SafeArea(
           child: Card(
-            elevation: 10,
+            elevation: getCardElavation(context)+2,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(32.0),
             ),
