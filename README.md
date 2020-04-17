@@ -6,6 +6,6 @@ A mobile App using Flutter
 
 Nice
 
-<img src="images/sgs_1.png" width="300">
-<img src="images/sgs_1d.png" width="300">
+<img src="images/sgs_home_dark.png" width="300">
+<img src="images/sgs_home_bright.png" width="300">
 
