@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-    //  title: 'Smart Grow System',
+      //  title: 'Smart Grow System',
       theme: ThemeData(
         brightness: Brightness.light,
         primarySwatch: Colors.green,
@@ -24,7 +24,9 @@ class MyApp extends StatelessWidget {
           //title: TextStyle(color: accentColor),
           // subhead: TextStyle(color: accentColor),
           subtitle: TextStyle(color: Colors.white),
-          display4: TextStyle(color: primaryColor, fontSize: 50.0),
+          display3: TextStyle(
+              color: text_gray, fontSize: 13.0, fontWeight: FontWeight.w400),
+          display4: TextStyle(color: primaryColor, fontSize: 30.0),
         ),
       ),
       darkTheme: ThemeData(
@@ -38,7 +40,9 @@ class MyApp extends StatelessWidget {
           title: TextStyle(color: accentColor),
           subhead: TextStyle(color: accentColor),
           subtitle: TextStyle(color: Colors.white),
-           display4: TextStyle(color: accentColor, fontSize: 50.0),
+          display3: TextStyle(
+              color: text_gray, fontSize: 13.0, fontWeight: FontWeight.w400),
+          display4: TextStyle(color: accentColor, fontSize: 30.0),
         ),
       ),
       home: LoadingScreen(
@@ -89,50 +93,53 @@ class _MyHomePageState extends State<MyHomePage> {
           widget.title,
           style: Theme.of(context).textTheme.title,
         ),
-        
       ),
       body: Center(
         child: getTab(context, index),
       ),
-      bottomNavigationBar: Container(
-        padding: EdgeInsets.only(left: 5, right: 5),
-        child: SafeArea(
-          child: Card(
-            elevation: getCardElavation(context)+2,
-            shape: RoundedRectangleBorder(
+      bottomNavigationBar: container(),
+    );
+  }
+
+  Container container() {
+    return Container(
+      padding: EdgeInsets.only(left: 5, right: 5),
+      child: SafeArea(
+        child: Card(
+          elevation: getCardElavation(context) + 2,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(32.0),
+          ),
+          child: Container(
+            decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(32.0),
+              color: isDark(context) ? accentColor_d : backgroundColor,
             ),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(32.0),
-                color: isDark(context) ? accentColor_d : backgroundColor,
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5),
-              child: GNav(
-                  gap: 8,
-                  activeColor: isDark(context) ? accentColor : primaryColor,
-                  color: isDark(context) ? Colors.white12 : Colors.black12,
-                  iconSize: 28,
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                  duration: Duration(milliseconds: 800),
-                  tabBackgroundColor:
-                      isDark(context) ? primaryColor : accentColor,
-                  tabs: [
-                    GButton(
-                      icon: LineIcons.home,
-                      text: 'Home',
-                    ),
-                    GButton(
-                      icon: LineIcons.photo,
-                      text: 'Gallery',
-                    ),
-                    GButton(
-                      icon: LineIcons.leaf,
-                      text: 'Settings',
-                    ),
-                  ],
-                  selectedIndex: index,
-                  onTabChange: (index) => setIndex(index)),
+            padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5),
+            child: GNav(
+              gap: 8,
+              activeColor: accentColor,
+              color: isDark(context) ? Colors.white12 : Colors.black12,
+              iconSize: 28,
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              duration: Duration(milliseconds: 800),
+              tabBackgroundColor: primaryColor,
+              tabs: [
+                GButton(
+                  icon: LineIcons.home,
+                  text: 'Home',
+                ),
+                GButton(
+                  icon: LineIcons.photo,
+                  text: 'Gallery',
+                ),
+                GButton(
+                  icon: LineIcons.leaf,
+                  text: 'Settings',
+                ),
+              ],
+              selectedIndex: index,
+              onTabChange: (index) => setIndex(index),
             ),
           ),
         ),

@@ -15,43 +15,41 @@ class _HomeState extends State<Home> {
     return Container(
       padding: EdgeInsets.only(top: 10),
       child: GridView.count(
-        padding: EdgeInsets.only(top: 0, left: 15, right: 15),
-        crossAxisSpacing: 5,
-        mainAxisSpacing: 5,
-        crossAxisCount: 2,
-        childAspectRatio: 1.25,
+        padding: EdgeInsets.only(top: 0, left: 10, right: 10),
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+        crossAxisCount: 3,
+        childAspectRatio: 1.0,
         children: <Widget>[
           CardData(
             icon: LineIcons.clone,
-            text: "Temperatur",
-            child: new Text(
-              "30° C",
-              style: Theme.of(context).textTheme.display4,
-            ),
+            label: "Temperatur",
+            text: "30°C",
           ),
           CardData(
             icon: LineIcons.sun_o,
-            text: "Luftfeuchtigkeit",
-            child: new Text(
-              "85%",
-              style: Theme.of(context).textTheme.display4,
-            ),
+            label: "Luftfeuchtigkeit",
+            text: "85%",
           ),
           CardData(
             icon: LineIcons.navicon,
-            text: "Current DayTime",
-            child: new Text(
-              "yee",
-              style: Theme.of(context).textTheme.display4,
-            ),
+            label: "DayTime",
+            text: "30°C",
           ),
           CardData(
             icon: LineIcons.navicon,
-            text: "Current DayTime",
-            child: new Text(
-              "yee",
-              style: Theme.of(context).textTheme.display4,
-            ),
+            label: "DayTime",
+            text: "30°C",
+          ),
+          CardData(
+            icon: LineIcons.sun_o,
+            label: "Luftfeuchtigkeit",
+            text: "85%",
+          ),
+          CardData(
+            icon: LineIcons.sun_o,
+            label: "Luftfeuchtigkeit",
+            text: "85%",
           ),
         ],
       ),
@@ -62,18 +60,18 @@ class _HomeState extends State<Home> {
 class CardData extends StatelessWidget {
   final IconData icon;
   final String text;
-  final Widget child;
+  final String label;
+  
 
   CardData({
     @required this.icon,
     @required this.text,
-    @required this.child,
+    @required this.label,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(top: 10),
       child: InkWell(
         onLongPress: () => temperatureDiagram(context),
         borderRadius: BorderRadius.circular(borderRadius),
@@ -84,95 +82,32 @@ class CardData extends StatelessWidget {
           ),
           color: isDark(context) ? accentColor_d : Colors.white,
           child: Container(
-            padding: EdgeInsets.only(left: 3, right: 3),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(borderRadius),
-            ),
-            child: new LayoutBuilder(
-              builder: (BuildContext context, BoxConstraints constraints) {
-                return Container(
-                  child: Column(
-                    children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          Container(
-                            transform:
-                                Matrix4.translationValues(0.0, -15.0, 0.0),
-                            child: Card(
-                              shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.circular(borderRadius),
-                              ),
-                              elevation: getCardElavation(context),
-                              child: Container(
-                                height: 40,
-                                width: constraints.maxWidth - 8,
-                                decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.circular(borderRadius),
-                                  gradient: LinearGradient(
-                                    begin: Alignment.centerRight,
-                                    end: Alignment.centerLeft,
-                                    colors: [
-                                      Color(
-                                        0xFF00ae00,
-                                      ),
-                                      primaryColor,
-                                    ],
-                                  ),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: <Widget>[
-                                    Column(
-                                      children: <Widget>[
-                                        Container(
-                                          alignment: Alignment(0.0, 0.0),
-                                          height: 40,
-                                          child: new Text(
-                                            text,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .subtitle,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Column(
-                                      children: <Widget>[
-                                        Container(
-                                          alignment: Alignment(0.0, 0.0),
-                                          height: 40,
-                                          child: Icon(
-                                            icon,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Container(
-                            padding: EdgeInsets.only(left: 5, right: 5, top: 0),
-                            transform:
-                                Matrix4.translationValues(0.0, -15.0, 0.0),
-                            child: child,
-                          ),
-                        ],
-                      ),
-                    ],
+            child: Container(
+              padding: EdgeInsets.all(5),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    child: Icon(
+                      icon,
+                      size: 20,
+                    ),
                   ),
-                );
-              },
+                  Container(
+                    child: new Text(
+                      label,
+                      style: Theme.of(context).textTheme.display3,
+                    ),
+                  ),
+                  Container(
+                    child: new Text(
+                      text,
+                      style: Theme.of(context).textTheme.display4,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -182,13 +117,14 @@ class CardData extends StatelessWidget {
 
   Future temperatureDiagram(context) {
     return showGeneralDialog(
-        barrierColor: Colors.black.withOpacity(0.5),
+        barrierColor: Colors.black.withOpacity(0.8),
         transitionBuilder: (context, a1, a2, widget) {
           return Transform.scale(
             scale: a1.value,
             child: Opacity(
               opacity: a1.value,
               child: SimpleDialog(
+                backgroundColor: accentColor_d,
                 elevation: getCardElavation(context),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(borderRadius + 10)),
@@ -205,7 +141,7 @@ class CardData extends StatelessWidget {
                       onPressed: () => print("yee"),
                       child: new Text("Show Diagram"),
                       // color: Colors.black,
-                      color: Colors.green,
+                      color: primaryColor,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
