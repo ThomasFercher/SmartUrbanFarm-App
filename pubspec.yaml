@@ -13,15 +13,21 @@ dependencies:
   cupertino_icons: ^0.1.2
   google_nav_bar: ^2.0.0
   line_icons: ^0.2.0
-  splashscreen:
+  weather_icons: ^2.0.1
+  image: ^2.1.12
+  flare_flutter: ^1.5.0
+  firebase_core: ^0.4.0+9
+  firebase_database: ^3.1.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
+
 flutter: 
   assets:
     - assets/
+    - assets/icons/
   uses-material-design: true
   fonts:
     - family: OpenSans
@@ -29,6 +35,9 @@ flutter:
         - asset: fonts/OpenSans-Regular.ttf
         - asset: fonts/OpenSans-Italic.ttf
           style: italic
+    - family:  SGS_CustomIcon
+      fonts:
+        - asset: fonts/SGS_CustomIcon.ttf
     
 
 

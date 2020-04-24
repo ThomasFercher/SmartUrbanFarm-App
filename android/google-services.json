@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "233837961891",
+    "firebase_url": "https://smartgrowsystem-sgs.firebaseio.com",
+    "project_id": "smartgrowsystem-sgs",
+    "storage_bucket": "smartgrowsystem-sgs.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:233837961891:android:8ca5808cfa62a302af5516",
+        "android_client_info": {
+          "package_name": "com.sgs.sgs"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "233837961891-ntguqe8h56rhpeq2b47cgt25igtkq3ml.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZWkSFzIE-q42O0lJLyD5IvJ-kDHmTvM4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "233837961891-ntguqe8h56rhpeq2b47cgt25igtkq3ml.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
