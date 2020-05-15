@@ -8,15 +8,20 @@ class DaySlider extends StatefulWidget {
   DaySlider({@required this.f});
 
   @override
-  _DaySliderState createState() => _DaySliderState(f: f);
+  _DaySliderState createState() => _DaySliderState();
 }
 
 class _DaySliderState extends State<DaySlider> {
-  RangeValues _values = new RangeValues(24, 72);
-  var labels = ["06:00", "18:00"];
-  var suntime = 12.00;
-  Function f;
-  _DaySliderState({this.f});
+  RangeValues _values;
+  var labels;
+  var suntime;
+
+  @override
+  void initState() {
+    _values = new RangeValues(24, 72);
+    labels = ["06:00", "18:00"];
+    suntime = 12.00;
+  }
 
   String getTimeString(double quarters) {
     int hours = (quarters / 4).floor();
@@ -91,7 +96,6 @@ class _DaySliderState extends State<DaySlider> {
                         ),
                         child: RangeSlider(
                           divisions: 96,
-                          useV2Slider: true,
                           values: _values,
                           min: 0,
                           max: 96,
@@ -107,7 +111,7 @@ class _DaySliderState extends State<DaySlider> {
                                 getTimeString(_values.end)
                               ];
                               suntime = _values.end / 4 - _values.start / 4;
-                              f(labels);
+                              widget.f(labels);
                             },
                           ),
                         ),
@@ -168,7 +172,7 @@ class _CustomRangeThumbShape extends RangeSliderThumbShape {
     Path oval = Path()
       ..addOval(new Rect.fromCenter(center: center, width: 40, height: 40));
     Paint shadowPaint = Paint()
-      ..color = Colors.black.withOpacity(1)
+      ..color = Colors.black.withOpacity(0.5)
       ..maskFilter = MaskFilter.blur(BlurStyle.normal, 1)
       ..style = PaintingStyle.fill;
     canvas.drawPath(oval, shadowPaint);

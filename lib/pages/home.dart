@@ -1,22 +1,57 @@
+import 'dart:async';
+
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:sgs/customwidgets/dayslider.dart';
 import 'package:sgs/styles.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:weather_icons/weather_icons.dart';
 
 class Home extends StatefulWidget {
   var temperature;
-  Home({this.temperature});
+  var humidity;
+  Home({this.temperature, this.humidity});
 
   @override
-  _HomeState createState() => _HomeState(temperatur: temperature);
+  _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
   var timeRange = [];
-  var temperatur;
+  var temp;
+  var humidity;
+  Timer updateTimer;
 
-  _HomeState({this.temperatur});
+  @protected
+  @mustCallSuper
+  void dispose() {
+    updateTimer.cancel();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    temp = widget.temperature;
+    humidity = widget.humidity;
+    super.initState();
+    // defines a timer
+    if (this.mounted) {
+      updateTimer = Timer.periodic(Duration(seconds: 1), (Timer t) async {
+        final ref = fb.reference();
+        await ref.child("temperature").once().then((DataSnapshot data) {
+          setState(() {
+            temp = data.value;
+          });
+        });
+        await ref.child("humidity").once().then((DataSnapshot data) {
+          setState(() {
+            humidity = data.value;
+          });
+        });
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,24 +68,24 @@ class _HomeState extends State<Home> {
             shrinkWrap: true,
             children: <Widget>[
               CardData(
-                icon: LineIcons.clone,
+                icon: WeatherIcons.thermometer,
                 label: "Temperatur",
-                text: "$temperature°C",
+                text: "$temp°C",
+              ),
+              CardData(
+                icon: WeatherIcons.humidity,
+                label: "Luftfeuchtigkeit",
+                text: "$humidity%",
+              ),
+              CardData(
+                icon: WeatherIcons.barometer,
+                label: "Bodenfeuchtigkeit",
+                text: "43.8%",
               ),
               CardData(
                 icon: LineIcons.sun_o,
-                label: "Luftfeuchtigkeit",
-                text: "85%",
-              ),
-              CardData(
-                icon: LineIcons.navicon,
                 label: "DayTime",
-                text: "30°C",
-              ),
-              CardData(
-                icon: LineIcons.navicon,
-                label: "DayTime",
-                text: "30°C",
+                text: "Day",
               ),
               CardData(
                 icon: LineIcons.sun_o,

@@ -16,8 +16,6 @@ void main() => {
     };
 
 class MyApp extends StatelessWidget {
-  final fb = FirebaseDatabase.instance;
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -64,9 +62,10 @@ class MyApp extends StatelessWidget {
             //print('project snapshot data is: ${projectSnap.data}');
             return Container(
               child: FlareActor(
-                'assets/sgs_logo.flr',
+                'assets/plant.flr',
                 alignment: Alignment.center,
-                animation: "Logo",
+                animation: "Growing",
+              
               ),
             );
           }
@@ -90,16 +89,17 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int index = 0;
+  int index = 1;
 
   Widget getTab(context, index) {
     return [
-      new Home(
-        temperature: temperature,
-      ),
       new Text(
         "Gallery",
         style: Theme.of(context).textTheme.subhead,
+      ),
+      new Home(
+        temperature: temperature,
+        humidity: humidity,
       ),
       new Text(
         "Options",
@@ -159,14 +159,14 @@ class _MyHomePageState extends State<MyHomePage> {
               tabs: [
                 GButton(
                   icon: LineIcons.home,
-                  text: 'Home',
-                ),
-                GButton(
-                  icon: LineIcons.photo,
                   text: 'Data',
                 ),
                 GButton(
                   icon: LineIcons.leaf,
+                  text: 'Dashboard',
+                ),
+                GButton(
+                  icon: Icons.settings,
                   text: 'Settings',
                 ),
               ],
@@ -188,12 +188,14 @@ Future<void> loadData(FirebaseDatabase fb) async {
   // night_icon = await loadImageAsset('assets/icons/night_icon.png');
 
   final ref = fb.reference();
-  ref.child("temperature").once().then((DataSnapshot data) {
+  await ref.child("temperature").once().then((DataSnapshot data) {
     temperature = data.value;
-    print(data.value);
+  });
+  await ref.child("humidity").once().then((DataSnapshot data) {
+    humidity = data.value;
   });
 
-  return Future.delayed(Duration(seconds: 0));
+  return Future.delayed(Duration(milliseconds: 2500));
 }
 
 Future<UI.Image> loadUiImage(String imageAssetPath) async {
