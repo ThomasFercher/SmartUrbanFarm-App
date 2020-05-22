@@ -195,7 +195,7 @@ Future<void> loadData(FirebaseDatabase fb) async {
     humidity = data.value;
   });
 
-  return Future.delayed(Duration(milliseconds: 2500));
+  return Future.delayed(Duration(milliseconds: 0));
 }
 
 Future<UI.Image> loadUiImage(String imageAssetPath) async {

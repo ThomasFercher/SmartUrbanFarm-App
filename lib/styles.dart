@@ -22,8 +22,8 @@ UI.Image dusk_icon2 = null;
 UI.Image dawn_icon = null;
 UI.Image midday_icon = null;
 UI.Image night_icon = null;
-var temperature = 0.0;
-var humidity = 0.0;
+var temperature = "0.0";
+var humidity = "0.0";
 
 bool isDark(context) {
   return MediaQuery.of(context).platformBrightness == Brightness.light
