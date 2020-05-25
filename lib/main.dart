@@ -3,10 +3,10 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:sgs/pages/advanced.dart';
 import 'package:sgs/pages/home.dart';
 import 'styles.dart';
 import 'dart:async';
-import 'dart:typed_data';
 import 'dart:ui' as UI;
 import 'package:flutter/services.dart';
 
@@ -26,15 +26,15 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.green,
         primaryColor: primaryColor,
         accentColor: accentColor,
-        primaryTextTheme: Typography(platform: TargetPlatform.iOS).white,
+        primaryTextTheme: Typography.material2018(platform: TargetPlatform.iOS).white,
         textTheme: TextTheme(
           //headline: TextStyle(color: accentColor),
           //title: TextStyle(color: accentColor),
           // subhead: TextStyle(color: accentColor),
-          subtitle: TextStyle(color: Colors.white),
-          display3: TextStyle(
+          subtitle2: TextStyle(color: Colors.white),
+          headline2: TextStyle(
               color: text_gray, fontSize: 13.0, fontWeight: FontWeight.w400),
-          display4: TextStyle(color: primaryColor, fontSize: 30.0),
+          headline1: TextStyle(color: primaryColor, fontSize: 30.0),
         ),
       ),
       darkTheme: ThemeData(
@@ -44,13 +44,13 @@ class MyApp extends StatelessWidget {
         primaryColor: backgroundColor_d,
         canvasColor: backgroundColor_d,
         textTheme: TextTheme(
-          headline: TextStyle(color: accentColor),
-          title: TextStyle(color: accentColor),
-          subhead: TextStyle(color: accentColor),
-          subtitle: TextStyle(color: Colors.white),
-          display3: TextStyle(
+          headline5: TextStyle(color: accentColor),
+          headline6: TextStyle(color: accentColor),
+          subtitle1: TextStyle(color: accentColor),
+          subtitle2: TextStyle(color: Colors.white),
+          headline2: TextStyle(
               color: text_gray, fontSize: 13.0, fontWeight: FontWeight.w400),
-          display4: TextStyle(color: accentColor, fontSize: 30.0),
+          headline1: TextStyle(color: accentColor, fontSize: 30.0),
           //headline1: TextStyle(color: accentColor),
         ),
       ),
@@ -65,7 +65,6 @@ class MyApp extends StatelessWidget {
                 'assets/plant.flr',
                 alignment: Alignment.center,
                 animation: "Growing",
-              
               ),
             );
           }
@@ -89,21 +88,21 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int index = 1;
+  int index = 2;
 
   Widget getTab(context, index) {
     return [
       new Text(
         "Gallery",
-        style: Theme.of(context).textTheme.subhead,
+        style: Theme.of(context).textTheme.subtitle1,
       ),
       new Home(
         temperature: temperature,
         humidity: humidity,
       ),
-      new Text(
-        "Options",
-        style: Theme.of(context).textTheme.subhead,
+      new Advanced(
+        temperatures: temperatures,
+        humidites: humiditys,
       ),
     ].elementAt(index);
   }
@@ -123,7 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
         elevation: 0,
         title: Text(
           widget.title,
-          style: Theme.of(context).textTheme.title,
+          style: Theme.of(context).textTheme.headline6,
         ),
       ),
       body: Center(
@@ -167,7 +166,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 GButton(
                   icon: Icons.settings,
-                  text: 'Settings',
+                  text: 'Advanced',
                 ),
               ],
               selectedIndex: index,
@@ -181,12 +180,6 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 Future<void> loadData(FirebaseDatabase fb) async {
-//  dusk_icon2 = await loadImageAsset("assets/icons/dusk_icon2.png");
-  // dawn_icon = await loadImageAsset('assets/icons/dawn_icon.png');
-//  dusk_icon = await loadImageAsset('assets/icons/dusk_icon.png');
-//  midday_icon = await loadImageAsset('assets/icons/midday_icon.png');
-  // night_icon = await loadImageAsset('assets/icons/night_icon.png');
-
   final ref = fb.reference();
   await ref.child("temperature").once().then((DataSnapshot data) {
     temperature = data.value;
@@ -194,18 +187,26 @@ Future<void> loadData(FirebaseDatabase fb) async {
   await ref.child("humidity").once().then((DataSnapshot data) {
     humidity = data.value;
   });
-
-  return Future.delayed(Duration(milliseconds: 0));
-}
-
-Future<UI.Image> loadUiImage(String imageAssetPath) async {
-  final ByteData data = await rootBundle.load(imageAssetPath);
-  final Completer<UI.Image> completer = Completer();
-  UI.decodeImageFromList(Uint8List.view(data.buffer), (UI.Image img) {
-    return completer.complete(img);
+  await ref
+      .child("temperatures")
+      .limitToLast(10)
+      .once()
+      .then((DataSnapshot data) {
+    Map<dynamic, dynamic> temps = data.value;
+    temperatures = temps.values.toList();
   });
-  return completer.future;
+  await ref
+      .child("humiditys")
+      .limitToLast(10)
+      .once()
+      .then((DataSnapshot data) {
+    Map<dynamic, dynamic> temps = data.value;
+    humiditys = temps.values.toList();
+  });
+
+  return Future.delayed(Duration(milliseconds: 3000));
 }
+
 
 Future<UI.Image> loadImageAsset(String assetName) async {
   final data = await rootBundle.load(assetName);

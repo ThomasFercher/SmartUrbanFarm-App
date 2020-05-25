@@ -23,8 +23,8 @@
 ///
 import 'package:flutter/widgets.dart';
 
-class SGS_CustomIcon {
-  SGS_CustomIcon._();
+class SGSCustomIcon {
+  SGSCustomIcon._();
 
   static const _kFontFam = 'SGS_CustomIcon';
   static const _kFontPkg = null;

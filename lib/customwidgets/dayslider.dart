@@ -4,7 +4,7 @@ import 'package:weather_icons/weather_icons.dart';
 import '../styles.dart';
 
 class DaySlider extends StatefulWidget {
-  Function f;
+  final Function f;
   DaySlider({@required this.f});
 
   @override
@@ -21,6 +21,7 @@ class _DaySliderState extends State<DaySlider> {
     _values = new RangeValues(24, 72);
     labels = ["06:00", "18:00"];
     suntime = 12.00;
+    super.initState();
   }
 
   String getTimeString(double quarters) {
@@ -120,7 +121,7 @@ class _DaySliderState extends State<DaySlider> {
                     Container(
                       padding: EdgeInsets.only(right: 15),
                       child: Icon(
-                        SGS_CustomIcon.uniF02E,
+                        SGSCustomIcon.uniF02E,
                         //  color: isDark(context) ? Colors.white : Colors.black54,
                         color: new Color(0xFFBBBAAB),
                       ),

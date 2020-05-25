@@ -1,6 +1,4 @@
-library SGS.styles;
-
-import 'dart:ui' as UI;
+library sgs.styles;
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -16,14 +14,20 @@ const double screen_width = 231;
 const Color text_gray = Color(0xFF757575);
 final fb = FirebaseDatabase.instance;
 
+var temperature = 0.0;
+var humidity = 0.0;
+List<dynamic> temperatures = [0.0];
+List<dynamic> humiditys = [0.0];
 
-UI.Image dusk_icon = null;
-UI.Image dusk_icon2 = null;
-UI.Image dawn_icon = null;
-UI.Image midday_icon = null;
-UI.Image night_icon = null;
-var temperature = "0.0";
-var humidity = "0.0";
+List<Color> temperatureGradient = [
+  primaryColor,
+  const Color(0xff02d39a),
+];
+
+List<Color> humidityGradient = [
+  Colors.purple,
+  Colors.deepPurple
+];
 
 bool isDark(context) {
   return MediaQuery.of(context).platformBrightness == Brightness.light

@@ -2,20 +2,21 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import '../styles.dart';
 
-class TemperatureChart extends StatelessWidget {
-  List<FlSpot> spots;
-  List<Color> gradientColors = [
-    primaryColor,
-    const Color(0xff02d39a),
-  ];
-  List<dynamic> temperatures;
-
-  TemperatureChart({this.temperatures});
+class DataChart extends StatelessWidget {
+  //List<FlSpot> spots;
+  final List<Color> gradientColors;
+  final List<dynamic> data;
+  final String title;
+  final double minY;
+  final double maxY;
+  
+  DataChart(
+      {@required this.data, @required this.title, this.minY, this.maxY, this.gradientColors});
 
   List<FlSpot> getSpots(List<dynamic> temps) {
     List<FlSpot> spots = [];
     for (var i = temps.length - 1; i >= 0; i--) {
-      spots.add(new FlSpot(i.toDouble(), double.parse(temps[i])));
+      spots.add(new FlSpot(i.toDouble(), temps[i].toDouble()));
     }
     return spots;
   }
@@ -23,9 +24,23 @@ class TemperatureChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: LineChart(
-        mainData(),
-      ),
+      padding: EdgeInsets.all(10),
+      child: Column(children: [
+        Container(
+          padding: EdgeInsets.only(left: 10, bottom: 25),
+          alignment: Alignment.centerLeft,
+          child: new Text(
+            this.title,
+            style: TextStyle(
+                color: isDark(context) ? accentColor : accentColor_d,
+                fontSize: 18),
+          ),
+        ),
+        Container(
+          width: MediaQuery.of(context).size.width,
+          child: LineChart(mainData()),
+        ),
+      ]),
     );
   }
 
@@ -81,11 +96,11 @@ class TemperatureChart extends StatelessWidget {
       ),
       minX: 0,
       maxX: 9,
-      minY: 20,
-      maxY: 40,
+      minY: minY,
+      maxY: maxY,
       lineBarsData: [
         LineChartBarData(
-          spots: getSpots(temperatures),
+          spots: getSpots(data),
           isCurved: true,
           colors: gradientColors,
           barWidth: 5,
