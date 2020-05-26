@@ -16,8 +16,8 @@ final fb = FirebaseDatabase.instance;
 
 var temperature = 0.0;
 var humidity = 0.0;
-List<dynamic> temperatures = [0.0];
-List<dynamic> humiditys = [0.0];
+List<double> temperatures = [0.0];
+List<double> humiditys = [0.0];
 
 List<Color> temperatureGradient = [
   primaryColor,

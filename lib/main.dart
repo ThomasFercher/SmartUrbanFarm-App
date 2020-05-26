@@ -26,7 +26,8 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.green,
         primaryColor: primaryColor,
         accentColor: accentColor,
-        primaryTextTheme: Typography.material2018(platform: TargetPlatform.iOS).white,
+        primaryTextTheme:
+            Typography.material2018(platform: TargetPlatform.iOS).white,
         textTheme: TextTheme(
           //headline: TextStyle(color: accentColor),
           //title: TextStyle(color: accentColor),
@@ -61,6 +62,7 @@ class MyApp extends StatelessWidget {
               projectSnap.connectionState == ConnectionState.waiting) {
             //print('project snapshot data is: ${projectSnap.data}');
             return Container(
+              color: isDark(context) ? Colors.black : Colors.white,
               child: FlareActor(
                 'assets/plant.flr',
                 alignment: Alignment.center,
@@ -193,20 +195,15 @@ Future<void> loadData(FirebaseDatabase fb) async {
       .once()
       .then((DataSnapshot data) {
     Map<dynamic, dynamic> temps = data.value;
-    temperatures = temps.values.toList();
+    temperatures = temps.values.toList().cast<double>();
   });
-  await ref
-      .child("humiditys")
-      .limitToLast(10)
-      .once()
-      .then((DataSnapshot data) {
+  await ref.child("humiditys").limitToLast(10).once().then((DataSnapshot data) {
     Map<dynamic, dynamic> temps = data.value;
-    humiditys = temps.values.toList();
+    humiditys = temps.values.toList().cast<double>();
   });
 
   return Future.delayed(Duration(milliseconds: 3000));
 }
-
 
 Future<UI.Image> loadImageAsset(String assetName) async {
   final data = await rootBundle.load(assetName);

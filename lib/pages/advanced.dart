@@ -17,8 +17,8 @@ class Advanced extends StatefulWidget {
 }
 
 class _AdvancedState extends State<Advanced> {
-  var temperatures;
-  var humiditys;
+  List<double> temperatures;
+  List<double> humiditys;
   Timer updateTimer;
   @override
   void initState() {
@@ -35,18 +35,14 @@ class _AdvancedState extends State<Advanced> {
             .then((DataSnapshot data) {
           Map<dynamic, dynamic> temps = data.value;
           setState(() {
-            temperatures = temps.values.toList();
+            temperatures = temps.values.toList().cast<double>();
           });
         });
 
-        ref
-            .child("humiditys")
-            .limitToLast(10)
-            .once()
-            .then((DataSnapshot data) {
+        ref.child("humiditys").limitToLast(10).once().then((DataSnapshot data) {
           Map<dynamic, dynamic> temps = data.value;
           setState(() {
-            humiditys = temps.values.toList();
+            humiditys = temps.values.toList().cast<double>();
           });
         });
       }
@@ -56,28 +52,26 @@ class _AdvancedState extends State<Advanced> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          Container(
-            child: DataChart(
-              title: "Temperatures",
-              data: temperatures,
-              gradientColors: temperatureGradient,
-              minY: 20,
-              maxY: 40,
+    return SingleChildScrollView(
+      child: Container(
+        child: Column(
+          children: [
+            Container(
+              child: DataChart(
+                title: "Temperatures",
+                data: temperatures,
+                gradientColors: temperatureGradient,
+              ),
             ),
-          ),
-          Container(
-            child: DataChart(
-              title: "Humidities",
-              data: humiditys,
-              gradientColors: humidityGradient,
-              minY: 30.0,
-              maxY: 90.0,
+            Container(
+              child: DataChart(
+                title: "Humidities",
+                data: humiditys,
+                gradientColors: humidityGradient,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
