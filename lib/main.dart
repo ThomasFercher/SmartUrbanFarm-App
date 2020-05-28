@@ -104,7 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       new Advanced(
         temperatures: temperatures,
-        humidites: humiditys,
+        humiditys: humiditys,
       ),
     ].elementAt(index);
   }
@@ -194,12 +194,10 @@ Future<void> loadData(FirebaseDatabase fb) async {
       .limitToLast(10)
       .once()
       .then((DataSnapshot data) {
-    Map<dynamic, dynamic> temps = data.value;
-    temperatures = temps.values.toList().cast<double>();
+    temperatures = sortData(data.value);
   });
   await ref.child("humiditys").limitToLast(10).once().then((DataSnapshot data) {
-    Map<dynamic, dynamic> temps = data.value;
-    humiditys = temps.values.toList().cast<double>();
+    humiditys = sortData(data.value);
   });
 
   return Future.delayed(Duration(milliseconds: 3000));

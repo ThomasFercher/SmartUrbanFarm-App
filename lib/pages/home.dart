@@ -22,7 +22,6 @@ class _HomeState extends State<Home> {
   var temp;
   var humidity;
   Timer updateTimer;
-  List<dynamic> temperatures;
 
   @protected
   @mustCallSuper
@@ -46,12 +45,7 @@ class _HomeState extends State<Home> {
             temp = data.value;
           });
         });
-        ref.child("temperatures").limitToLast(10).once().then((DataSnapshot data) {
-          Map<dynamic, dynamic> temps = data.value;
-          setState(() {
-            temperatures = temps.values.toList();
-          });
-        });
+
         ref.child("humidity").once().then((DataSnapshot data) {
           setState(() {
             humidity = data.value;
@@ -90,7 +84,7 @@ class _HomeState extends State<Home> {
                 label: "Bodenfeuchtigkeit",
                 text: "43.80%",
               ),
-                 CardData(
+              CardData(
                 icon: LineIcons.sun_o,
                 label: "DayTime",
                 text: "Day",
@@ -114,7 +108,6 @@ class _HomeState extends State<Home> {
               ),
             ),
           ),
-        
         ],
       ),
     );

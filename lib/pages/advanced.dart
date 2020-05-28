@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:collection';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -8,41 +9,44 @@ import '../styles.dart';
 
 class Advanced extends StatefulWidget {
   final temperatures;
-  final humidites;
+  final humiditys;
 
-  Advanced({@required this.temperatures, @required this.humidites});
+  Advanced({@required this.temperatures, @required this.humiditys});
 
   @override
   _AdvancedState createState() => _AdvancedState();
 }
 
 class _AdvancedState extends State<Advanced> {
-  List<double> temperatures;
-  List<double> humiditys;
+  SplayTreeMap<DateTime, double> humiditys;
+  SplayTreeMap<DateTime, double> temperatures;
   Timer updateTimer;
+
   @override
   void initState() {
     temperatures = widget.temperatures;
-    humiditys = widget.humidites;
+    humiditys = widget.humiditys;
+
     // defines a timer
-    updateTimer = Timer.periodic(Duration(minutes: 1), (Timer t) {
+    updateTimer = Timer.periodic(Duration(seconds: 10), (Timer t) {
       if (this.mounted) {
         final ref = fb.reference();
+
+        //access temperatures
         ref
             .child("temperatures")
             .limitToLast(10)
             .once()
             .then((DataSnapshot data) {
-          Map<dynamic, dynamic> temps = data.value;
           setState(() {
-            temperatures = temps.values.toList().cast<double>();
+            temperatures = sortData(data.value);
           });
         });
 
+        //access humiditys
         ref.child("humiditys").limitToLast(10).once().then((DataSnapshot data) {
-          Map<dynamic, dynamic> temps = data.value;
           setState(() {
-            humiditys = temps.values.toList().cast<double>();
+            humiditys = sortData(data.value);
           });
         });
       }

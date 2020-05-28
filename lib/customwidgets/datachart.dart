@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import '../styles.dart';
@@ -6,7 +8,7 @@ import 'dart:math';
 class DataChart extends StatelessWidget {
   final List<FlSpot> spots;
   final List<Color> gradientColors;
-  final List<dynamic> data;
+  final SplayTreeMap<DateTime, double> data;
   final String title;
   final double minY;
   final double maxY;
@@ -16,11 +18,13 @@ class DataChart extends StatelessWidget {
     @required this.data,
     @required this.title,
     this.gradientColors,
-  })  : spots = getSpots(data),
-        minY = getMinY(data),
-        maxY = getMaxY(data),
-        titlesY =
-            getTitlesY(getMinY(data), getMaxY(data)); //optimize constructor
+  })  : spots = getSpots(data.values.toList()),
+        minY = getMinY(data.values.toList()),
+        maxY = getMaxY(data.values.toList()),
+        titlesY = getTitlesY(
+          getMinY(data.values.toList()),
+          getMaxY(data.values.toList()),
+        ); //optimize constructor
 
   static List<FlSpot> getSpots(List<double> datalist) {
     List<FlSpot> spots = [];
@@ -53,7 +57,7 @@ class DataChart extends StatelessWidget {
       min = (minY / 2).ceil() * 2;
       max = (maxY / 2).floor() * 2;
       middle = -1;
-    }else if (diff >= 1) {
+    } else if (diff >= 1) {
       min = minY.floor();
       max = maxY.ceil();
       middle = -1;
@@ -86,7 +90,6 @@ class DataChart extends StatelessWidget {
 
   LineChartData mainData() {
     return LineChartData(
-      
       gridData: FlGridData(
         show: false,
         drawVerticalLine: false,
