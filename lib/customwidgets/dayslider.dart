@@ -35,7 +35,6 @@ class _DaySliderState extends State<DaySlider> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(10),
       child: Card(
         elevation: cardElavation,
         shape: RoundedRectangleBorder(
@@ -46,24 +45,6 @@ class _DaySliderState extends State<DaySlider> {
           padding: EdgeInsets.only(top: 10, bottom: 10),
           child: Column(
             children: <Widget>[
-              new Container(
-                alignment: Alignment.centerLeft,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      padding: EdgeInsets.only(right: 5),
-                      child: new Text(
-                        "Sunlight",
-                        style: TextStyle(
-                            color:
-                                isDark(context) ? accentColor : accentColor_d,
-                            fontSize: 30),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
               new Container(
                 child: new Text(
                   "${getTimeString(suntime * 4)} hours",

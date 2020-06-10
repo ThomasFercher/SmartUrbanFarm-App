@@ -1,6 +1,9 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:sgs/pages/advanced.dart';
@@ -16,6 +19,8 @@ void main() => {
     };
 
 class MyApp extends StatelessWidget {
+  final String assetName = 'assets/up_arrow.svg';
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -35,7 +40,9 @@ class MyApp extends StatelessWidget {
           subtitle2: TextStyle(color: Colors.white),
           headline2: TextStyle(
               color: text_gray, fontSize: 13.0, fontWeight: FontWeight.w400),
-          headline1: TextStyle(color: primaryColor, fontSize: 30.0),
+          headline6:
+              TextStyle(color: accentColor, fontSize: 22, fontFamily: "Lato"),
+          headline1: TextStyle(color: dark_gray, fontSize: 30.0),
         ),
       ),
       darkTheme: ThemeData(
@@ -46,12 +53,13 @@ class MyApp extends StatelessWidget {
         canvasColor: backgroundColor_d,
         textTheme: TextTheme(
           headline5: TextStyle(color: accentColor),
-          headline6: TextStyle(color: accentColor),
+          headline6: TextStyle(color: accentColor, fontFamily: "lato"),
           subtitle1: TextStyle(color: accentColor),
+
           subtitle2: TextStyle(color: Colors.white),
           headline2: TextStyle(
               color: text_gray, fontSize: 13.0, fontWeight: FontWeight.w400),
-          headline1: TextStyle(color: accentColor, fontSize: 30.0),
+          headline1: TextStyle(color: dark_gray, fontSize: 30.0),
           //headline1: TextStyle(color: accentColor),
         ),
       ),
@@ -90,14 +98,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int index = 2;
+  int index = 0;
 
   Widget getTab(context, index) {
     return [
-      new Text(
-        "Gallery",
-        style: Theme.of(context).textTheme.subtitle1,
-      ),
       new Home(
         temperature: temperature,
         humidity: humidity,
@@ -115,20 +119,50 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  CustomPainter getPainter(var i) {
+    switch (i) {
+      case 0:
+        return BluePainter();
+        break;
+      case 1:
+        return AdvancedPainter();
+        break;
+      default:
+        BluePainter();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: isDark(context) ? backgroundColor_d : backgroundColor,
       appBar: AppBar(
-        backgroundColor: isDark(context) ? backgroundColor_d : backgroundColor,
+        backgroundColor: isDark(context) ? backgroundColor_d : primaryColor,
         elevation: 0,
-        title: Text(
-          widget.title,
-          style: Theme.of(context).textTheme.headline6,
+
+        leading: Container(
+          padding: EdgeInsets.only(left: 25, top: 5, bottom: 20),
+          //color: Colors.red,
+          child: SvgPicture.asset(
+            "assets/leaf.svg",
+            color: Colors.white,
+
+            //  height: 100,
+          ),
+        ),
+        //  leading: Icon(Icons.stars),
+        title: Container(
+          padding: EdgeInsets.only(left: 0),
+          child: Text(
+            widget.title,
+            style: Theme.of(context).textTheme.headline6,
+          ),
         ),
       ),
-      body: Center(
-        child: getTab(context, index),
+      body: CustomPaint(
+        painter: isDark(context) ? null : getPainter(index),
+        child: Center(
+          child: getTab(context, index),
+        ),
       ),
       bottomNavigationBar: bottomNavigationBar(),
     );
@@ -159,14 +193,12 @@ class _MyHomePageState extends State<MyHomePage> {
               tabBackgroundColor: primaryColor,
               tabs: [
                 GButton(
-                  icon: LineIcons.home,
-                  text: 'Data',
-                ),
-                GButton(
+                  gap: 60,
                   icon: LineIcons.leaf,
                   text: 'Dashboard',
                 ),
                 GButton(
+                  gap: 60,
                   icon: Icons.settings,
                   text: 'Advanced',
                 ),
@@ -184,10 +216,14 @@ class _MyHomePageState extends State<MyHomePage> {
 Future<void> loadData(FirebaseDatabase fb) async {
   final ref = fb.reference();
   await ref.child("temperature").once().then((DataSnapshot data) {
-    temperature = data.value;
+    temperature = data.value.runtimeType == double
+        ? data.value
+        : double.parse(data.value);
   });
   await ref.child("humidity").once().then((DataSnapshot data) {
-    humidity = data.value;
+    humidity = data.value.runtimeType == double
+        ? data.value
+        : double.parse(data.value);
   });
   await ref
       .child("temperatures")
@@ -200,10 +236,62 @@ Future<void> loadData(FirebaseDatabase fb) async {
     humiditys = sortData(data.value);
   });
 
-  return Future.delayed(Duration(milliseconds: 3000));
+  return Future.delayed(Duration(milliseconds: 0));
 }
 
 Future<UI.Image> loadImageAsset(String assetName) async {
   final data = await rootBundle.load(assetName);
   return decodeImageFromList(data.buffer.asUint8List());
+}
+
+class BluePainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    var paint = Paint();
+    paint.color = primaryColor;
+    paint.style = PaintingStyle.fill;
+
+    var path = Path();
+
+    path.moveTo(0, size.height * 0.3);
+    path.quadraticBezierTo(size.width * 0.25, size.height * 0.26,
+        size.width * 0.5, size.height * 0.3);
+    path.quadraticBezierTo(size.width * 0.75, size.height * 0.34,
+        size.width * 1.0, size.height * 0.3);
+    path.lineTo(size.width, 0);
+    path.lineTo(0, 0);
+
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return true;
+  }
+}
+
+class AdvancedPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    var paint = Paint();
+    paint.color = primaryColor;
+    paint.style = PaintingStyle.fill;
+
+    var path = Path();
+
+    path.moveTo(0, size.height * 0.05);
+    path.quadraticBezierTo(size.width * 0.25, size.height * 0.04,
+        size.width * 0.5, size.height * 0.05);
+    path.quadraticBezierTo(size.width * 0.75, size.height * 0.06,
+        size.width * 1.0, size.height * 0.05);
+    path.lineTo(size.width, 0);
+    path.lineTo(0, 0);
+
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return true;
+  }
 }

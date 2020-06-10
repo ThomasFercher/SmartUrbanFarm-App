@@ -28,30 +28,36 @@ class _AdvancedState extends State<Advanced> {
     humiditys = widget.humiditys;
 
     // defines a timer
-    updateTimer = Timer.periodic(Duration(seconds: 10), (Timer t) {
-      if (this.mounted) {
-        final ref = fb.reference();
+    updateTimer = Timer.periodic(Duration(seconds: 3), (Timer t) {
+      final ref = fb.reference();
 
-        //access temperatures
-        ref
-            .child("temperatures")
-            .limitToLast(10)
-            .once()
-            .then((DataSnapshot data) {
+      //access temperatures
+      ref
+          .child("temperatures")
+          .limitToLast(10)
+          .once()
+          .then((DataSnapshot data) {
+        if (this.mounted)
           setState(() {
             temperatures = sortData(data.value);
           });
-        });
+      });
 
-        //access humiditys
-        ref.child("humiditys").limitToLast(10).once().then((DataSnapshot data) {
+      //access humiditys
+      ref.child("humiditys").limitToLast(10).once().then((DataSnapshot data) {
+        if (this.mounted)
           setState(() {
             humiditys = sortData(data.value);
           });
-        });
-      }
+      });
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    updateTimer.cancel();
+    super.dispose();
   }
 
   @override
@@ -62,14 +68,14 @@ class _AdvancedState extends State<Advanced> {
           children: [
             Container(
               child: DataChart(
-                title: "Temperatures",
+                title: "TEMPERATURES",
                 data: temperatures,
                 gradientColors: temperatureGradient,
               ),
             ),
             Container(
               child: DataChart(
-                title: "Humidities",
+                title: "HUMIDITIES",
                 data: humiditys,
                 gradientColors: humidityGradient,
               ),

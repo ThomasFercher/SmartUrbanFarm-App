@@ -1,8 +1,7 @@
 import 'dart:async';
-
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:line_icons/line_icons.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sgs/customwidgets/dayslider.dart';
 import 'package:sgs/styles.dart';
 import 'package:flutter/cupertino.dart';
@@ -38,81 +37,88 @@ class _HomeState extends State<Home> {
     // defines a timer
 
     updateTimer = Timer.periodic(Duration(seconds: 60), (Timer t) {
-      if (this.mounted) {
-        final ref = fb.reference();
-        ref.child("temperature").once().then((DataSnapshot data) {
+      final ref = fb.reference();
+      ref.child("temperature").once().then((DataSnapshot data) {
+        if (this.mounted)
           setState(() {
             temp = data.value;
           });
-        });
+      });
 
-        ref.child("humidity").once().then((DataSnapshot data) {
+      ref.child("humidity").once().then((DataSnapshot data) {
+        if (this.mounted)
           setState(() {
             humidity = data.value;
           });
-        });
-      }
+      });
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(top: 10),
-      child: Column(
-        children: <Widget>[
-          GridView.count(
-            padding: EdgeInsets.only(top: 0, left: 10, right: 10),
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-            crossAxisCount: 3,
-            childAspectRatio: 1.0,
-            shrinkWrap: true,
-            children: <Widget>[
-              CardData(
-                icon: WeatherIcons.thermometer,
-                label: "Temperatur",
-                text: "$temp°C",
-              ),
-              CardData(
-                icon: WeatherIcons.humidity,
-                label: "Luftfeuchtigkeit",
-                text: "$humidity%",
-              ),
-              CardData(
-                icon: WeatherIcons.barometer,
-                label: "Bodenfeuchtigkeit",
-                text: "43.80%",
-              ),
-              CardData(
-                icon: LineIcons.sun_o,
-                label: "DayTime",
-                text: "Day",
-              ),
-              CardData(
-                icon: LineIcons.sun_o,
-                label: "Luftfeuchtigkeit",
-                text: "85%",
-              ),
-              CardData(
-                icon: LineIcons.sun_o,
-                label: "Luftfeuchtigkeit",
-                text: "85%",
-              ),
-            ],
-          ),
-          Container(
-            child: DaySlider(
-              f: (t) => setState(
-                () => timeRange = t,
+      child: Container(
+        padding: EdgeInsets.all(10),
+        child: Column(
+          children: <Widget>[
+            sectionTitle(context, "DETAILS", accentColor),
+            GridView.count(
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+              crossAxisCount: 3,
+              childAspectRatio: 1.0,
+              shrinkWrap: true,
+              children: <Widget>[
+                CardData(
+                  icon: WeatherIcons.thermometer,
+                  label: "Temperatur",
+                  text: "$temp°C",
+                ),
+                CardData(
+                  icon: WeatherIcons.humidity,
+                  label: "Luftfeuchtigkeit",
+                  text: "$humidity%",
+                ),
+                CardData(
+                  icon: WeatherIcons.barometer,
+                  label: "Bodenfeuchtigkeit",
+                  text: "43.80%",
+                ),
+                /*  CardData(
+                          icon: LineIcons.sun_o,
+                          label: "DayTime",
+                          text: "Day",
+                        ),
+                        CardData(
+                          icon: LineIcons.sun_o,
+                          label: "Luftfeuchtigkeit",
+                          text: "85%",
+                        ),
+                        CardData(
+                          icon: LineIcons.sun_o,
+                          label: "Luftfeuchtigkeit",
+                          text: "85%",
+                        ),*/
+              ],
+            ),
+            Padding(padding: EdgeInsets.only(top: 80)),
+            sectionTitle(context, "SUNLIGHT",
+                isDark(context) ? accentColor : accentColor_d),
+            Container(
+              child: DaySlider(
+                f: (t) => setState(
+                  () => timeRange = t,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 }
+
+class CurvePainter {}
 
 class CardData extends StatelessWidget {
   final IconData icon;

@@ -68,21 +68,31 @@ class DataChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.only(left: 10, right: 10,top: 10),
       child: Column(children: [
         Container(
-          padding: EdgeInsets.only(left: 10, bottom: 25),
+          padding: EdgeInsets.only(bottom: 15, left: 3),
           alignment: Alignment.centerLeft,
-          child: new Text(
-            this.title,
-            style: TextStyle(
-                color: isDark(context) ? accentColor : accentColor_d,
-                fontSize: 18),
-          ),
+          child: new Text(this.title,
+              style: sectionTitleStyle(
+                  context, isDark(context) ? dark_gray : text_gray)),
         ),
-        Container(
-          width: MediaQuery.of(context).size.width,
-          child: LineChart(mainData()),
+        ClipRRect(
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            padding: EdgeInsets.only(right: 10),
+            child: Card(
+              color: isDark(context) ? Colors.black : Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(borderRadius),
+              ),
+              elevation: cardElavation,
+              child: Container(
+                padding: EdgeInsets.only(left: 5),
+                child: LineChart(mainData()),
+              ),
+            ),
+          ),
         ),
       ]),
     );
@@ -92,26 +102,16 @@ class DataChart extends StatelessWidget {
     return LineChartData(
       gridData: FlGridData(
         show: false,
-        drawVerticalLine: false,
       ),
+      borderData: FlBorderData(show: false),
       titlesData: FlTitlesData(
         show: true,
         bottomTitles: SideTitles(
-          showTitles: true,
+          showTitles: false,
           reservedSize: 22,
           textStyle: const TextStyle(
-              color: Color(0xff68737d),
-              fontWeight: FontWeight.bold,
-              fontSize: 16),
+              color: dark_gray, fontWeight: FontWeight.bold, fontSize: 16),
           getTitles: (value) {
-            /*   switch (value.toInt()) {
-              case 2:
-                return 'Nice';
-              case 5:
-                return 'Cock';
-              case 8:
-                return 'SEP';
-            }*/
             return '';
           },
           margin: 0,
@@ -119,17 +119,17 @@ class DataChart extends StatelessWidget {
         leftTitles: SideTitles(
           showTitles: true,
           textStyle: const TextStyle(
-            color: Color(0xff67727d),
+            color: dark_gray,
             fontWeight: FontWeight.bold,
-            fontSize: 15,
+            fontSize: 14,
           ),
           getTitles: (value) {
             return titlesY.contains(value.toInt())
                 ? value.toInt().toString()
                 : '';
           },
-          reservedSize: 28,
-          margin: 10,
+          reservedSize: 18,
+          margin: 5,
         ),
       ),
       minX: 0,
@@ -141,11 +141,9 @@ class DataChart extends StatelessWidget {
           spots: spots,
           isCurved: true,
           colors: gradientColors,
-          barWidth: 5,
+          barWidth: 6,
           isStrokeCapRound: true,
-          dotData: FlDotData(
-            show: true,
-          ),
+          dotData: FlDotData(show: true, dotSize: 6),
           belowBarData: BarAreaData(
             show: true,
             colors:
