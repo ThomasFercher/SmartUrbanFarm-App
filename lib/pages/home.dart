@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:sgs/customwidgets/CardData.dart';
+import 'package:sgs/customwidgets/carddata.dart';
 import 'package:sgs/customwidgets/dayslider.dart';
 import 'package:sgs/styles.dart';
 import 'package:flutter/cupertino.dart';

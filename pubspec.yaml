@@ -1,6 +1,5 @@
-name: sgs
+name: sgs 
 description: Monitoring Application for the Smart Grow System
-
 
 version: 1.0.0+1
 
@@ -9,7 +8,7 @@ environment:
 
 dependencies:
   flutter:
-    sdk: flutter 
+    sdk: flutter
   cupertino_icons: ^0.1.2
   google_nav_bar: ^2.0.0
   line_icons: ^0.2.0
@@ -20,14 +19,23 @@ dependencies:
   firebase_database: ^3.1.1
   fl_chart: ^0.9.4
   google_fonts: ^1.1.0
-  flutter_svg: ^0.18.0
+  flutter_svg: ^0.17.0
+  xml: ^3.3.1
 
 dev_dependencies:
+  flutter_launcher_icons: "^0.7.5"
   flutter_test:
     sdk: flutter
 
+flutter_icons:
+  ios: true
+  android: true
+  image_path_ios: "assets/leaf.png"
+  image_path_android: "assets/leaf.png"
+  #adaptive_icon_background: "assets/launcher/background.png"
+  #adaptive_icon_foreground: "assets/launcher/foreground.png"
 
-flutter: 
+flutter:
   assets:
     - assets/
     - assets/icons/
@@ -39,12 +47,6 @@ flutter:
         - asset: fonts/OpenSans-Regular.ttf
         - asset: fonts/OpenSans-Italic.ttf
           style: italic
-    - family:  SGS_CustomIcon
+    - family: SGS_CustomIcon
       fonts:
         - asset: fonts/SGS_CustomIcon.ttf
-    
-
-
- 
-
-  
