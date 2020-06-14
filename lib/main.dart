@@ -2,8 +2,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
-import 'package:google_fonts/google_fonts.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:sgs/pages/advanced.dart';
@@ -25,50 +23,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      //  title: 'Smart Grow System',
-      theme: ThemeData(
-        brightness: Brightness.light,
-        primarySwatch: Colors.green,
-        primaryColor: primaryColor,
-        accentColor: accentColor,
-        primaryTextTheme:
-            Typography.material2018(platform: TargetPlatform.iOS).white,
-        textTheme: TextTheme(
-          //headline: TextStyle(color: accentColor),
-          //title: TextStyle(color: accentColor),
-          // subhead: TextStyle(color: accentColor),
-          subtitle2: TextStyle(color: Colors.white),
-          headline2: TextStyle(
-              color: text_gray, fontSize: 13.0, fontWeight: FontWeight.w400),
-          headline6:
-              TextStyle(color: accentColor, fontSize: 22, fontFamily: "Lato"),
-          headline1: TextStyle(color: dark_gray, fontSize: 30.0),
-        ),
-      ),
-      darkTheme: ThemeData(
-        brightness: Brightness.dark,
-        primarySwatch: Colors.green,
-        accentColor: accentColor_d,
-        primaryColor: backgroundColor_d,
-        canvasColor: backgroundColor_d,
-        textTheme: TextTheme(
-          headline5: TextStyle(color: accentColor),
-          headline6: TextStyle(color: accentColor, fontFamily: "lato"),
-          subtitle1: TextStyle(color: accentColor),
-
-          subtitle2: TextStyle(color: Colors.white),
-          headline2: TextStyle(
-              color: text_gray, fontSize: 13.0, fontWeight: FontWeight.w400),
-          headline1: TextStyle(color: dark_gray, fontSize: 30.0),
-          //headline1: TextStyle(color: accentColor),
-        ),
-      ),
+      theme: lightThemeData,
+      darkTheme: darkThemData,
       home: FutureBuilder(
         builder: (context, projectSnap) {
           if (projectSnap.connectionState == ConnectionState.none ||
               projectSnap.hasData == null ||
               projectSnap.connectionState == ConnectionState.waiting) {
-            //print('project snapshot data is: ${projectSnap.data}');
+            // Splashscreen using a Flare2d as a loading Animation
             return Container(
               color: isDark(context) ? Colors.black : Colors.white,
               child: FlareActor(
@@ -78,8 +40,9 @@ class MyApp extends StatelessWidget {
               ),
             );
           }
+          // Once loaded the main page will be displayed
           return MyHomePage(
-            title: "Smart Grow System App",
+            title: "Smart Grow System",
           );
         },
         future: loadData(fb),
@@ -90,16 +53,19 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title, this.temperature}) : super(key: key);
-  final String title;
+
   final temperature;
+  final String title;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  // currently selected tab
   int index = 0;
 
+  // This function returns the Tab of the given index
   Widget getTab(context, index) {
     return [
       new Home(
@@ -113,59 +79,25 @@ class _MyHomePageState extends State<MyHomePage> {
     ].elementAt(index);
   }
 
+  // This function sets the new index value
   void setIndex(int i) {
     setState(() {
       index = i;
     });
   }
 
+  // This function return the Backgroundpainter for the given tab
   CustomPainter getPainter(var i) {
     switch (i) {
       case 0:
-        return BluePainter();
+        return HomePainter();
         break;
       case 1:
         return AdvancedPainter();
         break;
       default:
-        BluePainter();
+        return HomePainter();
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: isDark(context) ? backgroundColor_d : primaryColor,
-        elevation: 0,
-
-        leading: Container(
-          padding: EdgeInsets.only(left: 25, top: 5, bottom: 20),
-          //color: Colors.red,
-          child: SvgPicture.asset(
-            "assets/leaf.svg",
-            color: Colors.white,
-
-            //  height: 100,
-          ),
-        ),
-        //  leading: Icon(Icons.stars),
-        title: Container(
-          padding: EdgeInsets.only(left: 0),
-          child: Text(
-            widget.title,
-            style: Theme.of(context).textTheme.headline6,
-          ),
-        ),
-      ),
-      body: CustomPaint(
-        painter: isDark(context) ? null : getPainter(index),
-        child: Center(
-          child: getTab(context, index),
-        ),
-      ),
-      bottomNavigationBar: bottomNavigationBar(),
-    );
   }
 
   Widget bottomNavigationBar() {
@@ -211,8 +143,53 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: isDark(context) ? backgroundColor_d : primaryColor,
+        elevation: 0,
+        title: Container(color: Colors.green),
+        actions: [
+          Container(
+            width: MediaQuery.of(context).size.width,
+            padding: EdgeInsets.only(left: 10),
+            child: Row(
+              children: [
+                Container(
+                  width: 45,
+                  padding: EdgeInsets.only(top: 5, right: 5),
+                  child: SvgPicture.asset(
+                    "assets/leaf.svg",
+                    color: Colors.white,
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Text(
+                    widget.title,
+                    style: Theme.of(context).textTheme.headline6,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+      body: CustomPaint(
+        painter: isDark(context) ? null : getPainter(index),
+        child: Center(
+          child: getTab(context, index),
+        ),
+      ),
+      bottomNavigationBar: bottomNavigationBar(),
+    );
+  }
 }
 
+/// This function loads the inital data from the database when the app starts.
 Future<void> loadData(FirebaseDatabase fb) async {
   final ref = fb.reference();
   await ref.child("temperature").once().then((DataSnapshot data) {
@@ -236,7 +213,8 @@ Future<void> loadData(FirebaseDatabase fb) async {
     humiditys = sortData(data.value);
   });
 
-  return Future.delayed(Duration(milliseconds: 0));
+  //add a delay so the animation plays through
+  return Future.delayed(Duration(milliseconds: 2800));
 }
 
 Future<UI.Image> loadImageAsset(String assetName) async {
@@ -244,20 +222,22 @@ Future<UI.Image> loadImageAsset(String assetName) async {
   return decodeImageFromList(data.buffer.asUint8List());
 }
 
-class BluePainter extends CustomPainter {
+class HomePainter extends CustomPainter {
+  //drawing
   @override
   void paint(Canvas canvas, Size size) {
     var paint = Paint();
     paint.color = primaryColor;
     paint.style = PaintingStyle.fill;
 
+    var height = 200.0;
     var path = Path();
 
-    path.moveTo(0, size.height * 0.3);
-    path.quadraticBezierTo(size.width * 0.25, size.height * 0.26,
-        size.width * 0.5, size.height * 0.3);
-    path.quadraticBezierTo(size.width * 0.75, size.height * 0.34,
-        size.width * 1.0, size.height * 0.3);
+    path.moveTo(0, height);
+    path.quadraticBezierTo(
+        size.width * 0.25, height - 30, size.width * 0.5, height);
+    path.quadraticBezierTo(
+        size.width * 0.75, height + 30, size.width * 1.0, height);
     path.lineTo(size.width, 0);
     path.lineTo(0, 0);
 
@@ -271,19 +251,20 @@ class BluePainter extends CustomPainter {
 }
 
 class AdvancedPainter extends CustomPainter {
+  //drawing
   @override
   void paint(Canvas canvas, Size size) {
     var paint = Paint();
     paint.color = primaryColor;
     paint.style = PaintingStyle.fill;
-
+    var height = 20.0;
     var path = Path();
 
-    path.moveTo(0, size.height * 0.05);
-    path.quadraticBezierTo(size.width * 0.25, size.height * 0.04,
-        size.width * 0.5, size.height * 0.05);
-    path.quadraticBezierTo(size.width * 0.75, size.height * 0.06,
-        size.width * 1.0, size.height * 0.05);
+    path.moveTo(0, height);
+    path.quadraticBezierTo(
+        size.width * 0.25, height - 15, size.width * 0.5, height);
+    path.quadraticBezierTo(
+        size.width * 0.75, height + 15, size.width * 1.0, height);
     path.lineTo(size.width, 0);
     path.lineTo(0, 0);
 

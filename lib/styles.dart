@@ -12,7 +12,7 @@ const Color backgroundColor_d = Color(0xFF000000);
 const Color accentColor_d = Color(0xFF212121);
 const Color backgroundColor = Color(0xFFFFFFFF);
 const double cardElavation = 2.0;
-const double borderRadius = 5.0;
+const double borderRadius = 8.0;
 const double screen_width = 231;
 const Color text_gray = Color(0xFF646464);
 const Color dark_gray = Color(0xFFb4b4b4);
@@ -55,7 +55,6 @@ Widget sectionTitle(BuildContext context, String title, Color color) {
 }
 
 List<Color> humidityGradient = [Colors.purple, Colors.deepPurple];
-
 bool isDark(context) {
   return MediaQuery.of(context).platformBrightness == Brightness.light
       ? false
@@ -82,3 +81,57 @@ SplayTreeMap<DateTime, double> sortData(Map<dynamic, dynamic> data) {
       new SplayTreeMap<DateTime, double>.from(d, (a, b) => a.compareTo(b));
   return sorted;
 }
+
+ThemeData lightThemeData = ThemeData(
+  brightness: Brightness.light,
+  primarySwatch: Colors.green,
+  primaryColor: primaryColor,
+  accentColor: accentColor,
+  primaryTextTheme: Typography.material2018(platform: TargetPlatform.iOS).white,
+  textTheme: TextTheme(
+    subtitle2: TextStyle(
+      color: Colors.white,
+    ),
+    headline2: TextStyle(
+      color: text_gray,
+      fontSize: 13.0,
+      fontWeight: FontWeight.w400,
+    ),
+    headline6: TextStyle(
+      color: accentColor,
+      fontSize: 24,
+      fontFamily: "Lato",
+    ),
+    headline1: TextStyle(
+      color: Colors.black87,
+      fontSize: 30.0,
+    ),
+  ),
+);
+
+ThemeData darkThemData = ThemeData(
+  brightness: Brightness.dark,
+  primarySwatch: Colors.green,
+  accentColor: accentColor_d,
+  primaryColor: backgroundColor_d,
+  canvasColor: backgroundColor_d,
+  textTheme: TextTheme(
+    headline5: TextStyle(color: accentColor),
+    headline6: TextStyle(
+      color: accentColor,
+      fontFamily: "lato",
+      fontSize: 24,
+    ),
+    subtitle1: TextStyle(color: accentColor),
+    subtitle2: TextStyle(color: Colors.white),
+    headline2: TextStyle(
+      color: text_gray,
+      fontSize: 13.0,
+      fontWeight: FontWeight.w400,
+    ),
+    headline1: TextStyle(
+      color: dark_gray,
+      fontSize: 30.0,
+    ),
+  ),
+);

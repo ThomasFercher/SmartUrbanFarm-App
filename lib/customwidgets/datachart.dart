@@ -1,5 +1,4 @@
 import 'dart:collection';
-
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import '../styles.dart';
@@ -14,6 +13,9 @@ class DataChart extends StatelessWidget {
   final double maxY;
   final List<int> titlesY;
 
+  /// This widget is a Card with a Linechart in it.
+  /// You can define a custom title and inject your data with a list.
+  /// Define your own Gradient to display under the linechart line.
   DataChart({
     @required this.data,
     @required this.title,
@@ -68,28 +70,31 @@ class DataChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(left: 10, right: 10,top: 10),
+      padding: EdgeInsets.only(
+        left: 10,
+      ),
       child: Column(children: [
-        Container(
-          padding: EdgeInsets.only(bottom: 15, left: 3),
-          alignment: Alignment.centerLeft,
-          child: new Text(this.title,
-              style: sectionTitleStyle(
-                  context, isDark(context) ? dark_gray : text_gray)),
-        ),
+        sectionTitle(
+            context, this.title, isDark(context) ? accentColor : accentColor_d),
         ClipRRect(
           child: Container(
             width: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.only(right: 10),
+            padding: EdgeInsets.only(right: 25, bottom: 20),
             child: Card(
               color: isDark(context) ? Colors.black : Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(borderRadius),
+              shape: ContinuousRectangleBorder(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(borderRadius),
+                  topLeft: Radius.circular(borderRadius),
+                  topRight: Radius.circular(borderRadius),
+                ),
               ),
               elevation: cardElavation,
               child: Container(
-                padding: EdgeInsets.only(left: 5),
-                child: LineChart(mainData()),
+                padding: EdgeInsets.only(
+                  left: 5,
+                ),
+                child: LineChart(mainData(context)),
               ),
             ),
           ),
@@ -98,8 +103,33 @@ class DataChart extends StatelessWidget {
     );
   }
 
-  LineChartData mainData() {
+  LineChartData mainData(BuildContext context) {
     return LineChartData(
+      lineTouchData: LineTouchData(
+        touchTooltipData: LineTouchTooltipData(
+          tooltipBgColor: gradientColors[0],
+          getTooltipItems: (List<LineBarSpot> spots) {
+            List<LineTooltipItem> l = [];
+
+            spots.forEach((element) {
+              l.add(
+                new LineTooltipItem(
+                  element.y.toString(),
+                  TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14),
+                ),
+              );
+            });
+            return l;
+          },
+          fitInsideVertically: true,
+          tooltipRoundedRadius: borderRadius,
+          tooltipBottomMargin: 40,
+          tooltipPadding: EdgeInsets.only(top: 6, left: 8, right: 8, bottom: 6),
+        ),
+      ),
       gridData: FlGridData(
         show: false,
       ),
@@ -141,9 +171,9 @@ class DataChart extends StatelessWidget {
           spots: spots,
           isCurved: true,
           colors: gradientColors,
-          barWidth: 6,
+          barWidth: 7,
           isStrokeCapRound: true,
-          dotData: FlDotData(show: true, dotSize: 6),
+          dotData: FlDotData(show: true, dotSize: 7),
           belowBarData: BarAreaData(
             show: true,
             colors:

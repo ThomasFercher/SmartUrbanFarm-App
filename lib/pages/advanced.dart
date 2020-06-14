@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:collection';
-
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:sgs/customwidgets/datachart.dart';
@@ -11,7 +10,10 @@ class Advanced extends StatefulWidget {
   final temperatures;
   final humiditys;
 
-  Advanced({@required this.temperatures, @required this.humiditys});
+  Advanced({
+    @required this.temperatures,
+    @required this.humiditys,
+  });
 
   @override
   _AdvancedState createState() => _AdvancedState();
@@ -56,31 +58,37 @@ class _AdvancedState extends State<Advanced> {
 
   @override
   void dispose() {
+    //cancels the timer in case the widget is not in the build tree anymore
     updateTimer.cancel();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        child: Column(
-          children: [
-            Container(
-              child: DataChart(
-                title: "TEMPERATURES",
-                data: temperatures,
-                gradientColors: temperatureGradient,
+    return Container(
+      padding: isDark(context)
+          ? EdgeInsets.only(bottom: 30)
+          : EdgeInsets.only(top: 30),
+      child: SingleChildScrollView(
+        child: Container(
+          child: Column(
+            children: [
+              Container(
+                child: DataChart(
+                  title: "TEMPERATURES",
+                  data: temperatures,
+                  gradientColors: temperatureGradient,
+                ),
               ),
-            ),
-            Container(
-              child: DataChart(
-                title: "HUMIDITIES",
-                data: humiditys,
-                gradientColors: humidityGradient,
+              Container(
+                child: DataChart(
+                  title: "HUMIDITIES",
+                  data: humiditys,
+                  gradientColors: humidityGradient,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

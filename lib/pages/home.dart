@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:sgs/customwidgets/CardData.dart';
 import 'package:sgs/customwidgets/dayslider.dart';
 import 'package:sgs/styles.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,6 +17,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  //states
   var timeRange = [];
   var temp;
   var humidity;
@@ -25,33 +26,46 @@ class _HomeState extends State<Home> {
   @protected
   @mustCallSuper
   void dispose() {
+    //cancels the timer in case the widget is not in the build tree anymore
     updateTimer.cancel();
     super.dispose();
   }
 
   @override
   void initState() {
+    //sets given initial values
     temp = widget.temperature;
     humidity = widget.humidity;
-    super.initState();
+
     // defines a timer
+    updateTimer = Timer.periodic(
+      Duration(seconds: 60),
+      (Timer t) {
+        final ref = fb.reference();
+        //accesses the child "temperatures" value and calls setState
+        ref.child("temperature").once().then((DataSnapshot data) {
+          if (this.mounted)
+            setState(() {
+              temp = data.value;
+            });
+        });
+        //accesses the child "humidity" value and calls setState
+        ref.child("humidity").once().then((DataSnapshot data) {
+          if (this.mounted)
+            setState(() {
+              humidity = data.value;
+            });
+        });
+      },
+    );
 
-    updateTimer = Timer.periodic(Duration(seconds: 60), (Timer t) {
-      final ref = fb.reference();
-      ref.child("temperature").once().then((DataSnapshot data) {
-        if (this.mounted)
-          setState(() {
-            temp = data.value;
-          });
-      });
+    super.initState();
+  }
 
-      ref.child("humidity").once().then((DataSnapshot data) {
-        if (this.mounted)
-          setState(() {
-            humidity = data.value;
-          });
-      });
-    });
+  //gets called when the slider changes in value and updates the child "suntime" in the firebase database
+  void suntimeChanged(List<dynamic> suntime) {
+    String time = "${suntime[0]} - ${suntime[1]}";
+    fb.reference().child('suntime').set({'suntime': time}).then((_) {});
   }
 
   @override
@@ -61,7 +75,8 @@ class _HomeState extends State<Home> {
         padding: EdgeInsets.all(10),
         child: Column(
           children: <Widget>[
-            sectionTitle(context, "DETAILS", accentColor),
+            sectionTitle(context, "DETAILS",
+                isDark(context) ? accentColor : accentColor),
             GridView.count(
               crossAxisSpacing: 10,
               mainAxisSpacing: 10,
@@ -73,101 +88,36 @@ class _HomeState extends State<Home> {
                   icon: WeatherIcons.thermometer,
                   label: "Temperatur",
                   text: "$temp°C",
+                  iconColor: Colors.redAccent,
                 ),
                 CardData(
                   icon: WeatherIcons.humidity,
                   label: "Luftfeuchtigkeit",
                   text: "$humidity%",
+                  iconColor: Colors.blueAccent,
                 ),
                 CardData(
                   icon: WeatherIcons.barometer,
                   label: "Bodenfeuchtigkeit",
                   text: "43.80%",
+                  iconColor: Colors.brown,
                 ),
-                /*  CardData(
-                          icon: LineIcons.sun_o,
-                          label: "DayTime",
-                          text: "Day",
-                        ),
-                        CardData(
-                          icon: LineIcons.sun_o,
-                          label: "Luftfeuchtigkeit",
-                          text: "85%",
-                        ),
-                        CardData(
-                          icon: LineIcons.sun_o,
-                          label: "Luftfeuchtigkeit",
-                          text: "85%",
-                        ),*/
               ],
             ),
-            Padding(padding: EdgeInsets.only(top: 80)),
+            Padding(padding: EdgeInsets.only(top: 40)),
             sectionTitle(context, "SUNLIGHT",
                 isDark(context) ? accentColor : accentColor_d),
             Container(
               child: DaySlider(
-                f: (t) => setState(
-                  () => timeRange = t,
-                ),
+                onValueChanged: (_timeRange) => {
+                  setState(
+                    () => timeRange = _timeRange,
+                  ),
+                  suntimeChanged(timeRange)
+                },
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class CurvePainter {}
-
-class CardData extends StatelessWidget {
-  final IconData icon;
-  final String text;
-  final String label;
-
-  CardData({
-    @required this.icon,
-    @required this.text,
-    @required this.label,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Card(
-        elevation: getCardElavation(context),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(borderRadius),
-        ),
-        color: isDark(context) ? accentColor_d : Colors.white,
-        child: Container(
-          child: Container(
-            padding: EdgeInsets.all(5),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  child: Icon(
-                    icon,
-                    size: 20,
-                  ),
-                ),
-                Container(
-                  child: new Text(
-                    label,
-                    style: Theme.of(context).textTheme.headline2,
-                  ),
-                ),
-                Container(
-                  child: new Text(
-                    text,
-                    style: Theme.of(context).textTheme.headline1,
-                  ),
-                ),
-              ],
-            ),
-          ),
         ),
       ),
     );

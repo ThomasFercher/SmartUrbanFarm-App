@@ -4,8 +4,14 @@ import 'package:weather_icons/weather_icons.dart';
 import '../styles.dart';
 
 class DaySlider extends StatefulWidget {
-  final Function f;
-  DaySlider({@required this.f});
+  final Function onValueChanged;
+
+  /// This widget lets u choose a timerange from 0-24h
+  /// The current value is displayed over the slider itself
+  /// Also you can use the onValueChanged function to define your own callback function
+  DaySlider({
+    @required this.onValueChanged,
+  });
 
   @override
   _DaySliderState createState() => _DaySliderState();
@@ -93,7 +99,7 @@ class _DaySliderState extends State<DaySlider> {
                                 getTimeString(_values.end)
                               ];
                               suntime = _values.end / 4 - _values.start / 4;
-                              widget.f(labels);
+                              widget.onValueChanged(labels);
                             },
                           ),
                         ),
