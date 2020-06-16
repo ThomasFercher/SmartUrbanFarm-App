@@ -6,7 +6,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-const Color accentColor = Color(0xFFe2e2e2);
+const Color accentColor = Colors.white;//Color(0xFFe2e2e2);
 const Color primaryColor = Color(0xFF1db954);
 const Color backgroundColor_d = Color(0xFF000000);
 const Color accentColor_d = Color(0xFF212121);

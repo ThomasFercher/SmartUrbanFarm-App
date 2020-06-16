@@ -1,3 +1,5 @@
+
+
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
@@ -180,7 +182,8 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: CustomPaint(
         painter: isDark(context) ? null : getPainter(index),
-        child: Center(
+        child: Container(
+          margin: isDark(context) ? EdgeInsets.only(top: 25) : null,
           child: getTab(context, index),
         ),
       ),

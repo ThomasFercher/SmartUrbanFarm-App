@@ -67,7 +67,7 @@ class _AdvancedState extends State<Advanced> {
   Widget build(BuildContext context) {
     return Container(
       padding: isDark(context)
-          ? EdgeInsets.only(bottom: 30)
+          ? EdgeInsets.only(top: 10)
           : EdgeInsets.only(top: 30),
       child: SingleChildScrollView(
         child: Container(
