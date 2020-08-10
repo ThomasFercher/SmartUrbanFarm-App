@@ -77,6 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
         temperatures: temperatures,
         humiditys: humiditys,
       ),
+      new Text("Settings")
     ].elementAt(index);
   }
 
@@ -102,45 +103,24 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget bottomNavigationBar() {
+    final List<BottomNavigationBarItem> items = [
+      BottomNavigationBarItem(
+          icon: const Icon(LineIcons.leaf), title: const Text("Dashboard")),
+      BottomNavigationBarItem(
+          icon: const Icon(Icons.details), title: const Text("Advanced")),
+      BottomNavigationBarItem(
+          icon: const Icon(Icons.settings), title: const Text("Settings")),
+    ];
+
     return Container(
-      padding: EdgeInsets.only(left: 5, right: 5),
-      child: SafeArea(
-        child: Card(
-          elevation: getCardElavation(context) + 2,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(32.0),
-          ),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(32.0),
-              color: isDark(context) ? accentColor_d : backgroundColor,
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 5),
-            child: GNav(
-              gap: 8,
-              activeColor: accentColor,
-              color: isDark(context) ? Colors.white12 : Colors.black12,
-              iconSize: 28,
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-              duration: Duration(milliseconds: 800),
-              tabBackgroundColor: primaryColor,
-              tabs: [
-                GButton(
-                  gap: 60,
-                  icon: LineIcons.leaf,
-                  text: 'Dashboard',
-                ),
-                GButton(
-                  gap: 60,
-                  icon: Icons.settings,
-                  text: 'Advanced',
-                ),
-              ],
-              selectedIndex: index,
-              onTabChange: (index) => setIndex(index),
-            ),
-          ),
-        ),
+      child: BottomNavigationBar(
+        items: items,
+        currentIndex: index,
+        elevation: 2,
+        iconSize: 28,
+        unselectedItemColor: isDark(context) ? Colors.white12 : Colors.black26,
+        selectedItemColor: primaryColor,
+        onTap: (i) => setIndex(i),
       ),
     );
   }
@@ -220,7 +200,7 @@ Future<void> loadData(FirebaseDatabase fb) async {
   });
 
   //add a delay so the animation plays through
-  return Future.delayed(Duration(milliseconds: 2800));
+  return Future.delayed(Duration(milliseconds: 0));
 }
 
 Future<UI.Image> loadImageAsset(String assetName) async {
