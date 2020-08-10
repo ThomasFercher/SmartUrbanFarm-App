@@ -21,6 +21,7 @@ final fb = FirebaseDatabase.instance;
 
 double temperature;
 double humidity;
+String suntime;
 SplayTreeMap<DateTime, double> temperatures;
 SplayTreeMap<DateTime, double> humiditys;
 

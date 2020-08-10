@@ -1,5 +1,3 @@
-
-
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
@@ -41,11 +39,12 @@ class MyApp extends StatelessWidget {
                 animation: "Growing",
               ),
             );
+          } else {
+            // Once loaded the main page will be displayed
+            return MyHomePage(
+              title: "Smart Grow System",
+            );
           }
-          // Once loaded the main page will be displayed
-          return MyHomePage(
-            title: "Smart Grow System",
-          );
         },
         future: loadData(fb),
       ),
@@ -194,6 +193,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
 /// This function loads the inital data from the database when the app starts.
 Future<void> loadData(FirebaseDatabase fb) async {
+  print("yee");
   final ref = fb.reference();
   await ref.child("temperature").once().then((DataSnapshot data) {
     temperature = data.value.runtimeType == double
@@ -204,6 +204,9 @@ Future<void> loadData(FirebaseDatabase fb) async {
     humidity = data.value.runtimeType == double
         ? data.value
         : double.parse(data.value);
+  });
+  await ref.child("suntime").once().then((DataSnapshot data) {
+    suntime = data.value["suntime"];
   });
   await ref
       .child("temperatures")
