@@ -5,24 +5,20 @@ import 'dart:collection';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'dart:ui' as ui;
 
-const Color accentColor = Colors.white;//Color(0xFFe2e2e2);
+const Color accentColor = Colors.white; //Color(0xFFe2e2e2);
 const Color primaryColor = Color(0xFF1db954);
 const Color backgroundColor_d = Color(0xFF000000);
 const Color accentColor_d = Color(0xFF212121);
 const Color backgroundColor = Color(0xFFFFFFFF);
-const double cardElavation = 2.0;
+const double cardElavation = 1.0;
 const double borderRadius = 8.0;
 const double screen_width = 231;
 const Color text_gray = Color(0xFF646464);
 const Color dark_gray = Color(0xFFb4b4b4);
 Image logo = new Image(image: null);
 final fb = FirebaseDatabase.instance;
-
-double temperature;
-double humidity;
-SplayTreeMap<DateTime, double> temperatures;
-SplayTreeMap<DateTime, double> humiditys;
 
 List<Color> temperatureGradient = [
   primaryColor,
@@ -97,6 +93,11 @@ ThemeData lightThemeData = ThemeData(
       fontSize: 13.0,
       fontWeight: FontWeight.w400,
     ),
+    headline3: TextStyle(
+      color: text_gray,
+      fontSize: 15.0,
+      fontWeight: FontWeight.w600,
+    ),
     headline6: TextStyle(
       color: accentColor,
       fontSize: 24,
@@ -135,3 +136,16 @@ ThemeData darkThemData = ThemeData(
     ),
   ),
 );
+
+EdgeInsets lerp(EdgeInsets a, EdgeInsets b, double t) {
+  assert(t != null);
+  if (a == null && b == null) return null;
+  if (a == null) return b * t;
+  if (b == null) return a * (1.0 - t);
+  return EdgeInsets.fromLTRB(
+    ui.lerpDouble(a.left, b.left, t),
+    ui.lerpDouble(a.top, b.top, t),
+    ui.lerpDouble(a.right, b.right, t),
+    ui.lerpDouble(a.bottom, b.bottom, t),
+  );
+}

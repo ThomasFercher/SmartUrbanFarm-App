@@ -6,11 +6,10 @@ import 'package:sgs/providers/dashboardProvider.dart';
 import '../styles.dart';
 import 'dart:math';
 
-class DataChart extends StatelessWidget {
+class SmallDataChart extends StatelessWidget {
   final List<FlSpot> spots;
   final List<Color> gradientColors;
   final SplayTreeMap<DateTime, double> data;
-  final String title;
   final double minY;
   final double maxY;
   final List<int> titlesY;
@@ -18,10 +17,9 @@ class DataChart extends StatelessWidget {
   /// This widget is a Card with a Linechart in it.
   /// You can define a custom title and inject your data with a list.
   /// Define your own Gradient to display under the linechart line.
-  DataChart({
+  SmallDataChart({
     @required this.data,
-    @required this.title,
-    this.gradientColors,
+    @required this.gradientColors,
   })  : spots = getSpots(data.values.toList()),
         minY = getMinY(data.values.toList()),
         maxY = getMaxY(data.values.toList()),
@@ -74,37 +72,11 @@ class DataChart extends StatelessWidget {
     return Consumer<DashboardProvider>(
       builder: (context, d, child) {
         return Container(
-          padding: EdgeInsets.only(
-            left: 10,
+          color: isDark(context) ? Colors.black : Colors.white,
+          width: MediaQuery.of(context).size.width,
+          child: LineChart(
+            mainData(context),
           ),
-          child: Column(children: [
-            sectionTitle(context, this.title,
-                isDark(context) ? accentColor : accentColor_d),
-            ClipRRect(
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                padding: EdgeInsets.only(right: 25, bottom: 20),
-                child: Card(
-                  color: isDark(context) ? Colors.black : Colors.white,
-                  shape: ContinuousRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(borderRadius),
-                      topLeft: Radius.circular(borderRadius),
-                      topRight: Radius.circular(borderRadius),
-                    ),
-                  ),
-                  elevation: d.longPressed ? cardElavation + 2 : cardElavation,
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.only(
-                      left: 5,
-                    ),
-                    child: LineChart(mainData(context)),
-                  ),
-                ),
-              ),
-            ),
-          ]),
         );
       },
     );
