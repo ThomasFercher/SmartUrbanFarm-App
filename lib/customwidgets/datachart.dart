@@ -1,6 +1,8 @@
 import 'dart:collection';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:sgs/providers/dashboardProvider.dart';
 import '../styles.dart';
 import 'dart:math';
 
@@ -69,37 +71,42 @@ class DataChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(
-        left: 10,
-      ),
-      child: Column(children: [
-        sectionTitle(
-            context, this.title, isDark(context) ? accentColor : accentColor_d),
-        ClipRRect(
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.only(right: 25, bottom: 20),
-            child: Card(
-              color: isDark(context) ? Colors.black : Colors.white,
-              shape: ContinuousRectangleBorder(
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(borderRadius),
-                  topLeft: Radius.circular(borderRadius),
-                  topRight: Radius.circular(borderRadius),
-                ),
-              ),
-              elevation: cardElavation,
+    return Consumer<DashboardProvider>(
+      builder: (context, d, child) {
+        return Container(
+          padding: EdgeInsets.only(
+            left: 10,
+          ),
+          child: Column(children: [
+            sectionTitle(context, this.title,
+                isDark(context) ? accentColor : accentColor_d),
+            ClipRRect(
               child: Container(
-                padding: EdgeInsets.only(
-                  left: 5,
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.only(right: 25, bottom: 20),
+                child: Card(
+                  color: isDark(context) ? Colors.black : Colors.white,
+                  shape: ContinuousRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(borderRadius),
+                      topLeft: Radius.circular(borderRadius),
+                      topRight: Radius.circular(borderRadius),
+                    ),
+                  ),
+                  elevation: d.longPressed ? cardElavation + 2 : cardElavation,
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.only(
+                      left: 5,
+                    ),
+                    child: LineChart(mainData(context)),
+                  ),
                 ),
-                child: LineChart(mainData(context)),
               ),
             ),
-          ),
-        ),
-      ]),
+          ]),
+        );
+      },
     );
   }
 

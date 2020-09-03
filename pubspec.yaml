@@ -17,11 +17,16 @@ dependencies:
   flare_flutter: ^1.5.0
   firebase_core: ^0.4.0+9
   firebase_database: ^3.1.1
+  firebase_storage: ^3.0.8
+  firebase: ^5.0.4
   fl_chart: ^0.9.4
   google_fonts: ^1.1.0
   flutter_svg: ^0.17.0
   xml: ^3.3.1
-
+  implicitly_animated_reorderable_list: ^0.2.3
+  provider: ^4.3.2
+  service_locator: ^1.0.0
+  
 dev_dependencies:
   flutter_launcher_icons: "^0.7.5"
   flutter_test:

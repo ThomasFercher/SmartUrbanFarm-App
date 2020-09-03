@@ -2,18 +2,36 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:sgs/pages/advanced.dart';
+import 'package:sgs/pages/gallery.dart';
 import 'package:sgs/pages/home.dart';
+import 'package:sgs/providers/storageProvider.dart';
+import 'providers/dashboardProvider.dart';
 import 'styles.dart';
 import 'dart:async';
 import 'dart:ui' as UI;
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import 'pages/settings.dart';
 
 void main() => {
       WidgetsFlutterBinding.ensureInitialized(),
-      runApp(MyApp()),
+      runApp(
+        MultiProvider(
+          providers: [
+            ChangeNotifierProvider<DashboardProvider>(
+              lazy: false,
+              create: (_) => DashboardProvider(),
+            ),
+            ChangeNotifierProvider<StorageProvider>(
+              lazy: false,
+              create: (_) => StorageProvider(),
+            ),
+          ],
+          child: MyApp(),
+        ),
+      )
     };
 
 class MyApp extends StatelessWidget {
@@ -22,6 +40,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    Provider.of<DashboardProvider>(context, listen: false).loadData();
     return MaterialApp(
       theme: lightThemeData,
       darkTheme: darkThemData,
@@ -46,7 +65,7 @@ class MyApp extends StatelessWidget {
             );
           }
         },
-        future: loadData(fb),
+        future: loadData(context),
       ),
     );
   }
@@ -69,15 +88,10 @@ class _MyHomePageState extends State<MyHomePage> {
   // This function returns the Tab of the given index
   Widget getTab(context, index) {
     return [
-      new Home(
-        temperature: temperature,
-        humidity: humidity,
-      ),
-      new Advanced(
-        temperatures: temperatures,
-        humiditys: humiditys,
-      ),
-      new Text("Settings")
+      new Home(),
+      new Advanced(),
+      new Gallery(),
+      new SettingsPage(),
     ].elementAt(index);
   }
 
@@ -98,18 +112,28 @@ class _MyHomePageState extends State<MyHomePage> {
         return AdvancedPainter();
         break;
       default:
-        return HomePainter();
+        return AdvancedPainter();
     }
   }
 
   Widget bottomNavigationBar() {
     final List<BottomNavigationBarItem> items = [
       BottomNavigationBarItem(
-          icon: const Icon(LineIcons.leaf), title: const Text("Dashboard")),
+        icon: const Icon(LineIcons.leaf),
+        title: const Text("Dashboard"),
+      ),
       BottomNavigationBarItem(
-          icon: const Icon(Icons.details), title: const Text("Advanced")),
+        icon: const Icon(Icons.details),
+        title: const Text("Advanced"),
+      ),
       BottomNavigationBarItem(
-          icon: const Icon(Icons.settings), title: const Text("Settings")),
+        icon: const Icon(Icons.photo_album),
+        title: const Text("Gallery"),
+      ),
+      BottomNavigationBarItem(
+        icon: const Icon(Icons.settings),
+        title: const Text("Settings"),
+      ),
     ];
 
     return Container(
@@ -117,7 +141,10 @@ class _MyHomePageState extends State<MyHomePage> {
         items: items,
         currentIndex: index,
         elevation: 2,
-        iconSize: 28,
+        iconSize: 34,
+        type: BottomNavigationBarType.fixed,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
         unselectedItemColor: isDark(context) ? Colors.white12 : Colors.black26,
         selectedItemColor: primaryColor,
         onTap: (i) => setIndex(i),
@@ -139,15 +166,16 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Row(
               children: [
                 Container(
-                  width: 45,
-                  padding: EdgeInsets.only(top: 5, right: 5),
+                  width: 35,
+                  padding: EdgeInsets.only(bottom: 5, right: 5),
                   child: SvgPicture.asset(
                     "assets/leaf.svg",
                     color: Colors.white,
                   ),
                 ),
-                Align(
-                  alignment: Alignment.bottomLeft,
+                Container(
+                  padding: EdgeInsets.only(top: 5, left: 10),
+                  alignment: Alignment.center,
                   child: Text(
                     widget.title,
                     style: Theme.of(context).textTheme.headline6,
@@ -172,35 +200,16 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 /// This function loads the inital data from the database when the app starts.
-Future<void> loadData(FirebaseDatabase fb) async {
-  print("yee");
-  final ref = fb.reference();
-  await ref.child("temperature").once().then((DataSnapshot data) {
-    temperature = data.value.runtimeType == double
-        ? data.value
-        : double.parse(data.value);
-  });
-  await ref.child("humidity").once().then((DataSnapshot data) {
-    humidity = data.value.runtimeType == double
-        ? data.value
-        : double.parse(data.value);
-  });
-  await ref.child("suntime").once().then((DataSnapshot data) {
-    suntime = data.value["suntime"];
-  });
-  await ref
-      .child("temperatures")
-      .limitToLast(10)
-      .once()
-      .then((DataSnapshot data) {
-    temperatures = sortData(data.value);
-  });
-  await ref.child("humiditys").limitToLast(10).once().then((DataSnapshot data) {
-    humiditys = sortData(data.value);
-  });
+Future<void> loadData(context) async {
+  Stopwatch stopwatch = new Stopwatch()..start();
+  await Provider.of<DashboardProvider>(context, listen: false).loadData();
+  await Provider.of<StorageProvider>(context, listen: false).loadImages();
+  stopwatch.stop();
 
   //add a delay so the animation plays through
-  return Future.delayed(Duration(milliseconds: 0));
+  return Future.delayed(
+    Duration(milliseconds: 3000 - stopwatch.elapsedMilliseconds),
+  );
 }
 
 Future<UI.Image> loadImageAsset(String assetName) async {

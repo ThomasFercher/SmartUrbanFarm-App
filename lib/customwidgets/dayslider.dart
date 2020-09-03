@@ -5,13 +5,12 @@ import '../styles.dart';
 
 class DaySlider extends StatefulWidget {
   final Function onValueChanged;
+  final String initialTimeString;
 
   /// This widget lets u choose a timerange from 0-24h
   /// The current value is displayed over the slider itself
   /// Also you can use the onValueChanged function to define your own callback function
-  DaySlider({
-    @required this.onValueChanged,
-  });
+  DaySlider({@required this.onValueChanged, @required this.initialTimeString});
 
   @override
   _DaySliderState createState() => _DaySliderState();
@@ -24,9 +23,9 @@ class _DaySliderState extends State<DaySlider> {
 
   @override
   void initState() {
-    _values = new RangeValues(24, 72);
-    labels = ["06:00", "18:00"];
-    suntime = 12.00;
+    _values = getValueFromTimeString(widget.initialTimeString);
+    labels = [getTimeString(_values.start), getTimeString(_values.end)];
+    suntime = (_values.end - _values.start) / 4;
     super.initState();
   }
 
@@ -36,6 +35,18 @@ class _DaySliderState extends State<DaySlider> {
     String h = hours >= 10 ? "$hours" : "0$hours";
     String m = minutes == 0 ? "0$minutes" : "$minutes";
     return "$h:$m";
+  }
+
+  RangeValues getValueFromTimeString(String timestring) {
+    String val1 = timestring.split('-')[0];
+    String val2 = timestring.split('-')[1];
+    return new RangeValues(getRangeValue(val1), getRangeValue(val2));
+  }
+
+  double getRangeValue(String value) {
+    double hours = double.parse(value.split(":")[0]) * 4;
+    double min = double.parse(value.split(":")[1]) / 15;
+    return hours + min;
   }
 
   @override
