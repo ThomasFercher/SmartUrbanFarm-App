@@ -5,6 +5,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sgs/main.dart';
+import 'package:sgs/objects/environmentSettings.dart';
 
 import '../styles.dart';
 
@@ -28,6 +29,16 @@ class DashboardProvider with ChangeNotifier, DiagnosticableTreeMixin {
   SplayTreeMap<DateTime, double> temperatures = new SplayTreeMap();
   SplayTreeMap<DateTime, double> humiditys = new SplayTreeMap();
   final ref = fb.reference();
+
+  List<EnvironmentSettings> settings = [
+    new EnvironmentSettings(
+      name: "custom",
+      temperature: 50,
+      humidity: 50,
+      soilMoisture: 50,
+      suntime: "02:30 - 18:00",
+    )
+  ];
 
   DashboardProvider() {
     Timer.periodic(Duration(seconds: 60), (timer) {

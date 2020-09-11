@@ -9,20 +9,76 @@ import 'dart:ui' as ui;
 
 const Color accentColor = Colors.white; //Color(0xFFe2e2e2);
 const Color primaryColor = Color(0xFF1db954);
-const Color backgroundColor_d = Color(0xFF000000);
-const Color accentColor_d = Color(0xFF212121);
+const Color backgroundColor_d = Color(0xff065446);
+const Color accentColor_d = Color(0xFF323232);
 const Color backgroundColor = Color(0xFFFFFFFF);
-const double cardElavation = 1.0;
+const double cardElavation = 2.0;
 const double borderRadius = 8.0;
 const double screen_width = 231;
 const Color text_gray = Color(0xFF646464);
 const Color dark_gray = Color(0xFFb4b4b4);
+const Color d_text_gray = Color(0xFFedeae4);
 Image logo = new Image(image: null);
 final fb = FirebaseDatabase.instance;
+const Color gray = Color(0xFF1f1f1f);
+
+Color topColor = gradient4[0]; //Color(0xFF007243);
+Color bottomColor = gradient4[1]; //Color(0xFF396f5f);
+const Color background_t = Color(0x48000000);
+
+List<Color> gradient1 = [
+  const Color(0xFF4ac29a),
+  const Color(0xFFbdfff3),
+];
+
+List<Color> gradient2 = [
+  Colors.teal[800],
+  Colors.green[300],
+];
+
+List<Color> gradient3 = [
+  Colors.blueAccent,
+  const Color(0xFF000000),
+];
+
+List<Color> gradient4 = [
+  const Color(0xFF1d976c),
+  Colors.white,
+];
 
 List<Color> temperatureGradient = [
   primaryColor,
   const Color(0xff02d39a),
+];
+
+var selectedTheme = 0;
+
+AppTheme getTheme() {
+  return themes[selectedTheme];
+}
+
+List<AppTheme> themes = [
+  new AppTheme(
+    name: "light",
+    cardColor: Colors.white,
+    background: gradient4,
+    textColor: Colors.black87,
+    headlineColor: Colors.white,
+  ),
+  new AppTheme(
+    name: "cool",
+    cardColor: background_t,
+    background: gradient2,
+    textColor: Colors.white,
+    headlineColor: Colors.white,
+  ),
+  new AppTheme(
+    name: "dark",
+    cardColor: accentColor_d,
+    background: gradient3,
+    textColor: Colors.white,
+    headlineColor: Colors.white,
+  )
 ];
 
 TextStyle sectionTitleStyle(context, Color color) => GoogleFonts.lato(
@@ -45,7 +101,12 @@ Widget sectionTitle(BuildContext context, String title, Color color) {
     alignment: Alignment.centerLeft,
     child: Text(
       title,
-      style: sectionTitleStyle(context, color),
+      style: GoogleFonts.lato(
+        textStyle: TextStyle(
+          color: color,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
     ),
   );
 }
@@ -66,7 +127,7 @@ double getHeight(context) {
 }
 
 double getCardElavation(context) {
-  return isDark(context) ? 0 : cardElavation;
+  return cardElavation;
 }
 
 SplayTreeMap<DateTime, double> sortData(Map<dynamic, dynamic> data) {
@@ -78,15 +139,20 @@ SplayTreeMap<DateTime, double> sortData(Map<dynamic, dynamic> data) {
   return sorted;
 }
 
-ThemeData lightThemeData = ThemeData(
+ThemeData themeData = ThemeData(
   brightness: Brightness.light,
   primarySwatch: Colors.green,
   primaryColor: primaryColor,
   accentColor: accentColor,
-  primaryTextTheme: Typography.material2018(platform: TargetPlatform.iOS).white,
   textTheme: TextTheme(
     subtitle2: TextStyle(
-      color: Colors.white,
+      color: Colors.black54,
+      fontWeight: FontWeight.w400,
+    ),
+    subtitle1: TextStyle(
+      fontSize: 18,
+      color: Colors.black87,
+      fontWeight: FontWeight.w400,
     ),
     headline2: TextStyle(
       color: text_gray,
@@ -110,33 +176,6 @@ ThemeData lightThemeData = ThemeData(
   ),
 );
 
-ThemeData darkThemData = ThemeData(
-  brightness: Brightness.dark,
-  primarySwatch: Colors.green,
-  accentColor: accentColor_d,
-  primaryColor: backgroundColor_d,
-  canvasColor: backgroundColor_d,
-  textTheme: TextTheme(
-    headline5: TextStyle(color: accentColor),
-    headline6: TextStyle(
-      color: accentColor,
-      fontFamily: "lato",
-      fontSize: 24,
-    ),
-    subtitle1: TextStyle(color: accentColor),
-    subtitle2: TextStyle(color: Colors.white),
-    headline2: TextStyle(
-      color: text_gray,
-      fontSize: 13.0,
-      fontWeight: FontWeight.w400,
-    ),
-    headline1: TextStyle(
-      color: dark_gray,
-      fontSize: 30.0,
-    ),
-  ),
-);
-
 EdgeInsets lerp(EdgeInsets a, EdgeInsets b, double t) {
   assert(t != null);
   if (a == null && b == null) return null;
@@ -148,4 +187,19 @@ EdgeInsets lerp(EdgeInsets a, EdgeInsets b, double t) {
     ui.lerpDouble(a.right, b.right, t),
     ui.lerpDouble(a.bottom, b.bottom, t),
   );
+}
+
+class AppTheme {
+  final String name;
+  final Color cardColor;
+  final List<Color> background;
+  final Color textColor;
+  final Color headlineColor;
+
+  AppTheme(
+      {this.cardColor,
+      this.background,
+      this.textColor,
+      this.headlineColor,
+      this.name});
 }

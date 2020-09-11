@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'dart:ui';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:implicitly_animated_reorderable_list/transitions.dart';
 import 'package:provider/provider.dart';
@@ -35,15 +36,38 @@ class Advanced extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding:
-          isDark(context) ? EdgeInsets.only(top: 10) : EdgeInsets.only(top: 30),
-      child: Consumer<DashboardProvider>(
-        builder: (context, d, child) {
-          return DashboardDragList(
-            items: getItems(d),
-          );
-        },
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle(
+        systemNavigationBarColor: Colors.white,
+      ),
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(80.0),
+          child: Container(
+            color: getTheme().background[0],
+            padding: EdgeInsets.symmetric(vertical: 10),
+            child: AppBar(
+              title: Text(
+                "Advanced Data",
+                style: TextStyle(color: getTheme().headlineColor),
+              ),
+              iconTheme: IconThemeData(color: getTheme().headlineColor),
+              backgroundColor: getTheme().background[0],
+              elevation: 0,
+            ),
+          ),
+        ),
+        backgroundColor: Colors.white,
+        body: Consumer<DashboardProvider>(
+          builder: (context, d, child) {
+            return Container(
+              padding: EdgeInsets.only(top: 20),
+              child: DashboardDragList(
+                items: getItems(d),
+              ),
+            );
+          },
+        ),
       ),
     );
   }

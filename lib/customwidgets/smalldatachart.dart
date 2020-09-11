@@ -72,7 +72,7 @@ class SmallDataChart extends StatelessWidget {
     return Consumer<DashboardProvider>(
       builder: (context, d, child) {
         return Container(
-          color: isDark(context) ? Colors.black : Colors.white,
+          color: getTheme().cardColor,
           width: MediaQuery.of(context).size.width,
           child: LineChart(
             mainData(context),

@@ -71,6 +71,7 @@ class DataChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppTheme theme = getTheme();
     return Consumer<DashboardProvider>(
       builder: (context, d, child) {
         return Container(
@@ -79,13 +80,13 @@ class DataChart extends StatelessWidget {
           ),
           child: Column(children: [
             sectionTitle(context, this.title,
-                isDark(context) ? accentColor : accentColor_d),
+                theme.name == "light" ? Colors.black87 : theme.headlineColor),
             ClipRRect(
               child: Container(
                 width: MediaQuery.of(context).size.width,
                 padding: EdgeInsets.only(right: 25, bottom: 20),
                 child: Card(
-                  color: isDark(context) ? Colors.black : Colors.white,
+                  color: getTheme().cardColor,
                   shape: ContinuousRectangleBorder(
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(borderRadius),

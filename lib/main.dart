@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:sgs/pages/advanced.dart';
+import 'package:sgs/pages/environment.dart';
 import 'package:sgs/pages/gallery.dart';
 import 'package:sgs/pages/home.dart';
+import 'package:sgs/providers/settingsProvider.dart';
 import 'package:sgs/providers/storageProvider.dart';
 import 'providers/dashboardProvider.dart';
 import 'styles.dart';
@@ -16,6 +18,10 @@ import 'package:provider/provider.dart';
 import 'pages/settings.dart';
 
 void main() => {
+      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        systemNavigationBarColor: getTheme().background[1],
+      )),
       WidgetsFlutterBinding.ensureInitialized(),
       runApp(
         MultiProvider(
@@ -25,8 +31,12 @@ void main() => {
               create: (_) => DashboardProvider(),
             ),
             ChangeNotifierProvider<StorageProvider>(
-              lazy: false,
+              lazy: true,
               create: (_) => StorageProvider(),
+            ),
+            ChangeNotifierProvider<SettingsProvider>(
+              lazy: false,
+              create: (_) => SettingsProvider(),
             ),
           ],
           child: MyApp(),
@@ -42,8 +52,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     Provider.of<DashboardProvider>(context, listen: false).loadData();
     return MaterialApp(
-      theme: lightThemeData,
-      darkTheme: darkThemData,
+      theme: themeData,
       home: FutureBuilder(
         builder: (context, projectSnap) {
           if (projectSnap.connectionState == ConnectionState.none ||
@@ -82,120 +91,150 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  // currently selected tab
-  int index = 0;
+  static const String EnvironmentSettings = 'Environment';
+  static const String Settings = 'Settings';
+  static const String SignOut = 'About';
 
-  // This function returns the Tab of the given index
-  Widget getTab(context, index) {
-    return [
-      new Home(),
-      new Advanced(),
-      new Gallery(),
-      new SettingsPage(),
-    ].elementAt(index);
-  }
-
-  // This function sets the new index value
-  void setIndex(int i) {
-    setState(() {
-      index = i;
-    });
-  }
+  static const List<String> choices = <String>[
+    EnvironmentSettings,
+    Settings,
+    SignOut
+  ];
 
   // This function return the Backgroundpainter for the given tab
-  CustomPainter getPainter(var i) {
-    switch (i) {
-      case 0:
-        return HomePainter();
+  CustomPainter getPainter() {
+    switch (getTheme().name) {
+      case "light":
+        return LightPainter();
         break;
-      case 1:
-        return AdvancedPainter();
+      case "dark":
+        return DarkPainter();
         break;
       default:
-        return AdvancedPainter();
+        return CoolPainter();
     }
-  }
-
-  Widget bottomNavigationBar() {
-    final List<BottomNavigationBarItem> items = [
-      BottomNavigationBarItem(
-        icon: const Icon(LineIcons.leaf),
-        title: const Text("Dashboard"),
-      ),
-      BottomNavigationBarItem(
-        icon: const Icon(Icons.details),
-        title: const Text("Advanced"),
-      ),
-      BottomNavigationBarItem(
-        icon: const Icon(Icons.photo_album),
-        title: const Text("Gallery"),
-      ),
-      BottomNavigationBarItem(
-        icon: const Icon(Icons.settings),
-        title: const Text("Settings"),
-      ),
-    ];
-
-    return Container(
-      child: BottomNavigationBar(
-        items: items,
-        currentIndex: index,
-        elevation: 2,
-        iconSize: 34,
-        type: BottomNavigationBarType.fixed,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        unselectedItemColor: isDark(context) ? Colors.white12 : Colors.black26,
-        selectedItemColor: primaryColor,
-        onTap: (i) => setIndex(i),
-      ),
-    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: isDark(context) ? backgroundColor_d : primaryColor,
-        elevation: 0,
-        title: Container(color: Colors.green),
-        actions: [
-          Container(
-            width: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.only(left: 10),
-            child: Row(
-              children: [
+    return Consumer<SettingsProvider>(
+      builder: (context, value, child) {
+        return AnnotatedRegion<SystemUiOverlayStyle>(
+          value: SystemUiOverlayStyle(
+            systemNavigationBarColor: getTheme().background[1],
+          ),
+          child: Scaffold(
+            appBar: AppBar(
+              backgroundColor: getTheme().background[0],
+              elevation: 0,
+              actions: [
                 Container(
-                  width: 35,
-                  padding: EdgeInsets.only(bottom: 5, right: 5),
-                  child: SvgPicture.asset(
-                    "assets/leaf.svg",
-                    color: Colors.white,
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.only(top: 5, left: 10),
-                  alignment: Alignment.center,
-                  child: Text(
-                    widget.title,
-                    style: Theme.of(context).textTheme.headline6,
-                    textAlign: TextAlign.center,
+                  width: MediaQuery.of(context).size.width,
+                  padding: EdgeInsets.only(left: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 35,
+                        padding: EdgeInsets.only(bottom: 5, right: 5),
+                        child: SvgPicture.asset(
+                          "assets/leaf.svg",
+                          color: Colors.white,
+                        ),
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width - 100,
+                        padding: EdgeInsets.only(top: 5, left: 10),
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          widget.title,
+                          style: Theme.of(context).textTheme.headline6,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      Container(
+                        width: 42,
+                        alignment: Alignment.center,
+                        child: PopupMenuButton<String>(
+                          icon: Icon(
+                            Icons.more_vert,
+                            size: 30,
+                            color: Colors.white,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(borderRadius),
+                          ),
+                          color: Colors.white,
+                          elevation: getCardElavation(context),
+                          onSelected: choiceAction,
+                          itemBuilder: (BuildContext context) {
+                            return choices.map((String choice) {
+                              return PopupMenuItem<String>(
+                                value: choice,
+                                child: Text(
+                                  choice,
+                                  style: TextStyle(
+                                    color: Colors.black87,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              );
+                            }).toList();
+                          },
+                        ),
+                      )
+                    ],
                   ),
                 ),
               ],
             ),
+            body: Container(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                gradient: getTheme().name == "cool"
+                    ? LinearGradient(
+                        colors: getTheme().background,
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter)
+                    : null,
+              ),
+              child: CustomPaint(
+                painter: getPainter(),
+                child: Home(),
+              ),
+              //  bottomNavigationBar: bottomNavigationBar(),
+            ),
           ),
-        ],
-      ),
-      body: CustomPaint(
-        painter: isDark(context) ? null : getPainter(index),
-        child: Container(
-          margin: isDark(context) ? EdgeInsets.only(top: 25) : null,
-          child: getTab(context, index),
-        ),
-      ),
-      bottomNavigationBar: bottomNavigationBar(),
+        );
+      },
     );
+  }
+
+  void choiceAction(String choice) {
+    if (choice == Settings) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ChangeNotifierProvider.value(
+            value: Provider.of<SettingsProvider>(context),
+            child: SettingsPage(),
+          ),
+        ),
+      );
+    } else if (choice == EnvironmentSettings) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ChangeNotifierProvider.value(
+            value: Provider.of<DashboardProvider>(context),
+            child: Environment(),
+          ),
+        ),
+      );
+    } else if (choice == SignOut) {
+      print('SignOut');
+    }
   }
 }
 
@@ -217,17 +256,24 @@ Future<UI.Image> loadImageAsset(String assetName) async {
   return decodeImageFromList(data.buffer.asUint8List());
 }
 
-class HomePainter extends CustomPainter {
+class LightPainter extends CustomPainter {
   //drawing
   @override
   void paint(Canvas canvas, Size size) {
     var paint = Paint();
-    paint.color = primaryColor;
+    paint.color = Colors.white;
     paint.style = PaintingStyle.fill;
 
-    var height = 200.0;
-    var path = Path();
+    var height = 180.0;
+    var path = new Path();
 
+    path = new Path();
+    path.addRect(Rect.fromLTWH(0, 0, size.width, size.height));
+    canvas.drawPath(path, paint);
+    path.close();
+
+    path = new Path();
+    paint.color = getTheme().background[0];
     path.moveTo(0, height);
     path.quadraticBezierTo(
         size.width * 0.25, height - 30, size.width * 0.5, height);
@@ -245,16 +291,24 @@ class HomePainter extends CustomPainter {
   }
 }
 
-class AdvancedPainter extends CustomPainter {
+class DarkPainter extends CustomPainter {
   //drawing
   @override
   void paint(Canvas canvas, Size size) {
     var paint = Paint();
-    paint.color = primaryColor;
+    paint.color = Colors.black;
     paint.style = PaintingStyle.fill;
-    var height = 20.0;
-    var path = Path();
 
+    var height = 180.0;
+    var path = new Path();
+
+    path = new Path();
+    path.addRect(Rect.fromLTWH(0, 0, size.width, size.height));
+    canvas.drawPath(path, paint);
+    path.close();
+
+    paint.color = Colors.blueAccent;
+    path = new Path();
     path.moveTo(0, height);
     path.quadraticBezierTo(
         size.width * 0.25, height - 15, size.width * 0.5, height);
@@ -265,6 +319,17 @@ class AdvancedPainter extends CustomPainter {
 
     canvas.drawPath(path, paint);
   }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return true;
+  }
+}
+
+class CoolPainter extends CustomPainter {
+  //drawing
+  @override
+  void paint(Canvas canvas, Size size) {}
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) {

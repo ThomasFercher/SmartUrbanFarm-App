@@ -26,6 +26,7 @@ dependencies:
   implicitly_animated_reorderable_list: ^0.2.3
   provider: ^4.3.2
   service_locator: ^1.0.0
+  flutter_skeleton: ^0.1.0+1
   
 dev_dependencies:
   flutter_launcher_icons: "^0.7.5"

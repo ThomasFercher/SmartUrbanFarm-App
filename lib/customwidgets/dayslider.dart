@@ -57,15 +57,19 @@ class _DaySliderState extends State<DaySlider> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadius),
         ),
-        color: isDark(context) ? Colors.black : Colors.white,
+        color: getTheme().cardColor,
         child: Container(
           padding: EdgeInsets.only(top: 10, bottom: 10),
           child: Column(
             children: <Widget>[
-              new Container(
+              Container(
                 child: new Text(
                   "${getTimeString(suntime * 4)} hours",
-                  style: Theme.of(context).textTheme.headline1,
+                  style: TextStyle(
+                    color: getTheme().textColor,
+                    fontWeight: FontWeight.w100,
+                    fontSize: 30.0,
+                  ),
                 ),
               ),
               Container(
@@ -99,8 +103,7 @@ class _DaySliderState extends State<DaySlider> {
                           min: 0,
                           max: 96,
                           activeColor: primaryColor,
-                          inactiveColor:
-                              isDark(context) ? Colors.white24 : Colors.black12,
+                          inactiveColor: Colors.black26,
                           onChanged: (values) => setState(
                             () {
                               if (values.end - values.start >= 16)

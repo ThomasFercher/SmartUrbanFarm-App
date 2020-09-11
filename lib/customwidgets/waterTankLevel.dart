@@ -20,10 +20,13 @@ class WaterTankLevel extends StatelessWidget {
 
     double _yOffset = (200 / 100) * (100 - fullness);
     int yOffset = _yOffset.round();
-    print(fullness);
+
     return Card(
       shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(borderRadius)),
+        borderRadius: BorderRadius.circular(borderRadius),
+      ),
+      elevation: getCardElavation(context),
+      color: getTheme().cardColor,
       child: Container(
         height: 240,
         width: 120,
@@ -49,7 +52,11 @@ class WaterTankLevel extends StatelessWidget {
                     alignment: Alignment.topCenter,
                     child: Text(
                       "$fullness%",
-                      style: Theme.of(context).textTheme.headline1,
+                      style: TextStyle(
+                        color: getTheme().textColor,
+                        fontWeight: FontWeight.w100,
+                        fontSize: 30.0,
+                      ),
                     ),
                   ),
                 ],
