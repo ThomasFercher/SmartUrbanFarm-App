@@ -13,7 +13,7 @@ const Color backgroundColor_d = Color(0xff065446);
 const Color accentColor_d = Color(0xFF323232);
 const Color backgroundColor = Color(0xFFFFFFFF);
 const double cardElavation = 2.0;
-const double borderRadius = 8.0;
+const double borderRadius = 16.0;
 const double screen_width = 231;
 const Color text_gray = Color(0xFF646464);
 const Color dark_gray = Color(0xFFb4b4b4);
@@ -21,6 +21,10 @@ const Color d_text_gray = Color(0xFFedeae4);
 Image logo = new Image(image: null);
 final fb = FirebaseDatabase.instance;
 const Color gray = Color(0xFF1f1f1f);
+
+const String Temperature = 'Temperature';
+const String Humidity = 'Humidity';
+const String SoilMoisture = 'SoilMoisture';
 
 Color topColor = gradient4[0]; //Color(0xFF007243);
 Color bottomColor = gradient4[1]; //Color(0xFF396f5f);
@@ -42,8 +46,9 @@ List<Color> gradient3 = [
 ];
 
 List<Color> gradient4 = [
-  const Color(0xFF1d976c),
-  Colors.white,
+  /*Color(0xFFb2dfdb)*/ Color(0xFF26C281), Colors.white
+  //const Color(0xFF1d976c),
+  //Colors.white,
 ];
 
 List<Color> temperatureGradient = [
@@ -62,8 +67,11 @@ List<AppTheme> themes = [
     name: "light",
     cardColor: Colors.white,
     background: gradient4,
-    textColor: Colors.black87,
+    textColor: Colors.black.withOpacity(0.85),
+    secondaryTextColor: Colors.black.withOpacity(0.65),
     headlineColor: Colors.white,
+    secondaryColor: Color(0xFF3f51b5),
+    primaryColor: Color(0xFF26C281),
   ),
   new AppTheme(
     name: "cool",
@@ -71,6 +79,8 @@ List<AppTheme> themes = [
     background: gradient2,
     textColor: Colors.white,
     headlineColor: Colors.white,
+    primaryColor: Colors.teal[800],
+    secondaryColor: Colors.green[300],
   ),
   new AppTheme(
     name: "dark",
@@ -81,10 +91,11 @@ List<AppTheme> themes = [
   )
 ];
 
-TextStyle sectionTitleStyle(context, Color color) => GoogleFonts.lato(
+TextStyle sectionTitleStyle(context, Color color) => GoogleFonts.nunito(
       textStyle: TextStyle(
         color: color,
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w700,
+        fontSize: 22,
       ),
     );
 
@@ -97,16 +108,12 @@ TextStyle normal(context) => GoogleFonts.lato(
 
 Widget sectionTitle(BuildContext context, String title, Color color) {
   return Container(
-    padding: EdgeInsets.only(left: 4, bottom: 15),
+    padding: EdgeInsets.only(left: 4, bottom: 8),
     alignment: Alignment.centerLeft,
     child: Text(
       title,
-      style: GoogleFonts.lato(
-        textStyle: TextStyle(
-          color: color,
-          fontWeight: FontWeight.w600,
-        ),
-      ),
+      textAlign: TextAlign.start,
+      style: sectionTitleStyle(context, color),
     ),
   );
 }
@@ -194,12 +201,19 @@ class AppTheme {
   final Color cardColor;
   final List<Color> background;
   final Color textColor;
+  final Color secondaryTextColor;
   final Color headlineColor;
+  final Color primaryColor;
+  final Color secondaryColor;
 
-  AppTheme(
-      {this.cardColor,
-      this.background,
-      this.textColor,
-      this.headlineColor,
-      this.name});
+  AppTheme({
+    this.name,
+    this.cardColor,
+    this.background,
+    this.textColor,
+    this.secondaryTextColor,
+    this.headlineColor,
+    this.primaryColor,
+    this.secondaryColor,
+  });
 }

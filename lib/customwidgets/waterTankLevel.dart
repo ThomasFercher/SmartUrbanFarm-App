@@ -1,4 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:sgs/customwidgets/waterTankLevelPopup.dart';
+import 'package:sgs/providers/dashboardProvider.dart';
 import 'package:sgs/styles.dart';
 import 'dart:math';
 import 'dart:ui' as ui;
@@ -11,8 +15,10 @@ import 'package:flutter/scheduler.dart' show timeDilation;
 
 class WaterTankLevel extends StatelessWidget {
   final double fullness;
+  static double progress;
+  final double height, width;
   //controller for animation
-  WaterTankLevel({@required this.fullness});
+  WaterTankLevel({@required this.fullness, this.height, this.width});
 
   @override
   Widget build(BuildContext context) {
@@ -21,53 +27,62 @@ class WaterTankLevel extends StatelessWidget {
     double _yOffset = (200 / 100) * (100 - fullness);
     int yOffset = _yOffset.round();
 
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(borderRadius),
-      ),
-      elevation: getCardElavation(context),
-      color: getTheme().cardColor,
-      child: Container(
-        height: 240,
-        width: 120,
-        child: fullness > 8
-            ? Stack(
-                children: [
-                  new AnimationBody(
+    return CupertinoContextMenu(
+      actions: [Container()],
+      previewBuilder: (context, animation, child) {
+        return WaterTankLevelPopup(fulnness: fullness);
+      },
+      child: Card(
+        elevation: cardElavation,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(borderRadius),
+          ),
+        ),
+        color: Colors.white,
+        child: Container(
+          height: height,
+          width: width,
+          child: fullness > 8
+              ? Stack(
+                  children: [
+                    new AnimationBody(
                       size: size,
                       xOffset: 0,
                       yOffset: 5 + yOffset,
-                      color: Colors.blueAccent),
-                  new Opacity(
-                    opacity: 0.5,
-                    child: new AnimationBody(
-                      size: size,
-                      xOffset: 80,
-                      yOffset: 10 + yOffset,
-                      color: Colors.blueAccent,
+                      color: Color(0xFF3f51b5),
                     ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(top: 20),
-                    alignment: Alignment.topCenter,
-                    child: Text(
-                      "$fullness%",
-                      style: TextStyle(
-                        color: getTheme().textColor,
-                        fontWeight: FontWeight.w100,
-                        fontSize: 30.0,
+                    new Opacity(
+                      opacity: 0.5,
+                      child: new AnimationBody(
+                        size: size,
+                        xOffset: 80,
+                        yOffset: 10 + yOffset,
+                        color: Color(0xFF3f51b5),
                       ),
                     ),
+                    Container(
+                      padding: EdgeInsets.only(top: 20),
+                      alignment: Alignment.topCenter,
+                      child: Text(
+                        "$fullness%",
+                        style: TextStyle(
+                          color: getTheme().textColor,
+                          fontWeight: FontWeight.w100,
+                          fontSize: 30.0,
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              : Container(
+                  alignment: Alignment.center,
+                  child: new Text(
+                    "Empty",
+                    style: TextStyle(color: Colors.blueAccent),
                   ),
-                ],
-              )
-            : Container(
-                alignment: Alignment.center,
-                child: new Text(
-                  "Empty",
-                  style: TextStyle(color: Colors.blueAccent),
                 ),
-              ),
+        ),
       ),
     );
   }
@@ -142,7 +157,8 @@ class _AnimationBodyState extends State<AnimationBody>
             height: widget.size.height,
             color: widget.color,
           ),
-          clipper: new WaveClipper(animationController.value, animList1),
+          clipper:
+              new WaveClipper(animationController.value, animList1, context),
         ),
       ),
     );
@@ -152,9 +168,11 @@ class _AnimationBodyState extends State<AnimationBody>
 class WaveClipper extends CustomClipper<Path> {
   final double animation;
 
+  final BuildContext c;
+
   List<Offset> waveList1 = [];
 
-  WaveClipper(this.animation, this.waveList1);
+  WaveClipper(this.animation, this.waveList1, this.c);
 
   @override
   Path getClip(Size size) {
@@ -162,11 +180,11 @@ class WaveClipper extends CustomClipper<Path> {
 
     path.addPolygon(waveList1, false);
 
-    path.lineTo(size.width, size.height - 8);
-    path.arcToPoint(Offset(size.width - 8, size.height),
+    path.lineTo(size.width, size.height - borderRadius);
+    path.arcToPoint(Offset(size.width - borderRadius, size.height),
         radius: Radius.circular(borderRadius));
-    path.lineTo(8, size.height);
-    path.arcToPoint(Offset(0, size.height - 8),
+    path.lineTo(borderRadius, size.height);
+    path.arcToPoint(Offset(0, size.height - borderRadius),
         radius: Radius.circular(borderRadius));
 
     path.close();

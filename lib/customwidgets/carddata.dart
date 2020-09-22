@@ -1,10 +1,14 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sgs/customwidgets/datachart.dart';
 import 'package:sgs/customwidgets/detaildialog.dart';
+import 'package:sgs/customwidgets/slider.dart';
 import 'package:sgs/customwidgets/smalldatachart.dart';
+import 'package:sgs/pages/advanced.dart';
 import 'package:sgs/providers/dashboardProvider.dart';
 import 'package:sgs/styles.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,7 +18,8 @@ class CardData extends StatelessWidget {
   final String text;
   final String label;
   final Color iconColor;
-  final GlobalKey _key = new GlobalKey();
+  final String type;
+  final GlobalKey key;
 
   /// This widget displays a given text with a label and icon
   /// All this is displayed in a card
@@ -23,66 +28,117 @@ class CardData extends StatelessWidget {
     @required this.text,
     @required this.label,
     @required this.iconColor,
-  });
-
-  Offset getOffset(Offset initalOffset, width, contentWidth, y2) {
-    Offset offset;
-
-    if (contentWidth - width < initalOffset.dx) {
-      var newdx = initalOffset.dx - (initalOffset.dx + width - y2 + 8);
-      offset = new Offset(newdx, initalOffset.dy);
-    } else {
-      offset = new Offset(initalOffset.dx, initalOffset.dy);
-    }
-
-    return offset;
-  }
+    @required this.type,
+    @required this.key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Consumer<DashboardProvider>(
       builder: (context, d, child) {
         return CupertinoContextMenu(
-          actions: <Widget>[Container()],
+          actions: [
+            Container(
+              color: Colors.white,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Material(
+                    child: Container(
+                      width: 200,
+                      color: Colors.white,
+                      padding: EdgeInsets.only(top: 15, left: 15),
+                      child: Text(
+                        "Change Sollwert",
+                        style: GoogleFonts.nunito(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 15),
+                    child: MenuSlider(
+                      width: 220,
+                      color: iconColor,
+                      type: type,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Material(
+              child: Container(
+                color: Colors.white,
+                child: ListTile(
+                  title: Text(
+                    "Show Advanced Data",
+                    softWrap: false,
+                  ),
+                  trailing: Icon(
+                    Icons.assessment,
+                    color: iconColor,
+                    size: 20,
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Advanced(),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            )
+          ],
           previewBuilder: (context, animation, child) {
-            return detailedPopup(context, d);
+            var curvedValue = Curves.easeOut.transform(animation.value);
+            print(curvedValue);
+
+            return Opacity(
+              opacity: curvedValue,
+              child: detailedPopup(context, d),
+            );
           },
           child: Card(
+            elevation: cardElavation,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(borderRadius),
             ),
-            elevation: getCardElavation(context),
-            color: getTheme().cardColor,
             child: Container(
-              child: Container(
-                padding: EdgeInsets.all(5),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Icon(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(borderRadius),
+
+                color: Colors.white, //iconColor, //getTheme().cardColor,
+              ),
+              padding: EdgeInsets.all(8),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Flexible(
+                    fit: FlexFit.tight,
+                    child: Icon(
                       icon,
-                      size: 20,
+                      size: 26,
                       color: iconColor,
                     ),
-                    Text(
-                      label,
-                      style: TextStyle(
-                        color: getTheme().textColor,
-                        fontSize: 13.0,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                    Text(
+                  ),
+                  Flexible(
+                    fit: FlexFit.tight,
+                    child: Text(
                       text,
                       style: TextStyle(
-                        color: getTheme().textColor,
+                        color: getTheme().secondaryTextColor,
                         fontWeight: FontWeight.w100,
-                        fontSize: 30.0,
+                        fontSize: 26.0,
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -110,90 +166,160 @@ class CardData extends StatelessWidget {
     }
   }
 
-  getValue(var name, DashboardProvider d) {
-    switch (name) {
-      case "Temperatur":
-        return {
-          "value": d.tempSoll,
-          "string": d.tempSoll.toString() + "°C",
-          "changed": (v) => d.tempSollChanged(v),
-        };
+  getValueString(type, DashboardProvider d) {
+    switch (type) {
+      case Temperature:
+        return d.tempSoll.toString() + "°C";
         break;
-      case "Luftfeuchtigkeit":
-        return {
-          "value": d.humiditySoll,
-          "string": d.humiditySoll.toString() + "%",
-          "changed": (v) => d.humiditySollChanged(v)
-        };
+      case Humidity:
+        return d.humiditySoll.toString() + "%";
         break;
-      case "Bodenfeuchtigkeit":
-        return {
-          "value": d.soilMoistureSoll,
-          "string": d.soilMoistureSoll.toString() + "%",
-          "changed": (v) => d.soilMoistureSollChanged(v)
-        };
+      case SoilMoisture:
+        return d.soilMoistureSoll.toString() + "%";
         break;
       default:
         return 0.0;
     }
   }
 
+  List<double> getMargin(type, width) {
+    switch (type) {
+      case Temperature:
+        return [0, width - 280 - 40];
+        break;
+      case Humidity:
+        return [(width - 280 - 40) / 2, (width - 280 - 40) / 2];
+        break;
+      case SoilMoisture:
+        return [width - 280 - 40, 0];
+        break;
+    }
+  }
+
   Widget detailedPopup(BuildContext context, DashboardProvider d) {
     return Consumer<DashboardProvider>(
       builder: (context, d, child) {
-        return Container(
-          margin: EdgeInsets.only(
-              //  top: offsetcard.dy,
-              //  left: offsetcard.dx,
-              ),
-          width: 258.0,
-          height: 400.0,
-          child: Card(
-            elevation: cardElavation,
-            shape: ContinuousRectangleBorder(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(borderRadius),
-                topRight: Radius.circular(borderRadius),
-                bottomLeft: Radius.circular(borderRadius),
-              ),
+        return Material(
+          color: Colors.transparent,
+          child: Container(
+            margin: EdgeInsets.only(
+              top: 8,
+              left: getMargin(type, MediaQuery.of(context).size.width)[0],
+              right: getMargin(type, MediaQuery.of(context).size.width)[1],
             ),
-            color: getTheme().cardColor,
-            child: Stack(children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            width: 280,
+            height: 350.0,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
+              color: getTheme().cardColor,
+            ),
+            child: LayoutBuilder(builder: (context, contraints) {
+              double height = contraints.maxHeight;
+              double rowheight = 35;
+              double avheight = height > 2 * rowheight + 47 ? height - 117 : 0;
+              rowheight = avheight < rowheight ? 0 : 35;
+              return Column(
                 children: [
+                  /*   Align(
+                    alignment: Alignment.topCenter,
+                    child: Container(
+                      width: 60,
+                      height: 60,
+                      //   transform: Matrix4.translationValues(0, -25, 0),
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(borderRadius),
+                        ),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(borderRadius),
+                            color: iconColor,
+                          ),
+                          child: Hero(
+                            tag: icon.codePoint,
+                            child: new Icon(
+                              icon,
+                              size: 30,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),*/
+                  Padding(padding: EdgeInsets.only(top: borderRadius)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(
+                        child: Container(
+                          height: rowheight,
+                          width: 140,
+                          padding: EdgeInsets.only(bottom: 4, left: 10),
+                          child: Hero(
+                            tag: label,
+                            child: new Text(
+                              label,
+                              style: GoogleFonts.nunito(
+                                color: getTheme().textColor,
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Flexible(
+                        child: Container(
+                          height: rowheight,
+                          width: 110,
+                          alignment: Alignment.bottomRight,
+                          padding: EdgeInsets.only(right: 10),
+                          child: Hero(
+                            tag: text,
+                            child: new Text(
+                              text,
+                              style: TextStyle(
+                                color: getTheme().textColor,
+                                fontWeight: FontWeight.w100,
+                                fontSize: 30.0,
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Container(
-                        height: 35,
-                        width: 140,
-                        alignment: Alignment.bottomLeft,
-                        padding: EdgeInsets.only(bottom: 4, left: 10),
-                        margin: EdgeInsets.only(top: 40),
-                        child: Hero(
-                          tag: label,
+                      Flexible(
+                        child: Container(
+                          height: rowheight,
+                          width: 140,
+                          alignment: Alignment.bottomLeft,
+                          padding: EdgeInsets.only(bottom: 4, left: 10),
+                          margin: EdgeInsets.only(top: 15),
                           child: new Text(
-                            label,
-                            style: TextStyle(
+                            "Sollwert",
+                            style: GoogleFonts.nunito(
                               color: getTheme().textColor,
-                              fontSize: 15.0,
+                              fontSize: 16.0,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
                         ),
                       ),
-                      Container(
-                        height: 35,
-                        width: 110,
-                        alignment: Alignment.bottomRight,
-                        padding: EdgeInsets.only(right: 10),
-                        margin: EdgeInsets.only(top: 40),
-                        child: Hero(
-                          tag: text,
+                      Flexible(
+                        child: Container(
+                          height: rowheight,
+                          width: 110,
+                          alignment: Alignment.bottomRight,
+                          padding: EdgeInsets.only(right: 10),
+                          margin: EdgeInsets.only(top: 15),
                           child: new Text(
-                            text,
+                            getValueString(type, d),
                             style: TextStyle(
                               color: getTheme().textColor,
                               fontWeight: FontWeight.w100,
@@ -204,103 +330,20 @@ class CardData extends StatelessWidget {
                       )
                     ],
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            padding: EdgeInsets.only(left: 10),
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              "Sollwert",
-                              style: TextStyle(
-                                color: getTheme().textColor,
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            height: 30,
-                            width: 150,
-                            child: SliderTheme(
-                              data: SliderThemeData(
-                                trackShape: CustomTrackShape(),
-                              ),
-                              child: Slider(
-                                activeColor: iconColor,
-                                inactiveColor: iconColor,
-                                value: getValue(label, d)["value"],
-                                divisions: 80,
-                                min: 10,
-                                max: 50,
-                                onChanged: (value) {
-                                  getValue(label, d)["changed"](value);
-                                },
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Container(
-                        height: 35,
-                        width: 100,
-                        alignment: Alignment.bottomRight,
-                        padding: EdgeInsets.only(bottom: 0, right: 10),
-                        child: new Text(
-                          getValue(label, d)["string"],
-                          style: TextStyle(
-                            color: getTheme().textColor,
-                            fontWeight: FontWeight.w100,
-                            fontSize: 30.0,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
                   Divider(
                     color: Colors.black12,
                   ),
                   Container(
-                    padding: EdgeInsets.only(left: 5),
-                    width: 258,
-                    height: 200,
+                    padding: EdgeInsets.only(left: 10),
+                    height: avheight,
                     child: getSmallDataChart(
                       label,
                       d,
                     ),
-                  )
-                ],
-              ),
-              Align(
-                alignment: Alignment.topCenter,
-                child: Container(
-                  width: 60,
-                  height: 60,
-                  transform: Matrix4.translationValues(0, -30, 0),
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(borderRadius),
-                    ),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(borderRadius),
-                        color: iconColor,
-                      ),
-                      child: new Icon(
-                        icon,
-                        size: 30,
-                        color: Colors.white,
-                      ),
-                    ),
                   ),
-                ),
-              )
-            ]),
+                ],
+              );
+            }),
           ),
         );
       },

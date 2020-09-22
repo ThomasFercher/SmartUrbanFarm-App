@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:sgs/customwidgets/appBarHeader.dart';
 import 'package:sgs/main.dart';
 import 'package:sgs/providers/storageProvider.dart';
 
@@ -17,59 +18,35 @@ class Gallery extends StatelessWidget {
       value: SystemUiOverlayStyle(
         systemNavigationBarColor: getTheme().headlineColor,
       ),
-      child: Scaffold(
-        floatingActionButton: Container(
-          width: 64,
-          height: 64,
-          child: FloatingActionButton(
-            onPressed: () => {
-              Provider.of<StorageProvider>(context, listen: false).takePicture()
-            },
-            backgroundColor: Colors.white,
-            child: Icon(
-              Icons.camera_alt,
-              size: 25,
-              color: getTheme().background[0],
-            ),
-          ),
-        ),
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(80.0),
-          child: Container(
-            decoration: BoxDecoration(
-              color: getTheme().background[0],
-              boxShadow: <BoxShadow>[
-                BoxShadow(
-                  color: Colors.black54,
-                  blurRadius: 1.0,
-                  offset: Offset(0.0, 0.75),
-                )
-              ],
-            ),
-            padding: EdgeInsets.symmetric(vertical: 10),
-            child: AppBar(
-              iconTheme: IconThemeData(color: getTheme().headlineColor),
-              title: Text(
-                "Gallery",
-                style: TextStyle(color: getTheme().headlineColor),
+      child: SingleChildScrollView(
+        child: Container(
+          child: Column(
+            children: [
+              AppBarHeader(
+                isPage: true,
+                theme: getTheme(),
+                title: "Gallery",
+                trailling: Container(),
+                body: Consumer<StorageProvider>(
+                  builder: (context, d, child) {
+                    List<Image> imgs = d.images;
+                    print(imgs.length);
+                    return Container(
+                      padding: EdgeInsets.only(top: 20),
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: imgs.length,
+                        itemBuilder: (context, index) {
+                          return ImageListItem(imgs[index]);
+                        },
+                      ),
+                    );
+                  },
+                ),
               ),
-              backgroundColor: getTheme().background[0],
-              elevation: 0,
-            ),
+            ],
           ),
         ),
-        backgroundColor: Colors.white,
-        body: Consumer<StorageProvider>(builder: (context, d, child) {
-          List<Image> imgs = d.images;
-          print(imgs.length);
-          return ListView.builder(
-            shrinkWrap: true,
-            itemCount: imgs.length,
-            itemBuilder: (context, index) {
-              return ImageListItem(imgs[index]);
-            },
-          );
-        }),
       ),
     );
   }

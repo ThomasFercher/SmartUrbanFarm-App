@@ -27,43 +27,30 @@ class ActionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: width,
-      height: width,
-      child: Card(
-        elevation: getCardElavation(context),
-        color: getTheme().cardColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(borderRadius),
+    return Card(
+      elevation: cardElavation,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(borderRadius),
         ),
+      ),
+      color: iconColor,
+      child: Container(
+        width: width,
+        height: width,
         child: InkWell(
           enableFeedback: true,
           borderRadius: BorderRadius.circular(borderRadius),
           onTap: () => onPressed(),
           onLongPress: () => onPressed(),
-          child: Column(
-            children: [
-              Container(
-                padding: EdgeInsets.all(10),
-                margin: EdgeInsets.only(top: 10),
-                child: Icon(
-                  icon,
-                  size: 40,
-                  color: iconColor,
-                ),
-              ),
-              Container(
-                child: Text(
-                  text,
-                  style: TextStyle(
-                    color: getTheme().textColor,
-                    fontSize: 13.0,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              )
-            ],
+          child: Container(
+            alignment: Alignment.center,
+            padding: EdgeInsets.all(10),
+            child: Icon(
+              icon,
+              size: 40,
+              color: Colors.white, //Colors.white.withOpacity(1),
+            ),
           ),
         ),
       ),

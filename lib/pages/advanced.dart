@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:implicitly_animated_reorderable_list/transitions.dart';
 import 'package:provider/provider.dart';
+import 'package:sgs/customwidgets/appBarHeader.dart';
 import 'package:sgs/customwidgets/datachart.dart';
 import 'package:sgs/customwidgets/dashboarddraglist.dart';
 import 'package:sgs/providers/dashboardProvider.dart';
@@ -40,30 +41,16 @@ class Advanced extends StatelessWidget {
       value: SystemUiOverlayStyle(
         systemNavigationBarColor: Colors.white,
       ),
-      child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(80.0),
-          child: Container(
-            color: getTheme().background[0],
-            padding: EdgeInsets.symmetric(vertical: 10),
-            child: AppBar(
-              title: Text(
-                "Advanced Data",
-                style: TextStyle(color: getTheme().headlineColor),
-              ),
-              iconTheme: IconThemeData(color: getTheme().headlineColor),
-              backgroundColor: getTheme().background[0],
-              elevation: 0,
-            ),
-          ),
-        ),
-        backgroundColor: Colors.white,
+      child: AppBarHeader(
+        title: "Advanced Data",
+        isPage: true,
+        theme: getTheme(),
         body: Consumer<DashboardProvider>(
           builder: (context, d, child) {
             return Container(
-              padding: EdgeInsets.only(top: 20),
-              child: DashboardDragList(
-                items: getItems(d),
+              padding: EdgeInsets.only(top: 25, left: 10),
+              child: ListView(
+                children: getItems(d),
               ),
             );
           },

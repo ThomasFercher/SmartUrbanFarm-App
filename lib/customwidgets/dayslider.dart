@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sgs/customwidgets/s_g_s__custom_icon_icons.dart';
 import 'package:weather_icons/weather_icons.dart';
 import '../styles.dart';
@@ -51,13 +52,16 @@ class _DaySliderState extends State<DaySlider> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Card(
-        elevation: cardElavation,
-        shape: RoundedRectangleBorder(
+    AppTheme theme = getTheme();
+    return Card(
+      elevation: cardElavation,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(borderRadius)),
+      child: Container(
+        decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(borderRadius),
+          color: Colors.white,
         ),
-        color: getTheme().cardColor,
         child: Container(
           padding: EdgeInsets.only(top: 10, bottom: 10),
           child: Column(
@@ -66,9 +70,9 @@ class _DaySliderState extends State<DaySlider> {
                 child: new Text(
                   "${getTimeString(suntime * 4)} hours",
                   style: TextStyle(
-                    color: getTheme().textColor,
+                    color: theme.secondaryTextColor,
                     fontWeight: FontWeight.w100,
-                    fontSize: 30.0,
+                    fontSize: 26.0,
                   ),
                 ),
               ),
@@ -83,12 +87,12 @@ class _DaySliderState extends State<DaySlider> {
                       child: Icon(
                         WeatherIcons.day_sunny,
                         //    color: isDark(context) ? Colors.white : Colors.black54,
-                        color: Colors.orange,
+                        color: Colors.deepOrange[500],
                       ),
                     ),
                     Container(
                       constraints:
-                          BoxConstraints(maxWidth: getWidth(context) - 106),
+                          BoxConstraints(maxWidth: getWidth(context) - 136),
                       child: SliderTheme(
                         data: SliderThemeData(
                           overlayShape:
@@ -102,8 +106,8 @@ class _DaySliderState extends State<DaySlider> {
                           values: _values,
                           min: 0,
                           max: 96,
-                          activeColor: primaryColor,
-                          inactiveColor: Colors.black26,
+                          activeColor: theme.primaryColor,
+                          inactiveColor: Colors.black12,
                           onChanged: (values) => setState(
                             () {
                               if (values.end - values.start >= 16)
@@ -124,7 +128,7 @@ class _DaySliderState extends State<DaySlider> {
                       child: Icon(
                         SGSCustomIcon.uniF02E,
                         //  color: isDark(context) ? Colors.white : Colors.black54,
-                        color: new Color(0xFFBBBAAB),
+                        color: Colors.black38,
                       ),
                     ),
                   ],
@@ -174,7 +178,7 @@ class _CustomRangeThumbShape extends RangeSliderThumbShape {
     Path oval = Path()
       ..addOval(new Rect.fromCenter(center: center, width: 40, height: 40));
     Paint shadowPaint = Paint()
-      ..color = Colors.black.withOpacity(0.5)
+      ..color = Colors.black.withOpacity(0.25)
       ..maskFilter = MaskFilter.blur(BlurStyle.normal, 1)
       ..style = PaintingStyle.fill;
     canvas.drawPath(oval, shadowPaint);

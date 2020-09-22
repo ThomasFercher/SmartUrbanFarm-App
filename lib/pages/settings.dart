@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_skeleton/flutter_skeleton.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
+import 'package:sgs/customwidgets/appBarHeader.dart';
 import 'package:sgs/providers/settingsProvider.dart';
 import 'package:sgs/styles.dart';
 
@@ -132,41 +133,15 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle(
-        systemNavigationBarColor: Colors.white,
+        systemNavigationBarColor: getTheme().primaryColor,
       ),
-      child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(80.0),
-          child: Container(
-            padding: EdgeInsets.symmetric(vertical: 10),
-            decoration: BoxDecoration(
-              color: getTheme().background[0],
-              boxShadow: <BoxShadow>[
-                BoxShadow(
-                  color: Colors.black54,
-                  blurRadius: 1.0,
-                  offset: Offset(0.0, 0.75),
-                )
-              ],
-            ),
-            child: AppBar(
-              title: Padding(
-                padding: EdgeInsets.only(left: 5),
-                child: new Text(
-                  "Settings",
-                  style: TextStyle(color: getTheme().headlineColor),
-                ),
-              ),
-              backgroundColor: Colors.transparent,
-              iconTheme: IconThemeData(color: getTheme().headlineColor),
-              elevation: 0,
-            ),
-          ),
-        ),
-        backgroundColor: Colors.white,
+      child: AppBarHeader(
+        isPage: true,
+        title: "Settings",
+        theme: getTheme(),
         body: Consumer<SettingsProvider>(builder: (context, pr, child) {
           return Container(
-            padding: EdgeInsets.symmetric(horizontal: 5),
+            padding: EdgeInsets.only(left: 5, right: 5, top: 25),
             child: ListView(
               children: getSettings(pr, context),
             ),

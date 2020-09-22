@@ -24,6 +24,12 @@ class DashboardProvider with ChangeNotifier, DiagnosticableTreeMixin {
   double humiditySoll = 50;
   double soilMoistureSoll = 50;
   double waterTankLevel = 60;
+  double waterAnimationProgress;
+  bool waterTankMoving = false;
+
+  void setWaterTankMoving(v) {
+    waterTankMoving = v;
+  }
 
   String suntime = "02:30 - 18:00";
   SplayTreeMap<DateTime, double> temperatures = new SplayTreeMap();
@@ -61,21 +67,29 @@ class DashboardProvider with ChangeNotifier, DiagnosticableTreeMixin {
     fb.reference().child('suntime').set({'suntime': time}).then((_) {});
   }
 
-  void tempSollChanged(v) {
+  void tempSollChanged(double v) {
+    v = num.parse(v.toStringAsFixed(1));
     tempSoll = v;
     fb.reference().child('temperatureSoll').set(tempSoll);
     notifyListeners();
   }
 
-  void humiditySollChanged(v) {
+  void humiditySollChanged(double v) {
+    v = num.parse(v.toStringAsFixed(1));
     humiditySoll = v;
     fb.reference().child('humiditySoll').set(humiditySoll);
     notifyListeners();
   }
 
-  void soilMoistureSollChanged(v) {
+  void soilMoistureSollChanged(double v) {
+    v = num.parse(v.toStringAsFixed(1));
     soilMoistureSoll = v;
     fb.reference().child('soilMoistureSoll').set(soilMoistureSoll);
+    notifyListeners();
+  }
+
+  void setWaterAnimationProgress(double v) {
+    this.waterAnimationProgress = v;
     notifyListeners();
   }
 

@@ -2,6 +2,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:sgs/pages/advanced.dart';
 import 'package:sgs/pages/environment.dart';
@@ -9,6 +10,7 @@ import 'package:sgs/pages/gallery.dart';
 import 'package:sgs/pages/home.dart';
 import 'package:sgs/providers/settingsProvider.dart';
 import 'package:sgs/providers/storageProvider.dart';
+import 'package:weather_icons/weather_icons.dart';
 import 'providers/dashboardProvider.dart';
 import 'styles.dart';
 import 'dart:async';
@@ -18,10 +20,12 @@ import 'package:provider/provider.dart';
 import 'pages/settings.dart';
 
 void main() => {
-      SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        systemNavigationBarColor: getTheme().background[1],
-      )),
+      SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          systemNavigationBarColor: getTheme().background[1],
+        ),
+      ),
       WidgetsFlutterBinding.ensureInitialized(),
       runApp(
         MultiProvider(
@@ -52,6 +56,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     Provider.of<DashboardProvider>(context, listen: false).loadData();
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: themeData,
       home: FutureBuilder(
         builder: (context, projectSnap) {
@@ -91,21 +96,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  static const String EnvironmentSettings = 'Environment';
-  static const String Settings = 'Settings';
-  static const String SignOut = 'About';
-
-  static const List<String> choices = <String>[
-    EnvironmentSettings,
-    Settings,
-    SignOut
-  ];
-
   // This function return the Backgroundpainter for the given tab
   CustomPainter getPainter() {
     switch (getTheme().name) {
       case "light":
-        return LightPainter();
+        return CoolPainter();
         break;
       case "dark":
         return DarkPainter();
@@ -121,84 +116,13 @@ class _MyHomePageState extends State<MyHomePage> {
       builder: (context, value, child) {
         return AnnotatedRegion<SystemUiOverlayStyle>(
           value: SystemUiOverlayStyle(
-            systemNavigationBarColor: getTheme().background[1],
-          ),
-          child: Scaffold(
-            appBar: AppBar(
-              backgroundColor: getTheme().background[0],
-              elevation: 0,
-              actions: [
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.only(left: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: 35,
-                        padding: EdgeInsets.only(bottom: 5, right: 5),
-                        child: SvgPicture.asset(
-                          "assets/leaf.svg",
-                          color: Colors.white,
-                        ),
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width - 100,
-                        padding: EdgeInsets.only(top: 5, left: 10),
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          widget.title,
-                          style: Theme.of(context).textTheme.headline6,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      Container(
-                        width: 42,
-                        alignment: Alignment.center,
-                        child: PopupMenuButton<String>(
-                          icon: Icon(
-                            Icons.more_vert,
-                            size: 30,
-                            color: Colors.white,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(borderRadius),
-                          ),
-                          color: Colors.white,
-                          elevation: getCardElavation(context),
-                          onSelected: choiceAction,
-                          itemBuilder: (BuildContext context) {
-                            return choices.map((String choice) {
-                              return PopupMenuItem<String>(
-                                value: choice,
-                                child: Text(
-                                  choice,
-                                  style: TextStyle(
-                                    color: Colors.black87,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              );
-                            }).toList();
-                          },
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            body: Container(
+              systemNavigationBarColor:
+                  getTheme().background[1] //getTheme().background[1],
+              ),
+          child: Material(
+            child: Container(
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                gradient: getTheme().name == "cool"
-                    ? LinearGradient(
-                        colors: getTheme().background,
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter)
-                    : null,
-              ),
               child: CustomPaint(
                 painter: getPainter(),
                 child: Home(),
@@ -210,32 +134,6 @@ class _MyHomePageState extends State<MyHomePage> {
       },
     );
   }
-
-  void choiceAction(String choice) {
-    if (choice == Settings) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ChangeNotifierProvider.value(
-            value: Provider.of<SettingsProvider>(context),
-            child: SettingsPage(),
-          ),
-        ),
-      );
-    } else if (choice == EnvironmentSettings) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ChangeNotifierProvider.value(
-            value: Provider.of<DashboardProvider>(context),
-            child: Environment(),
-          ),
-        ),
-      );
-    } else if (choice == SignOut) {
-      print('SignOut');
-    }
-  }
 }
 
 /// This function loads the inital data from the database when the app starts.
@@ -244,7 +142,6 @@ Future<void> loadData(context) async {
   await Provider.of<DashboardProvider>(context, listen: false).loadData();
   await Provider.of<StorageProvider>(context, listen: false).loadImages();
   stopwatch.stop();
-
   //add a delay so the animation plays through
   return Future.delayed(
     Duration(milliseconds: 3000 - stopwatch.elapsedMilliseconds),
@@ -272,7 +169,7 @@ class LightPainter extends CustomPainter {
     canvas.drawPath(path, paint);
     path.close();
 
-    path = new Path();
+    /*   path = new Path();
     paint.color = getTheme().background[0];
     path.moveTo(0, height);
     path.quadraticBezierTo(
@@ -282,7 +179,7 @@ class LightPainter extends CustomPainter {
     path.lineTo(size.width, 0);
     path.lineTo(0, 0);
 
-    canvas.drawPath(path, paint);
+    canvas.drawPath(path, paint);-*/
   }
 
   @override

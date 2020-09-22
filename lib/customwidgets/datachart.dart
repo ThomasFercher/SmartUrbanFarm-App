@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sgs/customwidgets/smalldatachart.dart';
 import 'package:sgs/providers/dashboardProvider.dart';
 import '../styles.dart';
 import 'dart:math';
@@ -81,20 +82,17 @@ class DataChart extends StatelessWidget {
           child: Column(children: [
             sectionTitle(context, this.title,
                 theme.name == "light" ? Colors.black87 : theme.headlineColor),
-            ClipRRect(
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                padding: EdgeInsets.only(right: 25, bottom: 20),
-                child: Card(
-                  color: getTheme().cardColor,
-                  shape: ContinuousRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(borderRadius),
-                      topLeft: Radius.circular(borderRadius),
-                      topRight: Radius.circular(borderRadius),
-                    ),
-                  ),
-                  elevation: d.longPressed ? cardElavation + 2 : cardElavation,
+            Container(
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.only(right: 25, bottom: 20),
+              child: Card(
+                color: getTheme().cardColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
+                ),
+                elevation: d.longPressed ? cardElavation + 2 : cardElavation,
+                child: ClipPath(
+                  clipper: ChartClipper(),
                   child: Container(
                     width: MediaQuery.of(context).size.width,
                     padding: EdgeInsets.only(
@@ -179,9 +177,9 @@ class DataChart extends StatelessWidget {
           spots: spots,
           isCurved: true,
           colors: gradientColors,
-          barWidth: 7,
+          barWidth: 5,
           isStrokeCapRound: true,
-          dotData: FlDotData(show: true, dotSize: 7),
+          dotData: FlDotData(show: true, dotSize: 5),
           belowBarData: BarAreaData(
             show: true,
             colors:

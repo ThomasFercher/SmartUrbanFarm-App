@@ -71,11 +71,15 @@ class SmallDataChart extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<DashboardProvider>(
       builder: (context, d, child) {
-        return Container(
-          color: getTheme().cardColor,
-          width: MediaQuery.of(context).size.width,
-          child: LineChart(
-            mainData(context),
+        return ClipPath(
+          clipper: ChartClipper(),
+          child: Container(
+            color: getTheme().cardColor,
+            // width: MediaQuery.of(context).size.width,
+            height: 190,
+            child: LineChart(
+              mainData(context),
+            ),
           ),
         );
       },
@@ -150,9 +154,9 @@ class SmallDataChart extends StatelessWidget {
           spots: spots,
           isCurved: true,
           colors: gradientColors,
-          barWidth: 7,
+          barWidth: 5,
           isStrokeCapRound: true,
-          dotData: FlDotData(show: true, dotSize: 7),
+          dotData: FlDotData(show: true, dotSize: 5),
           belowBarData: BarAreaData(
             show: true,
             colors:
@@ -162,4 +166,34 @@ class SmallDataChart extends StatelessWidget {
       ],
     );
   }
+}
+
+class ChartClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    final path = Path();
+
+    path.moveTo(0, 0);
+    path.lineTo(0, size.height - borderRadius);
+
+    path.arcToPoint(
+      Offset(borderRadius, size.height),
+      radius: Radius.circular(borderRadius),
+      clockwise: false,
+    );
+    path.lineTo(size.width - borderRadius, size.height);
+    path.arcToPoint(
+      Offset(size.width, size.height - borderRadius),
+      radius: Radius.circular(borderRadius),
+      clockwise: false,
+    );
+    path.lineTo(size.width + 25, size.height - borderRadius);
+    path.lineTo(size.width + 25, 0);
+    path.close();
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(ChartClipper oldClipper) => false;
 }
