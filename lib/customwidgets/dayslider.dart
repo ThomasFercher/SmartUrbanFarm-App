@@ -1,3 +1,4 @@
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sgs/customwidgets/s_g_s__custom_icon_icons.dart';
@@ -83,16 +84,19 @@ class _DaySliderState extends State<DaySlider> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Container(
-                      padding: EdgeInsets.only(left: 10, bottom: 10),
-                      child: Icon(
-                        WeatherIcons.day_sunny,
-                        //    color: isDark(context) ? Colors.white : Colors.black54,
-                        color: Colors.deepOrange[500],
+                      margin: EdgeInsets.only(left: 5),
+                      width: 50,
+                      height: 50,
+                      child: FlareActor(
+                        'assets/flares/sun.flr',
+                        alignment: Alignment.center,
+                        animation: "Moon Rings",
+                      //  color: Colors.yellow[500],
                       ),
                     ),
                     Container(
                       constraints:
-                          BoxConstraints(maxWidth: getWidth(context) - 136),
+                          BoxConstraints(maxWidth: getWidth(context) - 168),
                       child: SliderTheme(
                         data: SliderThemeData(
                           overlayShape:
@@ -124,11 +128,13 @@ class _DaySliderState extends State<DaySlider> {
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.only(right: 15),
-                      child: Icon(
-                        SGSCustomIcon.uniF02E,
-                        //  color: isDark(context) ? Colors.white : Colors.black54,
-                        color: Colors.black38,
+                      margin: EdgeInsets.only(right: 5),
+                      width: 50,
+                      height: 50,
+                      child: FlareActor(
+                        'assets/flares/moon.flr',
+                        alignment: Alignment.center,
+                        animation: "Moon Rings",
                       ),
                     ),
                   ],

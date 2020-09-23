@@ -16,6 +16,9 @@ import 'package:sgs/providers/settingsProvider.dart';
 import 'package:sgs/styles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:weather_icons/weather_icons.dart';
+import 'advanced.dart';
+import 'package:page_transition/page_transition.dart';
+
 
 class Home extends StatelessWidget {
   static const String EnvironmentSettings = 'Environment';
@@ -190,11 +193,8 @@ class Home extends StatelessWidget {
                               ActionCard(
                                 width: width / 4 - 10,
                                 onPressed: () => {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => Advanced()),
-                                  )
+                                 
+                                  Navigator.push(context, PageTransition(type: PageTransitionType.upToDown, child: Advanced()))
                                 },
                                 icon: Icons.assessment,
                                 text: "Advanved Data",

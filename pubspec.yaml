@@ -13,6 +13,7 @@ dependencies:
   google_nav_bar: ^2.0.0
   line_icons: ^0.2.0
   weather_icons: ^2.0.1
+  page_transition: ^1.1.6
   #image: ^2.1.12
   flare_flutter: ^1.5.0
   firebase_core: ^0.4.0+9
@@ -45,6 +46,7 @@ flutter:
   assets:
     - assets/
     - assets/icons/
+    - assets/flares/
     - assets/leaf.svg
   uses-material-design: true
   fonts:

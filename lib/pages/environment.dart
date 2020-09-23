@@ -164,7 +164,7 @@ class SettingsListTile extends StatelessWidget {
             padding: EdgeInsets.only(left: 10, top: 5),
             alignment: Alignment.topLeft,
             child: Text(
-              "Temperature",
+              title,
               style: TextStyle(
                 color: getTheme().textColor,
                 fontSize: 15.0,

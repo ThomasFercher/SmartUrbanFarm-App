@@ -36,6 +36,7 @@ class CardData extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<DashboardProvider>(
       builder: (context, d, child) {
+        
         return CupertinoContextMenu(
           actions: [
             Container(
@@ -96,8 +97,6 @@ class CardData extends StatelessWidget {
           ],
           previewBuilder: (context, animation, child) {
             var curvedValue = Curves.easeOut.transform(animation.value);
-            print(curvedValue);
-
             return Opacity(
               opacity: curvedValue,
               child: detailedPopup(context, d),

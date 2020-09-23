@@ -45,7 +45,8 @@ class AppBarHeader extends StatelessWidget {
                               width: 25,
                               margin: EdgeInsets.only(right: 10),
                               child: Icon(
-                                Icons.arrow_back_ios_rounded,
+                                //  Icons.arrow_back_ios_rounded,
+                                Icons.arrow_back_ios,
                                 color: Colors.white,
                                 size: 28,
                               ),
