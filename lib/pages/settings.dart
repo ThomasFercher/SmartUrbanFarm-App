@@ -133,17 +133,18 @@ class SettingsPage extends StatelessWidget {
         systemNavigationBarColor: getTheme().primaryColor,
       ),
       child: AppBarHeader(
-        isPage: true,
-        title: "Settings",
-        theme: getTheme(),
-        body: Consumer<SettingsProvider>(builder: (context, pr, child) {
-          return Container(
-            child: ListView(
-              children: getSettings(pr, context),
-            ),
-          );
-        }),
-      ),
+          isPage: true,
+          title: "Settings",
+          theme: getTheme(),
+          body: [
+            Consumer<SettingsProvider>(builder: (context, pr, child) {
+              return Container(
+                child: ListView(
+                  children: getSettings(pr, context),
+                ),
+              );
+            }),
+          ]),
     );
   }
 }

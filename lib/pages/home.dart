@@ -67,201 +67,208 @@ class Home extends StatelessWidget {
         var soilMoisture = dashboard.soilMoisture;
 
         var width = MediaQuery.of(context).size.width - 20;
-        return SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              AppBarHeader(
-                isPage: false,
-                theme: theme,
-                title: "Smart Grow System",
-                trailling: PopupMenuButton<String>(
-                  icon: Icon(
-                    Icons.settings,
-                    size: 25,
-                    color: Colors.white,
+        return AppBarHeader(
+          isPage: false,
+          theme: theme,
+          title: "Smart Grow System",
+          trailling: PopupMenuButton<String>(
+            icon: Icon(
+              Icons.settings,
+              size: 25,
+              color: Colors.white,
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(borderRadius),
+            ),
+            color: Colors.white,
+            elevation: getCardElavation(context),
+            onSelected: (s) => choiceAction(s, context),
+            itemBuilder: (BuildContext context) {
+              return choices.map((String choice) {
+                return PopupMenuItem<String>(
+                  value: choice,
+                  child: Text(
+                    choice,
+                    style: TextStyle(
+                      color: Colors.black87,
+                      fontSize: 16,
+                    ),
                   ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(borderRadius),
-                  ),
-                  color: Colors.white,
-                  elevation: getCardElavation(context),
-                  onSelected: (s) => choiceAction(s, context),
-                  itemBuilder: (BuildContext context) {
-                    return choices.map((String choice) {
-                      return PopupMenuItem<String>(
-                        value: choice,
-                        child: Text(
-                          choice,
-                          style: TextStyle(
-                            color: Colors.black87,
-                            fontSize: 16,
-                          ),
-                        ),
-                      );
-                    }).toList();
-                  },
-                ),
-                body: ListView(
-                  shrinkWrap: true,
-                  children: <Widget>[
-                    sectionTitle(
-                      context,
-                      "Details",
-                      theme.secondaryTextColor,
-                    ),
-                    GridView.count(
-                      padding: EdgeInsets.all(0),
-                      crossAxisSpacing: 15,
-                      // mainAxisSpacing: 10,
-                      crossAxisCount: 3,
-                      childAspectRatio: 1.0,
-                      shrinkWrap: true,
-                      children: <Widget>[
-                        CardData(
-                          icon: WeatherIcons.thermometer,
-                          label: "Temperatur",
-                          text: "$temperature°C",
-                          iconColor: Colors.red[600],
-                          type: Temperature,
-                          key: GlobalKey(),
-                        ),
-                        CardData(
-                          icon: WeatherIcons.humidity,
-                          label: "Luftfeuchtigkeit",
-                          text: "$humidity%",
-                          iconColor: Colors.blue[700],
-                          type: Humidity,
-                          key: GlobalKey(),
-                        ),
-                        CardData(
-                          icon: WeatherIcons.barometer,
-                          label: "Bodenfeuchtigkeit",
-                          text: "$soilMoisture%",
-                          iconColor: Colors.brown[700],
-                          type: SoilMoisture,
-                          key: GlobalKey(),
-                        ),
-                      ],
-                    ),
-                    Padding(padding: EdgeInsets.only(top: 20)),
-                    sectionTitle(
-                        context,
-                        "Sunlight",
-                        theme.name == "light"
-                            ? theme.secondaryTextColor
-                            : theme.headlineColor),
-                    Container(
-                      child: DaySlider(
-                        initialTimeString: dashboard.suntime,
-                        onValueChanged: (_timeRange) =>
-                            {dashboard.suntimeChanged(_timeRange)},
-                      ),
-                    ),
-                    Padding(padding: EdgeInsets.only(top: 40)),
-                    sectionTitle(
-                        context,
-                        "Actions",
-                        theme.name == "light"
-                            ? theme.secondaryTextColor
-                            : theme.headlineColor),
-                    GridView.count(
-                      crossAxisCount: 2,
-                      padding: EdgeInsets.all(0),
-                      crossAxisSpacing: 15,
-                      mainAxisSpacing: 15,
-                      // mainAxisSpacing: 10,
-
-                      childAspectRatio: 1.75,
-                      shrinkWrap: true,
-                      children: [
-                        ActionCard(
-                          onPressed: () => {
-                            Navigator.push(
-                              context,
-                              PageTransition(
-                                  type: PageTransitionType.leftToRightWithFade,
-                                  child: Gallery()),
-                            )
-                          },
-                          icon: OMIcons.photo,
-                          text: "Gallery",
-                          iconColor: theme.primaryColor,
-                        ),
-                        ActionCard(
-                          onPressed: () => {
-                            Navigator.push(
-                              context,
-                              PageTransition(
-                                  type: PageTransitionType.rightToLeftWithFade,
-                                  child: Advanced()),
-                            ),
-                          },
-                          icon: OMIcons.assessment,
-                          text: "Advanced Data",
-                          iconColor: theme.secondaryColor,
-                        ),
-                        ActionCard(
-                          onPressed: () => {
-                            Navigator.push(
-                              context,
-                              PageTransition(
-                                  type: PageTransitionType.leftToRightWithFade,
-                                  child: Environment()),
-                            ),
-                          },
-                          icon: OMIcons.settingsBrightness,
-                          text: "Environment",
-                          iconColor: Color(0xFFf2426a),
-                        ),
-                      ],
-                    ),
-                    Padding(padding: EdgeInsets.only(top: 20)),
-                    GridView.count(
-                      shrinkWrap: true,
-                      crossAxisCount: 2,
-                      childAspectRatio: 0.5,
-                      crossAxisSpacing: 15,
-                      children: [
-                        LayoutBuilder(builder: (context, c) {
-                          return Column(
-                            children: [
-                              sectionTitle(
-                                  context,
-                                  "Grow Progress",
-                                  theme.name == "light"
-                                      ? theme.secondaryTextColor
-                                      : theme.headlineColor),
-                              WaterTankLevel(
-                                fullness: dashboard.waterTankLevel,
-                                height: c.maxHeight -46,
-                              ),
-                            ],
-                          );
-                        }),
-                        LayoutBuilder(builder: (context, c) {
-                          return Column(
-                            children: [
-                              sectionTitle(
-                                  context,
-                                  "Watertank",
-                                  theme.name == "light"
-                                      ? theme.secondaryTextColor
-                                      : theme.headlineColor),
-                              WaterTankLevel(
-                                fullness: dashboard.waterTankLevel,
-                                height: c.maxHeight - 46,
-                              ),
-                            ],
-                          );
-                        })
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            ],
+                );
+              }).toList();
+            },
           ),
+          body: <Widget>[
+            Padding(padding: EdgeInsets.only(top: 20)),
+            sectionTitle(
+              context,
+              "Details",
+              theme.secondaryTextColor,
+            ),
+            GridView.count(
+              primary: false,
+              padding: EdgeInsets.all(0),
+              crossAxisSpacing: 15,
+              // mainAxisSpacing: 10,
+              crossAxisCount: 3,
+              childAspectRatio: 1.0,
+              shrinkWrap: true,
+              children: <Widget>[
+                CardData(
+                  icon: WeatherIcons.thermometer,
+                  label: "Temperatur",
+                  text: "$temperature°C",
+                  iconColor: Colors.red[600],
+                  type: Temperature,
+                  key: GlobalKey(),
+                ),
+                CardData(
+                  icon: WeatherIcons.humidity,
+                  label: "Luftfeuchtigkeit",
+                  text: "$humidity%",
+                  iconColor: Colors.blue[700],
+                  type: Humidity,
+                  key: GlobalKey(),
+                ),
+                CardData(
+                  icon: WeatherIcons.barometer,
+                  label: "Bodenfeuchtigkeit",
+                  text: "$soilMoisture%",
+                  iconColor: Colors.brown[700],
+                  type: SoilMoisture,
+                  key: GlobalKey(),
+                ),
+              ],
+            ),
+            Padding(padding: EdgeInsets.only(top: 20)),
+            sectionTitle(
+                context,
+                "Sunlight",
+                theme.name == "light"
+                    ? theme.secondaryTextColor
+                    : theme.headlineColor),
+            Container(
+              child: DaySlider(
+                initialTimeString: dashboard.suntime,
+                onValueChanged: (_timeRange) =>
+                    {dashboard.suntimeChanged(_timeRange)},
+              ),
+            ),
+            Padding(padding: EdgeInsets.only(top: 40)),
+            sectionTitle(
+                context,
+                "Actions",
+                theme.name == "light"
+                    ? theme.secondaryTextColor
+                    : theme.headlineColor),
+            GridView.count(
+              primary: false,
+              crossAxisCount: 2,
+              padding: EdgeInsets.all(0),
+              crossAxisSpacing: 15,
+              mainAxisSpacing: 15,
+              // mainAxisSpacing: 10,
+
+              childAspectRatio: 1.75,
+              shrinkWrap: true,
+              children: [
+                ActionCard(
+                  onPressed: () => {
+                    Navigator.push(
+                      context,
+                      PageTransition(
+                          type: PageTransitionType.leftToRightWithFade,
+                          child: Gallery()),
+                    )
+                  },
+                  icon: OMIcons.photo,
+                  text: "Gallery",
+                  iconColor: theme.primaryColor,
+                ),
+                ActionCard(
+                  onPressed: () => {
+                    Navigator.push(
+                      context,
+                      PageTransition(
+                          type: PageTransitionType.rightToLeftWithFade,
+                          child: Advanced()),
+                    ),
+                  },
+                  icon: OMIcons.assessment,
+                  text: "Advanced Data",
+                  iconColor: theme.secondaryColor,
+                ),
+                ActionCard(
+                  onPressed: () => {
+                    Navigator.push(
+                      context,
+                      PageTransition(
+                          type: PageTransitionType.leftToRightWithFade,
+                          child: Environment()),
+                    ),
+                  },
+                  icon: OMIcons.settingsBrightness,
+                  text: "Environment",
+                  iconColor: Color(0xFFf2426a),
+                ),
+                ActionCard(
+                  onPressed: () => {
+                    Navigator.push(
+                      context,
+                      PageTransition(
+                          type: PageTransitionType.leftToRightWithFade,
+                          child: Environment()),
+                    ),
+                  },
+                  icon: OMIcons.musicVideo,
+                  text: "Test",
+                  iconColor: Color(0xFF74b9ff),
+                ),
+              ],
+            ),
+            Padding(padding: EdgeInsets.only(top: 20)),
+            GridView.count(
+              primary: false,
+              shrinkWrap: true,
+              crossAxisCount: 2,
+              childAspectRatio: 0.5,
+              crossAxisSpacing: 15,
+              children: [
+                LayoutBuilder(builder: (context, c) {
+                  return Column(
+                    children: [
+                      sectionTitle(
+                          context,
+                          "Grow Progress",
+                          theme.name == "light"
+                              ? theme.secondaryTextColor
+                              : theme.headlineColor),
+                      WaterTankLevel(
+                        fullness: dashboard.waterTankLevel,
+                        height: c.maxHeight - 46,
+                      ),
+                    ],
+                  );
+                }),
+                LayoutBuilder(builder: (context, c) {
+                  return Column(
+                    children: [
+                      sectionTitle(
+                          context,
+                          "Watertank",
+                          theme.name == "light"
+                              ? theme.secondaryTextColor
+                              : theme.headlineColor),
+                      WaterTankLevel(
+                        fullness: dashboard.waterTankLevel,
+                        height: c.maxHeight - 46,
+                      ),
+                    ],
+                  );
+                })
+              ],
+            )
+          ],
         );
       },
     );

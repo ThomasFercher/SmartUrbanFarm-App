@@ -35,20 +35,15 @@ class Advanced extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppBarHeader(
-      title: "Advanced Data",
-      isPage: true,
-      theme: getTheme(),
-      body: Consumer<DashboardProvider>(
-        builder: (context, d, child) {
-          return Container(
-           
-            child: ListView(
-              children: getItems(d),
-            ),
-          );
-        },
-      ),
+    return Consumer<DashboardProvider>(
+      builder: (context, d, child) {
+        return AppBarHeader(
+          title: "Advanced Data",
+          isPage: true,
+          theme: getTheme(),
+          body: getItems(d),
+        );
+      },
     );
   }
 }

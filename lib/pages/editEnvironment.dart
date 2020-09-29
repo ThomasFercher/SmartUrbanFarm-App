@@ -18,11 +18,11 @@ class EditEnvironment extends StatelessWidget {
       title: "Edit $name",
       isPage: true,
       theme: getTheme(),
-      body: Consumer<DashboardProvider>(
+      body: [Consumer<DashboardProvider>(
         builder: (context, d, child) {
           return Container();
         },
-      ),
+      ),]
     );
   }
 }

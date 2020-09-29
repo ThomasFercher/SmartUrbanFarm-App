@@ -18,28 +18,25 @@ import '../styles.dart';
 import 'editEnvironment.dart';
 
 class Environment extends StatelessWidget {
+  List<Widget> getEnvList(List<EnvironmentSettings> settings) {
+    List<Widget> cardlist = [];
+    settings.forEach((element) {
+      cardlist.add(EnvironmentListItem(settings: element));
+    });
+    return cardlist;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return AppBarHeader(
-      isPage: true,
-      title: "Environment Settings",
-      theme: getTheme(),
-      body: Consumer<DashboardProvider>(builder: (context, d, child) {
-        List<EnvironmentSettings> settings = d.settings;
-        return SingleChildScrollView(
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: settings.length,
-            scrollDirection: Axis.vertical,
-            itemBuilder: (context, index) {
-              return EnvironmentListItem(
-                settings: settings[index],
-              );
-            },
-          ),
-        );
-      }),
-    );
+    return Consumer<DashboardProvider>(builder: (context, d, child) {
+      List<EnvironmentSettings> settings = d.settings;
+      return AppBarHeader(
+        isPage: true,
+        title: "Environment Settings",
+        theme: getTheme(),
+        body: getEnvList(settings),
+      );
+    });
   }
 }
 
@@ -58,13 +55,14 @@ class EnvironmentListItem extends StatelessWidget {
 
     return Container(
       width: MediaQuery.of(context).size.width - 30,
-      margin: EdgeInsets.only(bottom: 20),
+      margin: EdgeInsets.only(top: 20),
       child: Card(
-        elevation: cardElavation + 2,
+        elevation: cardElavation,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(borderRadius)),
         color: Colors.white,
         child: ListView(
+          primary: false,
           shrinkWrap: true,
           children: [
             Row(
@@ -107,7 +105,7 @@ class EnvironmentListItem extends StatelessWidget {
                             context,
                             PageTransition(
                               type: PageTransitionType.rightToLeftWithFade,
-                              child: EditEnvironment(settings:settings),
+                              child: EditEnvironment(settings: settings),
                             ),
                           );
                         },

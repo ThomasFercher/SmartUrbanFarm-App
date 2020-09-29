@@ -11,43 +11,27 @@ import 'package:sgs/providers/storageProvider.dart';
 
 import '../styles.dart';
 
+List<Widget> getImageList(List<Image> imgs) {
+  List<Widget> cardlist =[];
+  imgs.forEach((element) {
+    cardlist.add(ImageListItem(element));
+  });
+  return cardlist;
+}
+
 class Gallery extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(
-        systemNavigationBarColor: getTheme().headlineColor,
-      ),
-      child: SingleChildScrollView(
-        child: Container(
-          child: Column(
-            children: [
-              AppBarHeader(
-                isPage: true,
-                theme: getTheme(),
-                title: "Gallery",
-                trailling: Container(),
-                body: Consumer<StorageProvider>(
-                  builder: (context, d, child) {
-                    List<Image> imgs = d.images;
-
-                    return Container(
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: imgs.length,
-                        itemBuilder: (context, index) {
-                          return ImageListItem(imgs[index]);
-                        },
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+    return Consumer<StorageProvider>(builder: (context, d, child) {
+      List<Image> imgs = d.images;
+      return AppBarHeader(
+        isPage: true,
+        theme: getTheme(),
+        title: "Gallery",
+        trailling: Container(),
+        body: getImageList(imgs),
+      );
+    });
   }
 }
 

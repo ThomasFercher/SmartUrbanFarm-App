@@ -46,6 +46,7 @@ class CardData extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Material(
+                   
                     child: Container(
                       width: 200,
                       color: Colors.white,
