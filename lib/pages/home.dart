@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:sgs/customwidgets/appBarHeader.dart';
 import 'package:sgs/customwidgets/carddata.dart';
@@ -18,7 +19,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:weather_icons/weather_icons.dart';
 import 'advanced.dart';
 import 'package:page_transition/page_transition.dart';
-
 
 class Home extends StatelessWidget {
   static const String EnvironmentSettings = 'Environment';
@@ -102,108 +102,145 @@ class Home extends StatelessWidget {
                     }).toList();
                   },
                 ),
-                body: Container(
-                  //margin: EdgeInsets.symmetric(horizontal: 10),
-
-                  padding: EdgeInsets.only(left: 25, right: 25, top: 25),
-                  child: ListView(
-                    shrinkWrap: true,
-                    children: <Widget>[
-                      sectionTitle(
-                        context,
-                        "Details",
-                        theme.secondaryTextColor,
-                      ),
-                      GridView.count(
-                        padding: EdgeInsets.all(0),
-                        crossAxisSpacing: 15,
-                        // mainAxisSpacing: 10,
-                        crossAxisCount: 3,
-                        childAspectRatio: 1.0,
-                        shrinkWrap: true,
-                        children: <Widget>[
-                          CardData(
-                            icon: WeatherIcons.thermometer,
-                            label: "Temperatur",
-                            text: "$temperature°C",
-                            iconColor: Colors.red[600],
-                            type: Temperature,
-                            key: GlobalKey(),
-                          ),
-                          CardData(
-                            icon: WeatherIcons.humidity,
-                            label: "Luftfeuchtigkeit",
-                            text: "$humidity%",
-                            iconColor: Colors.blue[700],
-                            type: Humidity,
-                            key: GlobalKey(),
-                          ),
-                          CardData(
-                            icon: WeatherIcons.barometer,
-                            label: "Bodenfeuchtigkeit",
-                            text: "$soilMoisture%",
-                            iconColor: Colors.brown[700],
-                            type: SoilMoisture,
-                            key: GlobalKey(),
-                          ),
-                        ],
-                      ),
-                      Padding(padding: EdgeInsets.only(top: 20)),
-                      sectionTitle(
-                          context,
-                          "Sunlight",
-                          theme.name == "light"
-                              ? theme.secondaryTextColor
-                              : theme.headlineColor),
-                      Container(
-                        child: DaySlider(
-                          initialTimeString: dashboard.suntime,
-                          onValueChanged: (_timeRange) =>
-                              {dashboard.suntimeChanged(_timeRange)},
+                body: ListView(
+                  shrinkWrap: true,
+                  children: <Widget>[
+                    sectionTitle(
+                      context,
+                      "Details",
+                      theme.secondaryTextColor,
+                    ),
+                    GridView.count(
+                      padding: EdgeInsets.all(0),
+                      crossAxisSpacing: 15,
+                      // mainAxisSpacing: 10,
+                      crossAxisCount: 3,
+                      childAspectRatio: 1.0,
+                      shrinkWrap: true,
+                      children: <Widget>[
+                        CardData(
+                          icon: WeatherIcons.thermometer,
+                          label: "Temperatur",
+                          text: "$temperature°C",
+                          iconColor: Colors.red[600],
+                          type: Temperature,
+                          key: GlobalKey(),
                         ),
+                        CardData(
+                          icon: WeatherIcons.humidity,
+                          label: "Luftfeuchtigkeit",
+                          text: "$humidity%",
+                          iconColor: Colors.blue[700],
+                          type: Humidity,
+                          key: GlobalKey(),
+                        ),
+                        CardData(
+                          icon: WeatherIcons.barometer,
+                          label: "Bodenfeuchtigkeit",
+                          text: "$soilMoisture%",
+                          iconColor: Colors.brown[700],
+                          type: SoilMoisture,
+                          key: GlobalKey(),
+                        ),
+                      ],
+                    ),
+                    Padding(padding: EdgeInsets.only(top: 20)),
+                    sectionTitle(
+                        context,
+                        "Sunlight",
+                        theme.name == "light"
+                            ? theme.secondaryTextColor
+                            : theme.headlineColor),
+                    Container(
+                      child: DaySlider(
+                        initialTimeString: dashboard.suntime,
+                        onValueChanged: (_timeRange) =>
+                            {dashboard.suntimeChanged(_timeRange)},
                       ),
-                      Padding(padding: EdgeInsets.only(top: 40)),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                    ),
+                    Padding(padding: EdgeInsets.only(top: 40)),
+                    sectionTitle(
+                        context,
+                        "Actions",
+                        theme.name == "light"
+                            ? theme.secondaryTextColor
+                            : theme.headlineColor),
+                    GridView.count(
+                      crossAxisCount: 2,
+                      padding: EdgeInsets.all(0),
+                      crossAxisSpacing: 15,
+                      mainAxisSpacing: 15,
+                      // mainAxisSpacing: 10,
+
+                      childAspectRatio: 1.75,
+                      shrinkWrap: true,
+                      children: [
+                        ActionCard(
+                          onPressed: () => {
+                            Navigator.push(
+                              context,
+                              PageTransition(
+                                  type: PageTransitionType.leftToRightWithFade,
+                                  child: Gallery()),
+                            )
+                          },
+                          icon: OMIcons.photo,
+                          text: "Gallery",
+                          iconColor: theme.primaryColor,
+                        ),
+                        ActionCard(
+                          onPressed: () => {
+                            Navigator.push(
+                              context,
+                              PageTransition(
+                                  type: PageTransitionType.rightToLeftWithFade,
+                                  child: Advanced()),
+                            ),
+                          },
+                          icon: OMIcons.assessment,
+                          text: "Advanced Data",
+                          iconColor: theme.secondaryColor,
+                        ),
+                        ActionCard(
+                          onPressed: () => {
+                            Navigator.push(
+                              context,
+                              PageTransition(
+                                  type: PageTransitionType.leftToRightWithFade,
+                                  child: Environment()),
+                            ),
+                          },
+                          icon: OMIcons.settingsBrightness,
+                          text: "Environment",
+                          iconColor: Color(0xFFf2426a),
+                        ),
+                      ],
+                    ),
+                    Padding(padding: EdgeInsets.only(top: 20)),
+                    GridView.count(
+                      shrinkWrap: true,
+                      crossAxisCount: 2,
+                      childAspectRatio: 0.5,
+                      crossAxisSpacing: 15,
+                      children: [
+                        LayoutBuilder(builder: (context, c) {
+                          return Column(
                             children: [
                               sectionTitle(
                                   context,
-                                  "Actions",
+                                  "Grow Progress",
                                   theme.name == "light"
                                       ? theme.secondaryTextColor
                                       : theme.headlineColor),
-                              ActionCard(
-                                width: width / 4 - 10,
-                                onPressed: () => {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => Gallery()),
-                                  )
-                                },
-                                icon: Icons.photo,
-                                text: "Gallery",
-                                iconColor: theme.primaryColor,
-                              ),
-                              Padding(padding: EdgeInsets.only(bottom: 5)),
-                              ActionCard(
-                                width: width / 4 - 10,
-                                onPressed: () => {
-                                 
-                                  Navigator.push(context, PageTransition(type: PageTransitionType.upToDown, child: Advanced()))
-                                },
-                                icon: Icons.assessment,
-                                text: "Advanved Data",
-                                iconColor: theme.secondaryColor,
+                              WaterTankLevel(
+                                fullness: dashboard.waterTankLevel,
+                                height: c.maxHeight -46,
                               ),
                             ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
+                          );
+                        }),
+                        LayoutBuilder(builder: (context, c) {
+                          return Column(
                             children: [
                               sectionTitle(
                                   context,
@@ -213,15 +250,14 @@ class Home extends StatelessWidget {
                                       : theme.headlineColor),
                               WaterTankLevel(
                                 fullness: dashboard.waterTankLevel,
-                                height: 218,
-                                width: 120,
+                                height: c.maxHeight - 46,
                               ),
                             ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                          );
+                        })
+                      ],
+                    )
+                  ],
                 ),
               ),
             ],

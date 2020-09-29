@@ -30,9 +30,8 @@ class Gallery extends StatelessWidget {
                 body: Consumer<StorageProvider>(
                   builder: (context, d, child) {
                     List<Image> imgs = d.images;
-                    print(imgs.length);
+
                     return Container(
-                      padding: EdgeInsets.only(top: 20),
                       child: ListView.builder(
                         shrinkWrap: true,
                         itemCount: imgs.length,
@@ -62,8 +61,8 @@ class ImageListItem extends StatelessWidget {
     // TODO: implement build
 
     return Container(
+      margin: EdgeInsets.only(bottom: 20),
       width: MediaQuery.of(context).size.width - 30,
-      margin: EdgeInsets.all(15),
       child: Card(
         elevation: cardElavation + 2,
         shape: RoundedRectangleBorder(

@@ -86,6 +86,7 @@ class AppBarHeader extends StatelessWidget {
                       topRight: Radius.circular(25),
                     ),
                   ),
+                  padding: EdgeInsets.all(borderRadius),
                   child: body,
                 ),
               ),

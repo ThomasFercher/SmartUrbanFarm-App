@@ -91,6 +91,7 @@ class _DaySliderState extends State<DaySlider> {
                         'assets/flares/sun.flr',
                         alignment: Alignment.center,
                         animation: "Moon Rings",
+                        color: Colors.orange,
                       //  color: Colors.yellow[500],
                       ),
                     ),

@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sgs/customwidgets/datachart.dart';
 import 'package:sgs/customwidgets/detaildialog.dart';
@@ -9,26 +10,25 @@ import 'package:sgs/customwidgets/smalldatachart.dart';
 import 'package:sgs/providers/dashboardProvider.dart';
 import 'package:sgs/styles.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:outline_material_icons/outline_material_icons.dart';
 
 class ActionCard extends StatelessWidget {
   final Function onPressed;
   final IconData icon;
   final String text;
   final Color iconColor;
-  final double width;
 
   ActionCard({
     @required this.onPressed,
     @required this.icon,
     @required this.iconColor,
     @required this.text,
-    @required this.width,
   });
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: cardElavation,
+      //elevation: cardElavation,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
           Radius.circular(borderRadius),
@@ -36,22 +36,43 @@ class ActionCard extends StatelessWidget {
       ),
       color: iconColor,
       child: Container(
-        width: width,
-        height: width,
         child: InkWell(
           enableFeedback: true,
           borderRadius: BorderRadius.circular(borderRadius),
           onTap: () => onPressed(),
           onLongPress: () => onPressed(),
-          child: Container(
-            alignment: Alignment.center,
-            padding: EdgeInsets.all(10),
-            child: Icon(
-              icon,
-              size: 40,
-              color: Colors.white, //Colors.white.withOpacity(1),
-            ),
-          ),
+          child: LayoutBuilder(builder: (context, constraints) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  width: constraints.maxWidth - 35 - 12,
+                  alignment: Alignment.bottomLeft,
+                  margin: EdgeInsets.only(top: 40),
+                  padding: EdgeInsets.only(bottom: 10, left: 10),
+                  child: Text(
+                    text,
+                    textAlign: TextAlign.start,
+                    style: GoogleFonts.nunito(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.topRight,
+                  padding: EdgeInsets.only(top: 12, right: 12),
+                  child: Icon(
+                    icon,
+                    size: 35,
+
+                    color: Colors.white, //Colors.white.withOpacity(1),
+                  ),
+                ),
+              ],
+            );
+          }),
         ),
       ),
     );

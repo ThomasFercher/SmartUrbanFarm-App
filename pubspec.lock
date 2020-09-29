@@ -221,13 +221,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.14"
-  implicitly_animated_reorderable_list:
-    dependency: "direct main"
-    description:
-      name: implicitly_animated_reorderable_list
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.2.3"
   intl:
     dependency: transitive
     description:
@@ -270,6 +263,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.4"
+  outline_material_icons:
+    dependency: "direct main"
+    description:
+      name: outline_material_icons
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.1"
   page_transition:
     dependency: "direct main"
     description:

@@ -6,6 +6,7 @@ class EnvironmentSettings {
   double humidity;
   double soilMoisture;
   String suntime;
+  double waterConsumption;
 
   double get getTemperature => temperature;
 
@@ -23,11 +24,16 @@ class EnvironmentSettings {
 
   set setSuntime(String suntime) => this.suntime = suntime;
 
+  double get getWaterConsumption => waterConsumption;
+
+  set setWaterConsumption(double waterConsumption) => this.waterConsumption = waterConsumption;
+
   EnvironmentSettings({
     @required this.name,
     @required this.temperature,
     @required this.humidity,
     @required this.soilMoisture,
     @required this.suntime,
+    @required this.waterConsumption,
   });
 }
