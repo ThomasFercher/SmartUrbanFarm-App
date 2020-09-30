@@ -12,11 +12,15 @@ import 'package:sgs/providers/storageProvider.dart';
 import '../styles.dart';
 
 List<Widget> getImageList(List<Image> imgs) {
-  List<Widget> cardlist =[];
+  List<Widget> cardlist = [Padding(padding: EdgeInsets.only(top: 15))];
   imgs.forEach((element) {
     cardlist.add(ImageListItem(element));
   });
   return cardlist;
+}
+
+takePhoto() {
+  print("take Photo");
 }
 
 class Gallery extends StatelessWidget {
@@ -30,6 +34,18 @@ class Gallery extends StatelessWidget {
         title: "Gallery",
         trailling: Container(),
         body: getImageList(imgs),
+        actionButton: Container(
+          height: 64,
+          width: 64,
+          child: FloatingActionButton(
+            onPressed: () => takePhoto(),
+            child: Icon(
+              Icons.camera_alt,
+              color: getTheme().primaryColor,
+              size: 32,
+            ),
+          ),
+        ),
       );
     });
   }

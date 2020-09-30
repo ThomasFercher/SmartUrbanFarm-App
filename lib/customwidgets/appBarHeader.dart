@@ -11,6 +11,7 @@ class AppBarHeader extends StatelessWidget {
   final AppTheme theme;
   final List<Widget> body;
   final bool isPage;
+  final Widget actionButton;
 
   const AppBarHeader({
     this.isPage,
@@ -18,6 +19,7 @@ class AppBarHeader extends StatelessWidget {
     this.trailling,
     this.theme,
     this.body,
+    this.actionButton,
   });
 
   @override
@@ -56,6 +58,7 @@ class AppBarHeader extends StatelessWidget {
             )
           ],
         ),
+        floatingActionButton: actionButton ?? null,
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15.0),
           child: CustomScrollView(

@@ -65,57 +65,60 @@ class EnvironmentListItem extends StatelessWidget {
           primary: false,
           shrinkWrap: true,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  padding: EdgeInsets.only(left: 15, bottom: 5, top: 5),
-                  child: Text(
-                    settings.name,
-                    style: GoogleFonts.nunito(
-                      fontSize: 30,
-                      fontWeight: FontWeight.w300,
+            Padding(
+              padding: const EdgeInsets.only(top: 5.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(left: 15, bottom: 5, top: 5),
+                    child: Text(
+                      settings.name,
+                      style: GoogleFonts.nunito(
+                        fontSize: 30,
+                        fontWeight: FontWeight.w300,
+                      ),
                     ),
                   ),
-                ),
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: borderRadius),
-                  decoration: BoxDecoration(
-                    color: getTheme().primaryColor,
-                    borderRadius: BorderRadius.circular(18),
-                  ),
-                  height: 36,
-                  child: Row(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.only(left: 18),
-                        child: Text(
-                          "Edit",
-                          style: TextStyle(color: Colors.white, fontSize: 16),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: borderRadius),
+                    decoration: BoxDecoration(
+                      color: getTheme().primaryColor,
+                      borderRadius: BorderRadius.circular(18),
+                    ),
+                    height: 36,
+                    child: Row(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.only(left: 18),
+                          child: Text(
+                            "Edit",
+                            style: TextStyle(color: Colors.white, fontSize: 16),
+                          ),
                         ),
-                      ),
-                      IconButton(
-                        icon: Icon(
-                          Icons.edit,
-                          color: Colors.white,
-                          size: 20,
+                        IconButton(
+                          icon: Icon(
+                            Icons.edit,
+                            color: Colors.white,
+                            size: 20,
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              PageTransition(
+                                type: PageTransitionType.rightToLeftWithFade,
+                                child: EditEnvironment(settings: settings),
+                              ),
+                            );
+                          },
                         ),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            PageTransition(
-                              type: PageTransitionType.rightToLeftWithFade,
-                              child: EditEnvironment(settings: settings),
-                            ),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                )
-              ],
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
-            Padding(padding: EdgeInsets.only(top: 10)),
+            Divider(),
             SettingsListTile(
               icon: WeatherIcons.thermometer,
               color: Colors.redAccent,
@@ -191,15 +194,16 @@ class SettingsListTile extends StatelessWidget {
       ),
       subtitle: Text("Sollwert"),
       leading: Container(
-        height: 48,
-        width: 48,
+        height: 40,
+        width: 40,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(24),
-          color: color,
+          borderRadius: BorderRadius.circular(20),
+          color: Colors.black.withOpacity(0.03),
         ),
         child: Icon(
           icon,
-          color: Colors.white,
+          color: color,
+          size: 18,
         ),
       ),
       trailing: Container(
