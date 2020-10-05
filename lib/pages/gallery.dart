@@ -11,44 +11,43 @@ import 'package:sgs/providers/storageProvider.dart';
 
 import '../styles.dart';
 
+List<Widget> getImageList(List<Image> imgs) {
+  List<Widget> cardlist = [Padding(padding: EdgeInsets.only(top: 15))];
+  imgs.forEach((element) {
+    cardlist.add(ImageListItem(element));
+  });
+  return cardlist;
+}
+
+takePhoto() {
+  print("take Photo");
+}
+
 class Gallery extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(
-        systemNavigationBarColor: getTheme().headlineColor,
-      ),
-      child: SingleChildScrollView(
-        child: Container(
-          child: Column(
-            children: [
-              AppBarHeader(
-                isPage: true,
-                theme: getTheme(),
-                title: "Gallery",
-                trailling: Container(),
-                body: Consumer<StorageProvider>(
-                  builder: (context, d, child) {
-                    List<Image> imgs = d.images;
-                    print(imgs.length);
-                    return Container(
-                      padding: EdgeInsets.only(top: 20),
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: imgs.length,
-                        itemBuilder: (context, index) {
-                          return ImageListItem(imgs[index]);
-                        },
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ],
+    return Consumer<StorageProvider>(builder: (context, d, child) {
+      List<Image> imgs = d.images;
+      return AppBarHeader(
+        isPage: true,
+        theme: getTheme(),
+        title: "Gallery",
+        trailling: Container(),
+        body: getImageList(imgs),
+        actionButton: Container(
+          height: 64,
+          width: 64,
+          child: FloatingActionButton(
+            onPressed: () => takePhoto(),
+            child: Icon(
+              Icons.camera_alt,
+              color: getTheme().primaryColor,
+              size: 32,
+            ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 }
 
@@ -62,8 +61,8 @@ class ImageListItem extends StatelessWidget {
     // TODO: implement build
 
     return Container(
+      margin: EdgeInsets.only(bottom: 20),
       width: MediaQuery.of(context).size.width - 30,
-      margin: EdgeInsets.all(15),
       child: Card(
         elevation: cardElavation + 2,
         shape: RoundedRectangleBorder(

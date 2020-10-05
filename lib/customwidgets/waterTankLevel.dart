@@ -22,7 +22,7 @@ class WaterTankLevel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = new Size(MediaQuery.of(context).size.width, 240.0);
+    Size size = new Size(MediaQuery.of(context).size.width, height);
 
     double _yOffset = (200 / 100) * (100 - fullness);
     int yOffset = _yOffset.round();
@@ -42,7 +42,6 @@ class WaterTankLevel extends StatelessWidget {
         color: Colors.white,
         child: Container(
           height: height,
-          width: width,
           child: fullness > 8
               ? Stack(
                   children: [

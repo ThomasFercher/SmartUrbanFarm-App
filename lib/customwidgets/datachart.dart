@@ -76,15 +76,13 @@ class DataChart extends StatelessWidget {
     return Consumer<DashboardProvider>(
       builder: (context, d, child) {
         return Container(
-          padding: EdgeInsets.only(
-            left: 10,
-          ),
+       
           child: Column(children: [
             sectionTitle(context, this.title,
                 theme.name == "light" ? Colors.black87 : theme.headlineColor),
             Container(
               width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.only(right: 25, bottom: 20),
+              padding: EdgeInsets.only(bottom: 20),
               child: Card(
                 color: getTheme().cardColor,
                 shape: RoundedRectangleBorder(

@@ -13,6 +13,7 @@ class SettingsPage extends StatelessWidget {
   List<Widget> getSettings(SettingsProvider pr, context) {
     return [
       ListTile(
+        contentPadding: EdgeInsets.symmetric(horizontal: 0),
         leading: LeadingIcon(icon: Icons.wifi_tethering),
         title: new Text(
           "Wi-Fi Configuration",
@@ -23,8 +24,8 @@ class SettingsPage extends StatelessWidget {
           style: Theme.of(context).textTheme.subtitle2,
         ),
       ),
-      Divider(),
       CheckboxListTile(
+        contentPadding: EdgeInsets.symmetric(horizontal: 0),
         secondary: LeadingIcon(icon: Icons.wifi_tethering),
         onChanged: (value) => pr.setCheckbox(value),
         value: pr.checkbox,
@@ -35,8 +36,8 @@ class SettingsPage extends StatelessWidget {
         activeColor: getTheme().background[0],
         checkColor: Colors.white,
       ),
-      Divider(),
       SwitchListTile(
+        contentPadding: EdgeInsets.symmetric(horizontal: 0),
         secondary: LeadingIcon(icon: Icons.camera_alt),
         value: pr.takeDailyPicture,
         activeColor: getTheme().background[0],
@@ -50,8 +51,8 @@ class SettingsPage extends StatelessWidget {
         ),
         onChanged: (value) => pr.setTakeDailyPicture(value),
       ),
-      Divider(),
       ListTile(
+        contentPadding: EdgeInsets.symmetric(horizontal: 0),
         leading: LeadingIcon(icon: Icons.info),
         title: Text(
           "More Information",
@@ -80,52 +81,48 @@ class SettingsPage extends StatelessWidget {
           );
         },
       ),
-      Divider(),
       Container(
         height: 320,
         child: Column(children: [
           ListTile(
+            contentPadding: EdgeInsets.symmetric(horizontal: 0),
             leading: LeadingIcon(icon: Icons.colorize),
             title: Text(
               "Select Color Theme",
               style: Theme.of(context).textTheme.subtitle1,
             ),
           ),
-          Padding(
-            padding: EdgeInsets.only(left: 15, right: 10),
-            child: GridView.count(
-              shrinkWrap: true,
-              crossAxisCount: 3,
-              crossAxisSpacing: 10,
-              childAspectRatio: 0.5,
-              children: [
-                ThemeCard(
-                  gradient: themes[0].background,
-                  cardColor: themes[0].cardColor,
-                  onSelected: () => {pr.setTheme(0)},
-                  selected: pr.getSelected(0),
-                  appTheme: themes[0],
-                ),
-                ThemeCard(
-                  gradient: themes[1].background,
-                  cardColor: themes[1].cardColor,
-                  onSelected: () => {pr.setTheme(1)},
-                  selected: pr.getSelected(1),
-                  appTheme: themes[1],
-                ),
-                ThemeCard(
-                  gradient: themes[2].background,
-                  cardColor: themes[2].cardColor,
-                  onSelected: () => {pr.setTheme(2)},
-                  selected: pr.getSelected(2),
-                  appTheme: themes[2],
-                ),
-              ],
-            ),
+          GridView.count(
+            shrinkWrap: true,
+            crossAxisCount: 3,
+            crossAxisSpacing: 10,
+            childAspectRatio: 0.5,
+            children: [
+              ThemeCard(
+                gradient: themes[0].background,
+                cardColor: themes[0].cardColor,
+                onSelected: () => {pr.setTheme(0)},
+                selected: pr.getSelected(0),
+                appTheme: themes[0],
+              ),
+              ThemeCard(
+                gradient: themes[1].background,
+                cardColor: themes[1].cardColor,
+                onSelected: () => {pr.setTheme(1)},
+                selected: pr.getSelected(1),
+                appTheme: themes[1],
+              ),
+              ThemeCard(
+                gradient: themes[2].background,
+                cardColor: themes[2].cardColor,
+                onSelected: () => {pr.setTheme(2)},
+                selected: pr.getSelected(2),
+                appTheme: themes[2],
+              ),
+            ],
           ),
         ]),
       ),
-      Divider(),
     ];
   }
 
@@ -136,18 +133,18 @@ class SettingsPage extends StatelessWidget {
         systemNavigationBarColor: getTheme().primaryColor,
       ),
       child: AppBarHeader(
-        isPage: true,
-        title: "Settings",
-        theme: getTheme(),
-        body: Consumer<SettingsProvider>(builder: (context, pr, child) {
-          return Container(
-            padding: EdgeInsets.only(left: 5, right: 5, top: 25),
-            child: ListView(
-              children: getSettings(pr, context),
-            ),
-          );
-        }),
-      ),
+          isPage: true,
+          title: "Settings",
+          theme: getTheme(),
+          body: [
+            Consumer<SettingsProvider>(builder: (context, pr, child) {
+              return Container(
+                child: ListView(
+                  children: getSettings(pr, context),
+                ),
+              );
+            }),
+          ]),
     );
   }
 }

@@ -23,7 +23,7 @@ class DashboardProvider with ChangeNotifier, DiagnosticableTreeMixin {
   double tempSoll = 25;
   double humiditySoll = 50;
   double soilMoistureSoll = 50;
-  double waterTankLevel = 60;
+  double waterTankLevel = 40;
   double waterAnimationProgress;
   bool waterTankMoving = false;
 
@@ -38,11 +38,19 @@ class DashboardProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
   List<EnvironmentSettings> settings = [
     new EnvironmentSettings(
-      name: "custom",
+      name: "Custom",
       temperature: 50,
       humidity: 50,
       soilMoisture: 50,
       suntime: "02:30 - 18:00",
+      waterConsumption: 1,
+    ),new EnvironmentSettings(
+      name: "Custom",
+      temperature: 50,
+      humidity: 50,
+      soilMoisture: 50,
+      suntime: "02:30 - 18:00",
+      waterConsumption: 1,
     )
   ];
 

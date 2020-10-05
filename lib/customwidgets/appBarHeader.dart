@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,8 +9,9 @@ class AppBarHeader extends StatelessWidget {
   final String title;
   final Widget trailling;
   final AppTheme theme;
-  final Widget body;
+  final List<Widget> body;
   final bool isPage;
+  final Widget actionButton;
 
   const AppBarHeader({
     this.isPage,
@@ -17,6 +19,7 @@ class AppBarHeader extends StatelessWidget {
     this.trailling,
     this.theme,
     this.body,
+    this.actionButton,
   });
 
   @override
@@ -25,69 +28,43 @@ class AppBarHeader extends StatelessWidget {
       value: SystemUiOverlayStyle(
         statusBarColor: getTheme().primaryColor,
       ),
-      child: Material(
-        child: Container(
-          height: MediaQuery.of(context).size.height,
-          child: ListView(
-            children: [
-              Container(
-                color: theme.background[0],
-                width: MediaQuery.of(context).size.width,
-                height: 80,
-                padding: EdgeInsets.all(20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    isPage
-                        ? GestureDetector(
-                            onTap: () => Navigator.of(context).pop(),
-                            child: Container(
-                              width: 25,
-                              margin: EdgeInsets.only(right: 10),
-                              child: Icon(
-                                //  Icons.arrow_back_ios_rounded,
-                                Icons.arrow_back_ios,
-                                color: Colors.white,
-                                size: 28,
-                              ),
-                            ),
-                          )
-                        : Container(),
-                    Expanded(
-                      child: Container(
-                        padding: EdgeInsets.only(left: 5),
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          title,
-                          style: GoogleFonts.nunito(
-                            fontSize: 30,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w700,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      width: 50,
-                      child: trailling,
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                color: theme.primaryColor,
-                height: MediaQuery.of(context).size.height - 100,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(25),
-                      topRight: Radius.circular(25),
-                    ),
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          toolbarHeight: 80,
+          iconTheme: IconThemeData(color: Colors.white),
+          backgroundColor: getTheme().primaryColor,
+          leading: isPage
+              ? Padding(
+                  padding: const EdgeInsets.only(left: 10.0),
+                  child: IconButton(
+                    icon: Icon(Icons.arrow_back_ios),
+                    onPressed: () => Navigator.of(context).pop(),
                   ),
-                  child: body,
-                ),
+                )
+              : null,
+          title: Text(
+            title,
+            style: GoogleFonts.nunito(
+              color: Colors.white,
+              fontWeight: FontWeight.w600,
+              fontSize: 26,
+            ),
+          ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 10.0),
+              child: trailling,
+            )
+          ],
+        ),
+        floatingActionButton: actionButton ?? null,
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+          child: CustomScrollView(
+            slivers: <Widget>[
+              SliverList(
+                delegate: SliverChildListDelegate(body),
               ),
             ],
           ),
