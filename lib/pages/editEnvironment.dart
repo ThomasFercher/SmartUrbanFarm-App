@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sgs/customwidgets/appBarHeader.dart';
 import 'package:sgs/customwidgets/datachart.dart';
+import 'package:sgs/customwidgets/dayslider.dart';
 import 'package:sgs/customwidgets/sectionTitle.dart';
 import 'package:sgs/objects/environmentSettings.dart';
 import 'package:sgs/providers/dashboardProvider.dart';
@@ -28,13 +29,31 @@ class EditEnvironment extends StatelessWidget {
         title: "Edit $name",
         isPage: true,
         theme: theme,
-        body: [
-          Padding(padding: EdgeInsets.only(top: 15)),
-          CupertinoTextField(
-            cursorColor: theme.primaryColor,
-            style: GoogleFonts.nunito(fontSize: 18),
+        contentPadding: false,
+        bottomAction: Container(
+          width: MediaQuery.of(context).size.width,
+          height: 70,
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          color: Colors.white,
+          child: RaisedButton(
+            onPressed: () => saveSettings(),
+            color: theme.primaryColor,
+            textColor: Colors.white,
+            child: Text(
+              "Save",
+              style:
+                  GoogleFonts.nunito(fontSize: 20, fontWeight: FontWeight.w600),
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(25),
+              ),
+            ),
           ),
-          Padding(padding: EdgeInsets.only(top: 15)),
+        ),
+        body: [
+          Input(theme: theme, settings: settings),
+          PlaceDivider(),
           EditVariable(
             value: settings.temperature,
             color: Colors.redAccent,
@@ -47,7 +66,7 @@ class EditEnvironment extends StatelessWidget {
               print(v);
             },
           ),
-          Padding(padding: EdgeInsets.only(top: 15)),
+          PlaceDivider(),
           EditVariable(
             value: settings.temperature,
             color: Colors.blueAccent,
@@ -60,7 +79,7 @@ class EditEnvironment extends StatelessWidget {
               print(v);
             },
           ),
-          Padding(padding: EdgeInsets.only(top: 15)),
+          PlaceDivider(),
           EditVariable(
             value: settings.temperature,
             color: Colors.brown,
@@ -73,7 +92,7 @@ class EditEnvironment extends StatelessWidget {
               print(v);
             },
           ),
-          Padding(padding: EdgeInsets.only(top: 15)),
+          PlaceDivider(),
           EditVariable(
             value: settings.temperature,
             color: Colors.lightBlueAccent,
@@ -82,20 +101,86 @@ class EditEnvironment extends StatelessWidget {
             icon: WeatherIcons.barometer,
             min: 0,
             max: 100,
-            onValueChanged: (v) {
-              print(v);
-            },
+            onValueChanged: (v) {},
           ),
-          Padding(padding: EdgeInsets.only(top: 250)),
-          CupertinoButton(
-            onPressed: () => saveSettings(),
-            color: theme.primaryColor,
-            child: Text("Save"),
-            borderRadius: BorderRadius.circular(borderRadius),
-          )
+          PlaceDivider(),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: SectionTitle(
+              title: "Suntime",
+              fontSize: 24,
+            ),
+          ),
+          DaySlider(
+              onValueChanged: (a) {
+                print(a);
+              },
+              initialTimeString: "6:00-14:00")
         ],
       );
     });
+  }
+}
+
+class Input extends StatelessWidget {
+  const Input({
+    Key key,
+    @required this.theme,
+    @required this.settings,
+  }) : super(key: key);
+
+  final AppTheme theme;
+  final EnvironmentSettings settings;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(20),
+      color: Colors.white,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 4),
+            child: SectionTitle(
+              title: "Name",
+              fontSize: 24,
+            ),
+          ),
+          SizedBox(
+            height: 48,
+            child: TextFormField(
+              cursorColor: theme.primaryColor,
+              initialValue: settings.name,
+              decoration: InputDecoration(
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey[400]),
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: theme.primaryColor),
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+
+                //fillColor: Colors.green
+              ),
+              validator: (val) {
+                if (val.length == 0) {
+                  return "Name cannot be empty!";
+                } else {
+                  return null;
+                }
+              },
+              style: GoogleFonts.nunito(
+                color: Colors.black87,
+                fontSize: 20,
+                height: 1,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -124,6 +209,8 @@ class EditVariable extends StatelessWidget {
   Widget build(BuildContext context) {
     AppTheme theme = getTheme();
     return Container(
+      padding: EdgeInsets.symmetric(horizontal: 20.0),
+      color: Colors.white,
       child: Column(
         children: [
           Row(
@@ -163,6 +250,21 @@ class EditVariable extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class PlaceDivider extends StatelessWidget {
+  double height;
+
+  PlaceDivider({height}) : height = height ?? 15.0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.grey[100],
+      height: height,
+      width: MediaQuery.of(context).size.width,
     );
   }
 }

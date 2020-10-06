@@ -112,27 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<SettingsProvider>(
-      builder: (context, value, child) {
-        return AnnotatedRegion<SystemUiOverlayStyle>(
-          value: SystemUiOverlayStyle(
-              systemNavigationBarColor:
-                  getTheme().background[1] //getTheme().background[1],
-              ),
-          child: Material(
-            child: Container(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              child: CustomPaint(
-                painter: getPainter(),
-                child: Home(),
-              ),
-              //  bottomNavigationBar: bottomNavigationBar(),
-            ),
-          ),
-        );
-      },
-    );
+    return Home();
   }
 }
 
@@ -157,7 +137,7 @@ class LightPainter extends CustomPainter {
   //drawing
   @override
   void paint(Canvas canvas, Size size) {
-    var paint = Paint();
+    /* var paint = Paint();
     paint.color = Colors.white;
     paint.style = PaintingStyle.fill;
 
@@ -167,7 +147,7 @@ class LightPainter extends CustomPainter {
     path = new Path();
     path.addRect(Rect.fromLTWH(0, 0, size.width, size.height));
     canvas.drawPath(path, paint);
-    path.close();
+    path.close();*/
 
     /*   path = new Path();
     paint.color = getTheme().background[0];

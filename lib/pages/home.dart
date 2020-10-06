@@ -71,6 +71,7 @@ class Home extends StatelessWidget {
           isPage: false,
           theme: theme,
           title: "Smart Grow System",
+          contentPadding: true,
           trailling: PopupMenuButton<String>(
             icon: Icon(
               Icons.settings,
@@ -147,13 +148,13 @@ class Home extends StatelessWidget {
                 theme.name == "light"
                     ? theme.secondaryTextColor
                     : theme.headlineColor),
-            Container(
+            /*   Container(
               child: DaySlider(
                 initialTimeString: dashboard.suntime,
                 onValueChanged: (_timeRange) =>
                     {dashboard.suntimeChanged(_timeRange)},
               ),
-            ),
+            ),*/
             Padding(padding: EdgeInsets.only(top: 40)),
             sectionTitle(
                 context,

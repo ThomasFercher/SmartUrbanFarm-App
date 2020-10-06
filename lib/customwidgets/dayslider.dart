@@ -54,95 +54,91 @@ class _DaySliderState extends State<DaySlider> {
   @override
   Widget build(BuildContext context) {
     AppTheme theme = getTheme();
-    return Card(
-      elevation: cardElavation,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(borderRadius)),
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(borderRadius),
+        color: Colors.white,
+      ),
+      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
       child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(borderRadius),
-          color: Colors.white,
-        ),
-        child: Container(
-          padding: EdgeInsets.only(top: 10, bottom: 10),
-          child: Column(
-            children: <Widget>[
-              Container(
-                child: new Text(
-                  "${getTimeString(suntime * 4)} hours",
-                  style: TextStyle(
-                    color: theme.secondaryTextColor,
-                    fontWeight: FontWeight.w100,
-                    fontSize: 26.0,
-                  ),
+        padding: EdgeInsets.only(top: 10, bottom: 10),
+        child: Column(
+          children: <Widget>[
+            Container(
+              child: new Text(
+                "${getTimeString(suntime * 4)} hours",
+                style: TextStyle(
+                  color: theme.secondaryTextColor,
+                  fontWeight: FontWeight.w100,
+                  fontSize: 26.0,
                 ),
               ),
-              Container(
-                padding: EdgeInsets.only(top: 5, bottom: 5),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(left: 5),
-                      width: 50,
-                      height: 50,
-                      child: FlareActor(
-                        'assets/flares/sun.flr',
-                        alignment: Alignment.center,
-                        animation: "Moon Rings",
-                        color: Colors.orange,
+            ),
+            Container(
+              padding: EdgeInsets.only(top: 5, bottom: 5),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.only(left: 5),
+                    width: 50,
+                    height: 50,
+                    child: FlareActor(
+                      'assets/flares/sun.flr',
+                      alignment: Alignment.center,
+                      animation: "Moon Rings",
+                      color: Colors.orange,
                       //  color: Colors.yellow[500],
-                      ),
                     ),
-                    Container(
-                      constraints:
-                          BoxConstraints(maxWidth: getWidth(context) - 168),
-                      child: SliderTheme(
-                        data: SliderThemeData(
-                          overlayShape:
-                              RoundSliderOverlayShape(overlayRadius: 22),
-                          rangeThumbShape: _CustomRangeThumbShape(
-                              values: labels, valuesTime: _values),
-                          trackHeight: 5,
+                  ),
+                  Container(
+                    constraints:
+                        BoxConstraints(maxWidth: getWidth(context) - 168),
+                    child: SliderTheme(
+                      data: SliderThemeData(
+                        overlayShape:
+                            RoundSliderOverlayShape(overlayRadius: 22),
+                        rangeThumbShape: _CustomRangeThumbShape(
+                            values: labels, valuesTime: _values),
+                        trackHeight: 5,
+                      ),
+                      child: RangeSlider(
+                        divisions: 96,
+                        values: _values,
+                        min: 0,
+                        max: 96,
+                        activeColor: theme.primaryColor,
+                        inactiveColor: Colors.black12,
+                        onChanged: (values) => setState(
+                          () {
+                            if (values.end - values.start >= 16)
+                              _values = values;
+                            labels = [
+                              getTimeString(_values.start),
+                              getTimeString(_values.end)
+                            ];
+                            suntime = _values.end / 4 - _values.start / 4;
+                            widget.onValueChanged(labels);
+                          },
                         ),
-                        child: RangeSlider(
-                          divisions: 96,
-                          values: _values,
-                          min: 0,
-                          max: 96,
-                          activeColor: theme.primaryColor,
-                          inactiveColor: Colors.black12,
-                          onChanged: (values) => setState(
-                            () {
-                              if (values.end - values.start >= 16)
-                                _values = values;
-                              labels = [
-                                getTimeString(_values.start),
-                                getTimeString(_values.end)
-                              ];
-                              suntime = _values.end / 4 - _values.start / 4;
-                              widget.onValueChanged(labels);
-                            },
-                          ),
-                        ),
                       ),
                     ),
-                    Container(
-                      margin: EdgeInsets.only(right: 5),
-                      width: 50,
-                      height: 50,
-                      child: FlareActor(
-                        'assets/flares/moon.flr',
-                        alignment: Alignment.center,
-                        animation: "Moon Rings",
-                      ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(right: 5),
+                    width: 50,
+                    height: 50,
+                    child: FlareActor(
+                      'assets/flares/moon.flr',
+                      alignment: Alignment.center,
+                      animation: "Moon Rings",
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

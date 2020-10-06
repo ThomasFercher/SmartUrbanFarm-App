@@ -12,15 +12,19 @@ class AppBarHeader extends StatelessWidget {
   final List<Widget> body;
   final bool isPage;
   final Widget actionButton;
+  final Widget bottomAction;
+  bool contentPadding = true;
 
-  const AppBarHeader({
+  AppBarHeader({
     this.isPage,
     this.title,
     this.trailling,
     this.theme,
     this.body,
     this.actionButton,
-  });
+    contentPadding,
+    this.bottomAction,
+  }) : contentPadding = contentPadding ?? true;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +33,12 @@ class AppBarHeader extends StatelessWidget {
         statusBarColor: getTheme().primaryColor,
       ),
       child: Scaffold(
-        backgroundColor: Colors.white,
+        //  backgroundColor: Colors.white,
+        bottomSheet: bottomAction ??
+            Container(
+              height: 0,
+              width: 0,
+            ),
         appBar: AppBar(
           toolbarHeight: 80,
           iconTheme: IconThemeData(color: Colors.white),
@@ -60,7 +69,9 @@ class AppBarHeader extends StatelessWidget {
         ),
         floatingActionButton: actionButton ?? null,
         body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+          padding: contentPadding
+              ? const EdgeInsets.symmetric(horizontal: 15.0)
+              : const EdgeInsets.all(0),
           child: CustomScrollView(
             slivers: <Widget>[
               SliverList(

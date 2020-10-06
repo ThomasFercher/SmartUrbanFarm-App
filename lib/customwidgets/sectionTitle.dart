@@ -8,14 +8,15 @@ class SectionTitle extends StatelessWidget {
   final double fontSize;
 
   const SectionTitle({
-    this.title, this.fontSize,
+    this.title,
+    this.fontSize,
   });
 
   Widget build(BuildContext context) {
     AppTheme theme = getTheme();
     return Container(
-     
-     alignment: Alignment.bottomLeft,
+      color: Colors.white,
+      alignment: Alignment.bottomLeft,
       child: Text(
         title,
         textAlign: TextAlign.start,
@@ -24,7 +25,6 @@ class SectionTitle extends StatelessWidget {
             color: theme.secondaryTextColor,
             fontWeight: FontWeight.w700,
             fontSize: fontSize,
-            
           ),
         ),
       ),
