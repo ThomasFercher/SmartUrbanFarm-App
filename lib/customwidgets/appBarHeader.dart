@@ -68,19 +68,52 @@ class AppBarHeader extends StatelessWidget {
           ],
         ),
         floatingActionButton: actionButton ?? null,
-        body: Padding(
-          padding: contentPadding
-              ? const EdgeInsets.symmetric(horizontal: 15.0)
-              : const EdgeInsets.all(0),
-          child: CustomScrollView(
-            slivers: <Widget>[
-              SliverList(
-                delegate: SliverChildListDelegate(body),
-              ),
-            ],
+        body: CustomPaint(
+          painter: DarkPainter(),
+          child: Padding(
+            padding: contentPadding
+                ? const EdgeInsets.symmetric(horizontal: 15.0)
+                : const EdgeInsets.all(0),
+            child: CustomScrollView(
+              slivers: <Widget>[
+                SliverList(
+                  delegate: SliverChildListDelegate(body),
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
+  }
+}
+
+class DarkPainter extends CustomPainter {
+  AppTheme theme = getTheme();
+  //drawing
+  @override
+  void paint(Canvas canvas, Size size) {
+    var paint = Paint();
+    paint.color = Colors.white;
+    paint.style = PaintingStyle.fill;
+
+    var height = 200.0;
+    var path = new Path();
+
+    paint.color = theme.primaryColor;
+    path = new Path();
+
+    canvas.save();
+    canvas.translate(size.width * 0.5, size.height * 0.5);
+    canvas.rotate(20);
+
+    canvas.drawOval(Rect.fromLTWH(-100, 100, 200, 400), paint);
+    canvas.restore();
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return true;
   }
 }

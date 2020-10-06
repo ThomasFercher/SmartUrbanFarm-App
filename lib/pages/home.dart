@@ -5,6 +5,7 @@ import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:sgs/customwidgets/appBarHeader.dart';
 import 'package:sgs/customwidgets/carddata.dart';
+import 'package:sgs/customwidgets/dayRange.dart';
 import 'package:sgs/customwidgets/dayslider.dart';
 import 'package:sgs/customwidgets/actionCard.dart';
 import 'package:sgs/customwidgets/waterTankLevel.dart';
@@ -72,33 +73,6 @@ class Home extends StatelessWidget {
           theme: theme,
           title: "Smart Grow System",
           contentPadding: true,
-          trailling: PopupMenuButton<String>(
-            icon: Icon(
-              Icons.settings,
-              size: 25,
-              color: Colors.white,
-            ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(borderRadius),
-            ),
-            color: Colors.white,
-            elevation: getCardElavation(context),
-            onSelected: (s) => choiceAction(s, context),
-            itemBuilder: (BuildContext context) {
-              return choices.map((String choice) {
-                return PopupMenuItem<String>(
-                  value: choice,
-                  child: Text(
-                    choice,
-                    style: TextStyle(
-                      color: Colors.black87,
-                      fontSize: 16,
-                    ),
-                  ),
-                );
-              }).toList();
-            },
-          ),
           body: <Widget>[
             Padding(padding: EdgeInsets.only(top: 20)),
             sectionTitle(
@@ -119,7 +93,7 @@ class Home extends StatelessWidget {
                   icon: WeatherIcons.thermometer,
                   label: "Temperatur",
                   text: "$temperature°C",
-                  iconColor: Colors.red[600],
+                  iconColor: theme.primaryColor,
                   type: Temperature,
                   key: GlobalKey(),
                 ),
@@ -127,7 +101,7 @@ class Home extends StatelessWidget {
                   icon: WeatherIcons.humidity,
                   label: "Luftfeuchtigkeit",
                   text: "$humidity%",
-                  iconColor: Colors.blue[700],
+                  iconColor: theme.primaryColor,
                   type: Humidity,
                   key: GlobalKey(),
                 ),
@@ -135,7 +109,7 @@ class Home extends StatelessWidget {
                   icon: WeatherIcons.barometer,
                   label: "Bodenfeuchtigkeit",
                   text: "$soilMoisture%",
-                  iconColor: Colors.brown[700],
+                  iconColor:theme.primaryColor,
                   type: SoilMoisture,
                   key: GlobalKey(),
                 ),
@@ -148,14 +122,16 @@ class Home extends StatelessWidget {
                 theme.name == "light"
                     ? theme.secondaryTextColor
                     : theme.headlineColor),
-            /*   Container(
-              child: DaySlider(
+            Container(
+              child:
+                  /*DaySlider(
                 initialTimeString: dashboard.suntime,
                 onValueChanged: (_timeRange) =>
                     {dashboard.suntimeChanged(_timeRange)},
-              ),
-            ),*/
-            Padding(padding: EdgeInsets.only(top: 40)),
+              ),*/
+                  DayRange(),
+            ),
+            Padding(padding: EdgeInsets.only(top: 20)),
             sectionTitle(
                 context,
                 "Actions",
@@ -197,8 +173,28 @@ class Home extends StatelessWidget {
                   },
                   icon: OMIcons.assessment,
                   text: "Advanced Data",
-                  iconColor: theme.secondaryColor,
+                  iconColor: theme.primaryColor,
                 ),
+              ],
+            ),
+            Padding(padding: EdgeInsets.only(top: 20)),
+            sectionTitle(
+                context,
+                "Settings",
+                theme.name == "light"
+                    ? theme.secondaryTextColor
+                    : theme.headlineColor),
+            GridView.count(
+              primary: false,
+              crossAxisCount: 2,
+              padding: EdgeInsets.all(0),
+              crossAxisSpacing: 15,
+              mainAxisSpacing: 15,
+              // mainAxisSpacing: 10,
+
+              childAspectRatio: 1.75,
+              shrinkWrap: true,
+              children: [
                 ActionCard(
                   onPressed: () => {
                     Navigator.push(
@@ -210,7 +206,7 @@ class Home extends StatelessWidget {
                   },
                   icon: OMIcons.settingsBrightness,
                   text: "Environment",
-                  iconColor: Color(0xFFf2426a),
+                  iconColor: theme.secondaryColor,
                 ),
                 ActionCard(
                   onPressed: () => {
@@ -221,9 +217,9 @@ class Home extends StatelessWidget {
                           child: Environment()),
                     ),
                   },
-                  icon: OMIcons.musicVideo,
-                  text: "Test",
-                  iconColor: Color(0xFF74b9ff),
+                  icon: OMIcons.settings,
+                  text: "App Settings",
+                  iconColor: theme.secondaryColor,
                 ),
               ],
             ),

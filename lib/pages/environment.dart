@@ -59,7 +59,8 @@ class EnvironmentListItem extends StatelessWidget {
       child: Card(
         elevation: cardElavation,
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(borderRadius)),
+          borderRadius: BorderRadius.circular(borderRadius),
+        ),
         color: Colors.white,
         child: ListView(
           primary: false,
@@ -106,7 +107,7 @@ class EnvironmentListItem extends StatelessWidget {
                             Navigator.push(
                               context,
                               PageTransition(
-                                type: PageTransitionType.rightToLeftWithFade,
+                                type: PageTransitionType.leftToRightWithFade,
                                 child: EditEnvironment(settings: settings),
                               ),
                             );

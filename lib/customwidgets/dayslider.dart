@@ -2,6 +2,7 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sgs/customwidgets/s_g_s__custom_icon_icons.dart';
+import 'package:sgs/customwidgets/sectionTitle.dart';
 import 'package:weather_icons/weather_icons.dart';
 import '../styles.dart';
 
@@ -59,23 +60,36 @@ class _DaySliderState extends State<DaySlider> {
         borderRadius: BorderRadius.circular(borderRadius),
         color: Colors.white,
       ),
-      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 0),
       child: Container(
         padding: EdgeInsets.only(top: 10, bottom: 10),
         child: Column(
           children: <Widget>[
-            Container(
-              child: new Text(
-                "${getTimeString(suntime * 4)} hours",
-                style: TextStyle(
-                  color: theme.secondaryTextColor,
-                  fontWeight: FontWeight.w100,
-                  fontSize: 26.0,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 5.0),
+                  child: SectionTitle(
+                    title: "Suntime",
+                    fontSize: 24,
+                  ),
                 ),
-              ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 5),
+                  child: new Text(
+                    "${getTimeString(suntime * 4)} hours",
+                    style: TextStyle(
+                      color: theme.secondaryTextColor,
+                      fontWeight: FontWeight.w100,
+                      fontSize: 26.0,
+                    ),
+                  ),
+                ),
+              ],
             ),
             Container(
-              padding: EdgeInsets.only(top: 5, bottom: 5),
+              padding: EdgeInsets.only(top: 10, bottom: 5),
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -97,11 +111,12 @@ class _DaySliderState extends State<DaySlider> {
                         BoxConstraints(maxWidth: getWidth(context) - 168),
                     child: SliderTheme(
                       data: SliderThemeData(
-                        overlayShape:
-                            RoundSliderOverlayShape(overlayRadius: 22),
+                        overlayShape: RoundSliderOverlayShape(overlayRadius: 0),
                         rangeThumbShape: _CustomRangeThumbShape(
-                            values: labels, valuesTime: _values),
-                        trackHeight: 5,
+                          values: labels,
+                          valuesTime: _values,
+                        ),
+                        trackHeight: 2,
                       ),
                       child: RangeSlider(
                         divisions: 96,
@@ -179,30 +194,30 @@ class _CustomRangeThumbShape extends RangeSliderThumbShape {
   }) {
     final Canvas canvas = context.canvas;
     Path oval = Path()
-      ..addOval(new Rect.fromCenter(center: center, width: 40, height: 40));
+      ..addOval(new Rect.fromCenter(center: center, width: 36, height: 36));
     Paint shadowPaint = Paint()
-      ..color = Colors.black.withOpacity(0.25)
-      ..maskFilter = MaskFilter.blur(BlurStyle.normal, 1)
+      ..color = Colors.grey[800].withOpacity(0.6)
+      ..maskFilter = MaskFilter.blur(BlurStyle.normal, 1.0)
       ..style = PaintingStyle.fill;
     canvas.drawPath(oval, shadowPaint);
-    canvas.drawCircle(center, 20, _paint);
+    canvas.drawCircle(center, 18, _paint);
 
     switch (thumb) {
       case Thumb.start:
         TextSpan span = new TextSpan(
-            style: new TextStyle(color: Colors.black54, fontSize: 14),
+            style: GoogleFonts.nunito(color: Colors.black54, fontSize: 12),
             text: values[0]);
         TextPainter tp = new TextPainter(
             text: span,
             textAlign: TextAlign.center,
             textDirection: TextDirection.ltr);
         tp.layout();
-        tp.paint(canvas, new Offset(center.dx - 18, center.dy - 7));
+        tp.paint(canvas, new Offset(center.dx - 16, center.dy - 8));
 
         break;
       case Thumb.end:
         TextSpan span = new TextSpan(
-          style: new TextStyle(color: Colors.black54, fontSize: 14),
+          style: GoogleFonts.nunito(color: Colors.black54, fontSize: 12),
           text: values[1],
         );
         TextPainter tp = new TextPainter(
@@ -210,13 +225,11 @@ class _CustomRangeThumbShape extends RangeSliderThumbShape {
             textAlign: TextAlign.center,
             textDirection: TextDirection.ltr);
         tp.layout();
-        tp.paint(canvas, new Offset(center.dx - 18, center.dy - 7));
+        tp.paint(canvas, new Offset(center.dx - 16, center.dy - 8));
 
         break;
     }
   }
 }
 
-void drawCircle(Offset thumbCenter, canvas, _paint) {
-  canvas.drawCircle(thumbCenter, 16.0, _paint);
-}
+

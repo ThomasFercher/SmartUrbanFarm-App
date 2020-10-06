@@ -131,10 +131,11 @@ class CardData extends StatelessWidget {
                     fit: FlexFit.tight,
                     child: Text(
                       text,
-                      style: TextStyle(
-                        color: getTheme().secondaryTextColor,
-                        fontWeight: FontWeight.w100,
+                      style: GoogleFonts.nunito(
+                        color: Colors.black54,
+                        fontWeight: FontWeight.w200,
                         fontSize: 26.0,
+
                       ),
                     ),
                   ),

@@ -34,7 +34,7 @@ class ActionCard extends StatelessWidget {
           Radius.circular(borderRadius),
         ),
       ),
-      color: iconColor,
+      color: Colors.white,
       child: Container(
         child: InkWell(
           enableFeedback: true,
@@ -54,9 +54,9 @@ class ActionCard extends StatelessWidget {
                     text,
                     textAlign: TextAlign.start,
                     style: GoogleFonts.nunito(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 18,
+                      color: Colors.black54,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
                     ),
                   ),
                 ),
@@ -67,7 +67,7 @@ class ActionCard extends StatelessWidget {
                     icon,
                     size: 35,
 
-                    color: Colors.white, //Colors.white.withOpacity(1),
+                    color: iconColor, //Colors.white.withOpacity(1),
                   ),
                 ),
               ],

@@ -97,18 +97,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   // This function return the Backgroundpainter for the given tab
-  CustomPainter getPainter() {
-    switch (getTheme().name) {
-      case "light":
-        return CoolPainter();
-        break;
-      case "dark":
-        return DarkPainter();
-        break;
-      default:
-        return CoolPainter();
-    }
-  }
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -168,40 +157,7 @@ class LightPainter extends CustomPainter {
   }
 }
 
-class DarkPainter extends CustomPainter {
-  //drawing
-  @override
-  void paint(Canvas canvas, Size size) {
-    var paint = Paint();
-    paint.color = Colors.black;
-    paint.style = PaintingStyle.fill;
 
-    var height = 180.0;
-    var path = new Path();
-
-    path = new Path();
-    path.addRect(Rect.fromLTWH(0, 0, size.width, size.height));
-    canvas.drawPath(path, paint);
-    path.close();
-
-    paint.color = Colors.blueAccent;
-    path = new Path();
-    path.moveTo(0, height);
-    path.quadraticBezierTo(
-        size.width * 0.25, height - 15, size.width * 0.5, height);
-    path.quadraticBezierTo(
-        size.width * 0.75, height + 15, size.width * 1.0, height);
-    path.lineTo(size.width, 0);
-    path.lineTo(0, 0);
-
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return true;
-  }
-}
 
 class CoolPainter extends CustomPainter {
   //drawing

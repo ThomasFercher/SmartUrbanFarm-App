@@ -32,8 +32,8 @@ class EditEnvironment extends StatelessWidget {
         contentPadding: false,
         bottomAction: Container(
           width: MediaQuery.of(context).size.width,
-          height: 70,
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          height: 60,
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
           color: Colors.white,
           child: RaisedButton(
             onPressed: () => saveSettings(),
@@ -104,18 +104,14 @@ class EditEnvironment extends StatelessWidget {
             onValueChanged: (v) {},
           ),
           PlaceDivider(),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: SectionTitle(
-              title: "Suntime",
-              fontSize: 24,
-            ),
-          ),
+      
           DaySlider(
-              onValueChanged: (a) {
-                print(a);
-              },
-              initialTimeString: "6:00-14:00")
+            onValueChanged: (a) {
+              print(a);
+            },
+            initialTimeString: "6:00-14:00",
+          ),
+          PlaceDivider(height: 100.0,)
         ],
       );
     });
