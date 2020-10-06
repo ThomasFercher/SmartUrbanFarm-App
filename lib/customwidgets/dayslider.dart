@@ -56,10 +56,7 @@ class _DaySliderState extends State<DaySlider> {
   Widget build(BuildContext context) {
     AppTheme theme = getTheme();
     return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(borderRadius),
-        color: Colors.white,
-      ),
+      color: Colors.white,
       padding: EdgeInsets.symmetric(horizontal: 15, vertical: 0),
       child: Container(
         padding: EdgeInsets.only(top: 10, bottom: 10),
@@ -231,5 +228,3 @@ class _CustomRangeThumbShape extends RangeSliderThumbShape {
     }
   }
 }
-
-

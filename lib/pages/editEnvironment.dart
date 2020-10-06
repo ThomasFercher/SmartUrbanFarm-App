@@ -8,113 +8,129 @@ import 'package:sgs/customwidgets/dayslider.dart';
 import 'package:sgs/customwidgets/sectionTitle.dart';
 import 'package:sgs/objects/environmentSettings.dart';
 import 'package:sgs/providers/dashboardProvider.dart';
+import 'package:sgs/providers/environmentSettingsProvider.dart';
 import 'package:weather_icons/weather_icons.dart';
 import '../styles.dart';
 
 class EditEnvironment extends StatelessWidget {
-  EnvironmentSettings settings;
+  EnvironmentSettings initialSettings;
 
-  EditEnvironment({@required this.settings});
+  EditEnvironment({@required this.initialSettings});
 
-  saveSettings() {
-    print("safe");
+  save(EnvironmentSettings settings, context) {
+    print(settings);
+    Provider.of<DashboardProvider>(context, listen: false)
+        .editSettings(this.initialSettings, settings);
+    Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    var name = settings.name;
-    return Consumer<DashboardProvider>(builder: (context, d, child) {
-      AppTheme theme = getTheme();
-      return AppBarHeader(
-        title: "Edit $name",
-        isPage: true,
-        theme: theme,
-        contentPadding: false,
-        bottomAction: Container(
-          width: MediaQuery.of(context).size.width,
-          height: 60,
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-          color: Colors.white,
-          child: RaisedButton(
-            onPressed: () => saveSettings(),
-            color: theme.primaryColor,
-            textColor: Colors.white,
-            child: Text(
-              "Save",
-              style:
-                  GoogleFonts.nunito(fontSize: 20, fontWeight: FontWeight.w600),
-            ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(25),
+    var name = initialSettings.name;
+    return ListenableProvider(
+      create: (_) => EnvironmentSettingsProvider(initialSettings),
+      builder: (context, child) {
+        AppTheme theme = getTheme();
+        //   EnvironmentSettings settings = d.getSettings();
+        return Consumer<EnvironmentSettingsProvider>(
+            builder: (context, pr, child) {
+          return AppBarHeader(
+            title: "Edit $name",
+            isPage: true,
+            theme: theme,
+            contentPadding: false,
+            bottomAction: Container(
+              width: MediaQuery.of(context).size.width,
+              height: 60,
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              color: Colors.white,
+              child: RaisedButton(
+                onPressed: () => save(pr.getSettings(), context),
+                color: theme.primaryColor,
+                textColor: Colors.white,
+                child: Text(
+                  "Save",
+                  style: GoogleFonts.nunito(
+                      fontSize: 20, fontWeight: FontWeight.w600),
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(25),
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
-        body: [
-          Input(theme: theme, settings: settings),
-          PlaceDivider(),
-          EditVariable(
-            value: settings.temperature,
-            color: Colors.redAccent,
-            title: "Temperature",
-            unit: "°C",
-            icon: WeatherIcons.thermometer,
-            min: 0,
-            max: 50,
-            onValueChanged: (v) {
-              print(v);
-            },
-          ),
-          PlaceDivider(),
-          EditVariable(
-            value: settings.temperature,
-            color: Colors.blueAccent,
-            title: "Humidty",
-            unit: "%",
-            icon: WeatherIcons.humidity,
-            min: 0,
-            max: 100,
-            onValueChanged: (v) {
-              print(v);
-            },
-          ),
-          PlaceDivider(),
-          EditVariable(
-            value: settings.temperature,
-            color: Colors.brown,
-            title: "Soil Moisture",
-            unit: "%",
-            icon: WeatherIcons.barometer,
-            min: 0,
-            max: 100,
-            onValueChanged: (v) {
-              print(v);
-            },
-          ),
-          PlaceDivider(),
-          EditVariable(
-            value: settings.temperature,
-            color: Colors.lightBlueAccent,
-            title: "Water Consumption",
-            unit: "l/d",
-            icon: WeatherIcons.barometer,
-            min: 0,
-            max: 100,
-            onValueChanged: (v) {},
-          ),
-          PlaceDivider(),
-      
-          DaySlider(
-            onValueChanged: (a) {
-              print(a);
-            },
-            initialTimeString: "6:00-14:00",
-          ),
-          PlaceDivider(height: 100.0,)
-        ],
-      );
-    });
+            body: [
+              Input(
+                theme: theme,
+                initialValue: pr.settings.name,
+                valChanged: (val) => pr.changeName(val),
+              ),
+              PlaceDivider(),
+              EditVariable(
+                value: pr.settings.temperature,
+                color: Colors.redAccent,
+                title: "Temperature",
+                unit: "°C",
+                icon: WeatherIcons.thermometer,
+                min: 0,
+                max: 50,
+                onValueChanged: (v) {
+                  pr.changeTemperature(v);
+                },
+              ),
+              PlaceDivider(),
+              EditVariable(
+                value: pr.settings.humidity,
+                color: Colors.blueAccent,
+                title: "Humidty",
+                unit: "%",
+                icon: WeatherIcons.humidity,
+                min: 0,
+                max: 100,
+                onValueChanged: (v) {
+                  pr.changeHumidity(v);
+                },
+              ),
+              PlaceDivider(),
+              EditVariable(
+                value: pr.settings.soilMoisture,
+                color: Colors.brown,
+                title: "Soil Moisture",
+                unit: "%",
+                icon: WeatherIcons.barometer,
+                min: 0,
+                max: 100,
+                onValueChanged: (v) {
+                  pr.changeSoilMoisture(v);
+                },
+              ),
+              PlaceDivider(),
+              EditVariable(
+                value: pr.settings.waterConsumption,
+                color: Colors.lightBlueAccent,
+                title: "Water Consumption",
+                unit: "l/d",
+                icon: WeatherIcons.barometer,
+                min: 0,
+                max: 100,
+                onValueChanged: (v) {
+                  pr.changeWaterConsumption(v);
+                },
+              ),
+              PlaceDivider(),
+              DaySlider(
+                onValueChanged: (v) => pr.changeSuntime(v),
+                initialTimeString: pr.settings.suntime,
+              ),
+              PlaceDivider(
+                height: 100.0,
+              )
+            ],
+          );
+        });
+      },
+    );
   }
 }
 
@@ -122,11 +138,13 @@ class Input extends StatelessWidget {
   const Input({
     Key key,
     @required this.theme,
-    @required this.settings,
+    @required this.initialValue,
+    @required this.valChanged,
   }) : super(key: key);
 
   final AppTheme theme;
-  final EnvironmentSettings settings;
+  final String initialValue;
+  final Function valChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -146,7 +164,7 @@ class Input extends StatelessWidget {
             height: 48,
             child: TextFormField(
               cursorColor: theme.primaryColor,
-              initialValue: settings.name,
+              initialValue: initialValue,
               decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.grey[400]),
@@ -159,6 +177,7 @@ class Input extends StatelessWidget {
 
                 //fillColor: Colors.green
               ),
+              onChanged: (value) => valChanged(value),
               validator: (val) {
                 if (val.length == 0) {
                   return "Name cannot be empty!";
@@ -204,6 +223,7 @@ class EditVariable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AppTheme theme = getTheme();
+    print(((max - min) * 2).round());
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20.0),
       color: Colors.white,
@@ -238,10 +258,14 @@ class EditVariable extends StatelessWidget {
             width: MediaQuery.of(context).size.width,
             child: CupertinoSlider(
               value: value,
-              onChanged: (val) => onValueChanged(val),
+              onChanged: (val) {
+                val = double.parse((val).toStringAsFixed(2));
+                onValueChanged(val);
+              },
               activeColor: color,
               max: max,
               min: min,
+              divisions: ((max - min) * 2).round(),
             ),
           ),
         ],

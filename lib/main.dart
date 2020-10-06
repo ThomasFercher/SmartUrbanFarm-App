@@ -8,6 +8,7 @@ import 'package:sgs/pages/advanced.dart';
 import 'package:sgs/pages/environment.dart';
 import 'package:sgs/pages/gallery.dart';
 import 'package:sgs/pages/home.dart';
+import 'package:sgs/providers/environmentSettingsProvider.dart';
 import 'package:sgs/providers/settingsProvider.dart';
 import 'package:sgs/providers/storageProvider.dart';
 import 'package:weather_icons/weather_icons.dart';
@@ -42,6 +43,7 @@ void main() => {
               lazy: false,
               create: (_) => SettingsProvider(),
             ),
+            
           ],
           child: MyApp(),
         ),
@@ -97,7 +99,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   // This function return the Backgroundpainter for the given tab
- 
 
   @override
   Widget build(BuildContext context) {
@@ -156,8 +157,6 @@ class LightPainter extends CustomPainter {
     return true;
   }
 }
-
-
 
 class CoolPainter extends CustomPainter {
   //drawing

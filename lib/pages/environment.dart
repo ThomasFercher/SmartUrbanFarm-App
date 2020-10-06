@@ -62,64 +62,61 @@ class EnvironmentListItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(borderRadius),
         ),
         color: Colors.white,
-        child: ListView(
-          primary: false,
-          shrinkWrap: true,
+        child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 5.0),
+            Container(
+              padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+              height: 56,
+              decoration: BoxDecoration(
+                color: getTheme().primaryColor,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(borderRadius),
+                    topRight: Radius.circular(borderRadius)),
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Container(
-                    padding: EdgeInsets.only(left: 15, bottom: 5, top: 5),
+                    
+                    padding: EdgeInsets.only(left: 15),
                     child: Text(
                       settings.name,
                       style: GoogleFonts.nunito(
-                        fontSize: 30,
-                        fontWeight: FontWeight.w300,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white,
                       ),
                     ),
                   ),
                   Container(
                     margin: EdgeInsets.symmetric(horizontal: borderRadius),
+                    height: 40,
+                    width: 40,
                     decoration: BoxDecoration(
-                      color: getTheme().primaryColor,
-                      borderRadius: BorderRadius.circular(18),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(21),
                     ),
-                    height: 36,
-                    child: Row(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.only(left: 18),
-                          child: Text(
-                            "Edit",
-                            style: TextStyle(color: Colors.white, fontSize: 16),
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.edit,
+                        color: getTheme().primaryColor,
+                        size: 22,
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          PageTransition(
+                            type: PageTransitionType.leftToRightWithFade,
+                            child: EditEnvironment(initialSettings: settings),
                           ),
-                        ),
-                        IconButton(
-                          icon: Icon(
-                            Icons.edit,
-                            color: Colors.white,
-                            size: 20,
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              PageTransition(
-                                type: PageTransitionType.leftToRightWithFade,
-                                child: EditEnvironment(settings: settings),
-                              ),
-                            );
-                          },
-                        ),
-                      ],
+                        );
+                      },
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
-            Divider(),
             SettingsListTile(
               icon: WeatherIcons.thermometer,
               color: Colors.redAccent,

@@ -13,6 +13,7 @@ class AppBarHeader extends StatelessWidget {
   final bool isPage;
   final Widget actionButton;
   final Widget bottomAction;
+
   bool contentPadding = true;
 
   AppBarHeader({
@@ -28,60 +29,63 @@ class AppBarHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<SliverListTile> bodyList = body
+        .map((e) => SliverListTile(
+              child: e,
+              hasPadding: contentPadding,
+            ))
+        .toList();
+
     return AnnotatedRegion(
       value: SystemUiOverlayStyle(
-        statusBarColor: getTheme().primaryColor,
+        statusBarColor: Colors.transparent,
+        systemNavigationBarColor: Colors.transparent,
       ),
       child: Scaffold(
-        //  backgroundColor: Colors.white,
         bottomSheet: bottomAction ??
             Container(
               height: 0,
               width: 0,
             ),
-        appBar: AppBar(
-          toolbarHeight: 80,
-          iconTheme: IconThemeData(color: Colors.white),
-          backgroundColor: getTheme().primaryColor,
-          leading: isPage
-              ? Padding(
-                  padding: const EdgeInsets.only(left: 10.0),
-                  child: IconButton(
-                    icon: Icon(Icons.arrow_back_ios),
-                    onPressed: () => Navigator.of(context).pop(),
-                  ),
-                )
-              : null,
-          title: Text(
-            title,
-            style: GoogleFonts.nunito(
-              color: Colors.white,
-              fontWeight: FontWeight.w600,
-              fontSize: 26,
-            ),
-          ),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 10.0),
-              child: trailling,
-            )
-          ],
-        ),
         floatingActionButton: actionButton ?? null,
-        body: CustomPaint(
-          painter: DarkPainter(),
-          child: Padding(
-            padding: contentPadding
-                ? const EdgeInsets.symmetric(horizontal: 15.0)
-                : const EdgeInsets.all(0),
-            child: CustomScrollView(
-              slivers: <Widget>[
-                SliverList(
-                  delegate: SliverChildListDelegate(body),
+        body: CustomScrollView(
+          slivers: <Widget>[
+            SliverAppBar(
+              expandedHeight: isPage ? 80 : 200,
+              toolbarHeight: 80,
+              flexibleSpace: !isPage ? Placeholder() : Container(),
+              floating: true,
+              pinned: true,
+              iconTheme: IconThemeData(color: Colors.white),
+              backgroundColor: getTheme().primaryColor,
+              leading: isPage
+                  ? Padding(
+                      padding: const EdgeInsets.only(left: 10.0),
+                      child: IconButton(
+                        icon: Icon(Icons.arrow_back_ios),
+                        onPressed: () => Navigator.of(context).pop(),
+                      ),
+                    )
+                  : null,
+              title: Text(
+                title,
+                style: GoogleFonts.nunito(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 26,
                 ),
+              ),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 10.0),
+                  child: trailling,
+                )
               ],
             ),
-          ),
+            SliverList(
+              delegate: SliverChildListDelegate(bodyList),
+            ),
+          ],
         ),
       ),
     );
@@ -93,7 +97,7 @@ class DarkPainter extends CustomPainter {
   //drawing
   @override
   void paint(Canvas canvas, Size size) {
-    var paint = Paint();
+    /*   var paint = Paint();
     paint.color = Colors.white;
     paint.style = PaintingStyle.fill;
 
@@ -109,11 +113,30 @@ class DarkPainter extends CustomPainter {
 
     canvas.drawOval(Rect.fromLTWH(-100, 100, 200, 400), paint);
     canvas.restore();
-    canvas.drawPath(path, paint);
+    canvas.drawPath(path, paint);*/
   }
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) {
     return true;
+  }
+}
+
+class SliverListTile extends StatelessWidget {
+  final Widget child;
+  final bool hasPadding;
+
+  const SliverListTile(
+      {Key key, @required this.child, @required this.hasPadding})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: hasPadding
+          ? const EdgeInsets.symmetric(horizontal: 15.0)
+          : EdgeInsets.zero,
+      child: child,
+    );
   }
 }

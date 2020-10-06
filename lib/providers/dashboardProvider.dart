@@ -44,7 +44,8 @@ class DashboardProvider with ChangeNotifier, DiagnosticableTreeMixin {
       soilMoisture: 50,
       suntime: "02:30 - 18:00",
       waterConsumption: 1,
-    ),new EnvironmentSettings(
+    ),
+    new EnvironmentSettings(
       name: "Custom",
       temperature: 50,
       humidity: 50,
@@ -174,6 +175,11 @@ class DashboardProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
   void pressed() {
     alongPressed = !alongPressed;
+    notifyListeners();
+  }
+
+  void editSettings(EnvironmentSettings initial, EnvironmentSettings e_s) {
+    settings[settings.indexOf(initial)] = e_s;
     notifyListeners();
   }
 }

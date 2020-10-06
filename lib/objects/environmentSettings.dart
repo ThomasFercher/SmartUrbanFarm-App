@@ -28,6 +28,11 @@ class EnvironmentSettings {
 
   set setWaterConsumption(double waterConsumption) => this.waterConsumption = waterConsumption;
 
+
+  set setName(String name) =>this.name = name;
+
+  String get getName => name;
+
   EnvironmentSettings({
     @required this.name,
     @required this.temperature,
