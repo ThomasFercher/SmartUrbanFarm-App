@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sgs/customwidgets/appBarBanner.dart';
 
 import '../styles.dart';
 
@@ -51,11 +52,12 @@ class AppBarHeader extends StatelessWidget {
         body: CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
-              expandedHeight: isPage ? 80 : 200,
+              expandedHeight: isPage ? 80 : 220,
               toolbarHeight: 80,
-              flexibleSpace: !isPage ? Placeholder() : Container(),
+              flexibleSpace: !isPage ? AppBarBanner(220) : Container(),
               floating: true,
               pinned: true,
+              snap: true,
               iconTheme: IconThemeData(color: Colors.white),
               backgroundColor: getTheme().primaryColor,
               leading: isPage
@@ -67,14 +69,16 @@ class AppBarHeader extends StatelessWidget {
                       ),
                     )
                   : null,
-              title: Text(
-                title,
-                style: GoogleFonts.nunito(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 26,
-                ),
-              ),
+              title: isPage
+                  ? Text(
+                      title,
+                      style: GoogleFonts.nunito(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 26,
+                      ),
+                    )
+                  : null,
               actions: [
                 Padding(
                   padding: const EdgeInsets.only(right: 10.0),

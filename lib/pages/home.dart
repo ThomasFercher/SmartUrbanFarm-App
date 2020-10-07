@@ -109,7 +109,7 @@ class Home extends StatelessWidget {
                   icon: WeatherIcons.barometer,
                   label: "Bodenfeuchtigkeit",
                   text: "$soilMoisture%",
-                  iconColor:theme.primaryColor,
+                  iconColor: theme.primaryColor,
                   type: SoilMoisture,
                   key: GlobalKey(),
                 ),
@@ -213,8 +213,9 @@ class Home extends StatelessWidget {
                     Navigator.push(
                       context,
                       PageTransition(
-                          type: PageTransitionType.leftToRightWithFade,
-                          child: Environment()),
+                        type: PageTransitionType.leftToRightWithFade,
+                        child: SettingsPage(),
+                      ),
                     ),
                   },
                   icon: OMIcons.settings,

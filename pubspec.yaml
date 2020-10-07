@@ -46,6 +46,7 @@ flutter:
   assets:
     - assets/
     - assets/icons/
+    - assets/images/
     - assets/flares/
     - assets/leaf.svg
   uses-material-design: true
