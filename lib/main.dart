@@ -43,7 +43,6 @@ void main() => {
               lazy: false,
               create: (_) => SettingsProvider(),
             ),
-            
           ],
           child: MyApp(),
         ),
@@ -67,17 +66,17 @@ class MyApp extends StatelessWidget {
               projectSnap.connectionState == ConnectionState.waiting) {
             // Splashscreen using a Flare2d as a loading Animation
             return Container(
-              color: isDark(context) ? Colors.black : Colors.white,
+              color: Colors.white,
               child: FlareActor(
-                'assets/plant.flr',
+                'assets/flares/splashscreen.flr',
                 alignment: Alignment.center,
-                animation: "Growing",
+                animation: "Loading",
               ),
             );
           } else {
             // Once loaded the main page will be displayed
             return MyHomePage(
-              title: "Smart Grow System",
+              title: "Smart Grow Farm",
             );
           }
         },

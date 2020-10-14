@@ -14,6 +14,7 @@ import '../styles.dart';
 class Advanced extends StatelessWidget {
   List<Widget> getItems(DashboardProvider d) {
     return [
+      Padding(padding: EdgeInsets.only(top: borderRadius)),
       Container(
         key: const Key("temp"),
         child: DataChart(
@@ -42,6 +43,7 @@ class Advanced extends StatelessWidget {
           isPage: true,
           theme: getTheme(),
           body: getItems(d),
+         
         );
       },
     );

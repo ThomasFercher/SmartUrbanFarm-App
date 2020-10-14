@@ -3,9 +3,12 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AppBarBanner extends StatelessWidget {
   final maxHeight;
+  final String title;
   static double barheight = 30.47619047619048;
 
-  AppBarBanner(var maxHeight) : this.maxHeight = maxHeight + barheight;
+  AppBarBanner(var maxHeight, String title)
+      : this.maxHeight = maxHeight + barheight,
+        this.title = title;
 
   @override
   Widget build(BuildContext context) {
@@ -35,11 +38,11 @@ class AppBarBanner extends StatelessWidget {
                 height: 80,
                 padding: EdgeInsets.only(top: 20),
                 child: Text(
-                  "Smart Grow System",
+                  title,
                   textAlign: TextAlign.center,
                   style: GoogleFonts.quicksand(
                     color: Colors.white,
-                    fontSize: 30 + 10 * h,
+                    fontSize: 34 + 10 * h,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -47,7 +50,9 @@ class AppBarBanner extends StatelessWidget {
             ),
             Positioned(
               bottom: 0,
-              left: (width / 2 - width / 6) * h3,
+              left: (width / 2 - width / 6) * h3 > 5
+                  ? (width / 2 - width / 6) * h3
+                  : 5,
               child: Container(
                 width: (width / 3) * h3 > 80 ? (width / 3) * h3 : 80,
                 //constraints: BoxConstraints(maxHeight: 64),
@@ -57,7 +62,7 @@ class AppBarBanner extends StatelessWidget {
             ),
             Positioned(
               bottom: 0,
-              left: 5,
+              left: 10,
               child: Opacity(
                 opacity: op,
                 child: Container(
@@ -68,7 +73,7 @@ class AppBarBanner extends StatelessWidget {
             ),
             Positioned(
               bottom: 0,
-              right: 0,
+              right: 5,
               child: Opacity(
                 opacity: op,
                 child: Container(

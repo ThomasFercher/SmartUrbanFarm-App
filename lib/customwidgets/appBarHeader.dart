@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sgs/customwidgets/appBarBanner.dart';
@@ -14,7 +15,7 @@ class AppBarHeader extends StatelessWidget {
   final bool isPage;
   final Widget actionButton;
   final Widget bottomAction;
-
+  final _controller = ScrollController();
   bool contentPadding = true;
 
   AppBarHeader({
@@ -37,6 +38,20 @@ class AppBarHeader extends StatelessWidget {
             ))
         .toList();
 
+    _controller.addListener(() {
+      var scrollOffset = _controller.position.pixels;
+      var scrollDirection = _controller.position.userScrollDirection;
+
+      if (scrollOffset < 140 && scrollDirection == ScrollDirection.reverse) {
+        _controller.animateTo(140,
+            duration: Duration(milliseconds: 100), curve: Curves.slowMiddle);
+      } else if (scrollOffset < 140 &&
+          scrollDirection == ScrollDirection.forward) {
+        _controller.animateTo(0,
+            duration: Duration(milliseconds: 100), curve: Curves.slowMiddle);
+      }
+    });
+
     return AnnotatedRegion(
       value: SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
@@ -49,15 +64,16 @@ class AppBarHeader extends StatelessWidget {
               width: 0,
             ),
         floatingActionButton: actionButton ?? null,
+        backgroundColor: Colors.white,
         body: CustomScrollView(
+          controller: _controller,
           slivers: <Widget>[
             SliverAppBar(
               expandedHeight: isPage ? 80 : 220,
               toolbarHeight: 80,
-              flexibleSpace: !isPage ? AppBarBanner(220) : Container(),
+              flexibleSpace: !isPage ? AppBarBanner(220,title) : Container(),
               floating: true,
               pinned: true,
-              snap: true,
               iconTheme: IconThemeData(color: Colors.white),
               backgroundColor: getTheme().primaryColor,
               leading: isPage

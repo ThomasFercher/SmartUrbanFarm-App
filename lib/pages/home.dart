@@ -8,6 +8,7 @@ import 'package:sgs/customwidgets/carddata.dart';
 import 'package:sgs/customwidgets/dayRange.dart';
 import 'package:sgs/customwidgets/dayslider.dart';
 import 'package:sgs/customwidgets/actionCard.dart';
+import 'package:sgs/customwidgets/growProgress.dart';
 import 'package:sgs/customwidgets/waterTankLevel.dart';
 import 'package:sgs/pages/advanced.dart';
 import 'package:sgs/pages/environment.dart';
@@ -71,7 +72,7 @@ class Home extends StatelessWidget {
         return AppBarHeader(
           isPage: false,
           theme: theme,
-          title: "Smart Grow System",
+          title: "Smart Grow Farm",
           contentPadding: true,
           body: <Widget>[
             Padding(padding: EdgeInsets.only(top: 20)),
@@ -158,7 +159,7 @@ class Home extends StatelessWidget {
                           child: Gallery()),
                     )
                   },
-                  icon: OMIcons.photo,
+                  icon: Icons.photo,
                   text: "Gallery",
                   iconColor: theme.primaryColor,
                 ),
@@ -171,7 +172,7 @@ class Home extends StatelessWidget {
                           child: Advanced()),
                     ),
                   },
-                  icon: OMIcons.assessment,
+                  icon: Icons.assessment,
                   text: "Advanced Data",
                   iconColor: theme.primaryColor,
                 ),
@@ -204,7 +205,7 @@ class Home extends StatelessWidget {
                           child: Environment()),
                     ),
                   },
-                  icon: OMIcons.settingsBrightness,
+                  icon: Icons.settings_system_daydream,
                   text: "Environment",
                   iconColor: theme.secondaryColor,
                 ),
@@ -218,7 +219,7 @@ class Home extends StatelessWidget {
                       ),
                     ),
                   },
-                  icon: OMIcons.settings,
+                  icon: Icons.settings,
                   text: "App Settings",
                   iconColor: theme.secondaryColor,
                 ),
@@ -241,10 +242,7 @@ class Home extends StatelessWidget {
                           theme.name == "light"
                               ? theme.secondaryTextColor
                               : theme.headlineColor),
-                      WaterTankLevel(
-                        fullness: dashboard.waterTankLevel,
-                        height: c.maxHeight - 46,
-                      ),
+                      GrowProgress(c, 100.0)
                     ],
                   );
                 }),
