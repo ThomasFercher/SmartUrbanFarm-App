@@ -11,7 +11,7 @@ import 'package:sgs/providers/dashboardProvider.dart';
 import 'package:sgs/providers/environmentSettingsProvider.dart';
 import 'package:weather_icons/weather_icons.dart';
 import '../styles.dart';
-
+import 'package:sgs/objects/appTheme.dart';
 class EditEnvironment extends StatelessWidget {
   EnvironmentSettings initialSettings;
 

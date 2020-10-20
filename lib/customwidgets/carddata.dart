@@ -8,6 +8,7 @@ import 'package:sgs/customwidgets/datachart.dart';
 import 'package:sgs/customwidgets/detaildialog.dart';
 import 'package:sgs/customwidgets/slider.dart';
 import 'package:sgs/customwidgets/smalldatachart.dart';
+import 'package:sgs/objects/appTheme.dart';
 import 'package:sgs/pages/advanced.dart';
 import 'package:sgs/providers/dashboardProvider.dart';
 import 'package:sgs/styles.dart';

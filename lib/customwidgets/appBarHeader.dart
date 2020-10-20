@@ -4,6 +4,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sgs/customwidgets/appBarBanner.dart';
+import 'package:sgs/objects/appTheme.dart';
 
 import '../styles.dart';
 
@@ -64,9 +65,10 @@ class AppBarHeader extends StatelessWidget {
               width: 0,
             ),
         floatingActionButton: actionButton ?? null,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.grey[50],
         body: CustomScrollView(
           controller: isPage ? null : _controller,
+          
           slivers: <Widget>[
             SliverAppBar(
               expandedHeight: isPage ? 80 : 220,

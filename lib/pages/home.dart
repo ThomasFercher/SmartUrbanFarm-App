@@ -21,7 +21,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:weather_icons/weather_icons.dart';
 import 'advanced.dart';
 import 'package:page_transition/page_transition.dart';
-
+import 'package:sgs/objects/appTheme.dart';
 class Home extends StatelessWidget {
   static const String EnvironmentSettings = 'Environment';
   static const String Settings = 'Settings';

@@ -5,7 +5,7 @@ import 'package:sgs/customwidgets/s_g_s__custom_icon_icons.dart';
 import 'package:sgs/customwidgets/sectionTitle.dart';
 import 'package:weather_icons/weather_icons.dart';
 import '../styles.dart';
-
+import 'package:sgs/objects/appTheme.dart';
 class DaySlider extends StatefulWidget {
   final Function onValueChanged;
   final String initialTimeString;

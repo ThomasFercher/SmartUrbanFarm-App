@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:sgs/customwidgets/appBarHeader.dart';
 import 'package:sgs/providers/settingsProvider.dart';
 import 'package:sgs/styles.dart';
+import 'package:sgs/objects/appTheme.dart';
 
 class SettingsPage extends StatelessWidget {
   List<Widget> getSettings(SettingsProvider pr, context) {

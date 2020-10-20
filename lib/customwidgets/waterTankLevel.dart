@@ -27,61 +27,55 @@ class WaterTankLevel extends StatelessWidget {
     double _yOffset = (200 / 100) * (100 - fullness);
     int yOffset = _yOffset.round();
 
-    return CupertinoContextMenu(
-      actions: [Container()],
-      previewBuilder: (context, animation, child) {
-        return WaterTankLevelPopup(fulnness: fullness);
-      },
-      child: Card(
-        elevation: cardElavation,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(borderRadius),
-          ),
+    return Card(
+      elevation: cardElavation,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(borderRadius),
         ),
-        color: Colors.white,
-        child: Container(
-          height: height,
-          child: fullness > 8
-              ? Stack(
-                  children: [
-                    new AnimationBody(
+      ),
+      color: Colors.white,
+      child: Container(
+        height: height,
+        child: fullness > 8
+            ? Stack(
+                children: [
+                  new AnimationBody(
+                    size: size,
+                    xOffset: 0,
+                    yOffset: 5 + yOffset,
+                    color: Color(0xFF3f51b5),
+                  ),
+                  new Opacity(
+                    opacity: 0.5,
+                    child: new AnimationBody(
                       size: size,
-                      xOffset: 0,
-                      yOffset: 5 + yOffset,
+                      xOffset: 80,
+                      yOffset: 10 + yOffset,
                       color: Color(0xFF3f51b5),
                     ),
-                    new Opacity(
-                      opacity: 0.5,
-                      child: new AnimationBody(
-                        size: size,
-                        xOffset: 80,
-                        yOffset: 10 + yOffset,
-                        color: Color(0xFF3f51b5),
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(top: 20),
-                      alignment: Alignment.topCenter,
-                      child: Text(
-                        "$fullness%",
-                        style: TextStyle(
-                          color: getTheme().textColor,
-                          fontWeight: FontWeight.w100,
-                          fontSize: 30.0,
-                        ),
-                      ),
-                    ),
-                  ],
-                )
-              : Container(
-                  alignment: Alignment.center,
-                  child: new Text(
-                    "Empty",
-                    style: TextStyle(color: Colors.blueAccent),
                   ),
+                  Container(
+                    padding: EdgeInsets.only(top: 20),
+                    alignment: Alignment.topCenter,
+                    child: Text(
+                      "$fullness%",
+                      style: TextStyle(
+                        color: getTheme().textColor,
+                        fontWeight: FontWeight.w100,
+                        fontSize: 30.0,
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            : Container(
+                alignment: Alignment.center,
+                child: new Text(
+                  "Empty",
+                  style: TextStyle(color: Colors.blueAccent),
                 ),
-        ),
+              ),
       ),
     );
   }
