@@ -53,13 +53,16 @@ class Gallery extends StatelessWidget {
 
 class ImageListItem extends StatelessWidget {
   final Image image;
+  
 
   ImageListItem(this.image);
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+  
 
+   
     return Container(
       margin: EdgeInsets.only(bottom: 20),
       width: MediaQuery.of(context).size.width - 30,

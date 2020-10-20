@@ -162,6 +162,7 @@ class Home extends StatelessWidget {
                   icon: Icons.photo,
                   text: "Gallery",
                   iconColor: theme.primaryColor,
+                  backgroundColor: Color(0xFFdcf8ec),
                 ),
                 ActionCard(
                   onPressed: () => {
@@ -175,6 +176,7 @@ class Home extends StatelessWidget {
                   icon: Icons.assessment,
                   text: "Advanced Data",
                   iconColor: theme.primaryColor,
+                backgroundColor: Color(0xFFdcf8ec),
                 ),
               ],
             ),
@@ -208,6 +210,7 @@ class Home extends StatelessWidget {
                   icon: Icons.settings_system_daydream,
                   text: "Environment",
                   iconColor: theme.secondaryColor,
+                  backgroundColor: Color(0xFFe1e4f4),
                 ),
                 ActionCard(
                   onPressed: () => {
@@ -222,6 +225,7 @@ class Home extends StatelessWidget {
                   icon: Icons.settings,
                   text: "App Settings",
                   iconColor: theme.secondaryColor,
+                  backgroundColor: Color(0xFFe1e4f4),
                 ),
               ],
             ),

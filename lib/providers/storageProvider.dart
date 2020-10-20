@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:sgs/styles.dart';
 
 class StorageProvider extends ChangeNotifier {
   StorageReference listref = FirebaseStorage.instance.ref();
@@ -14,18 +16,18 @@ class StorageProvider extends ChangeNotifier {
 
   StorageProvider() {
     print("yeeeeee");
-    var subscription = dbref.reference().child('images').onValue.listen(
+    /*var subscription = dbref.reference().child('images').onValue.listen(
       (event) {
         loadImages();
       },
-    );
+    );*/
   }
 
   void takePicture() {
     dbref.child("photo").set(true);
   }
 
-  Future<void> loadImages() async {
+  Future<void> loadImages(context) async {
     imgRefs = await getImageReferences();
 
     await Future.wait(
@@ -36,10 +38,12 @@ class StorageProvider extends ChangeNotifier {
 
     urls.forEach((date, url) {
       if (images.every((element) => element.semanticLabel != date))
-        images.add(Image.network(
-          url = url,
-          semanticLabel: date,
-        ));
+        images.add(
+          new Image.network(
+            url,
+            semanticLabel: date,
+          ),
+        );
     });
 
     //need to call sort after all images are in the lis
@@ -47,6 +51,11 @@ class StorageProvider extends ChangeNotifier {
     images.sort((img1, img2) {
       return img1.semanticLabel.compareTo(img2.semanticLabel);
     });
+
+    images.forEach((element) {
+      precacheImage(element.image, context);
+    });
+
     print("loaded images");
     notifyListeners();
   }

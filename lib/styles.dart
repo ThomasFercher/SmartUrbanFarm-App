@@ -12,7 +12,7 @@ const Color primaryColor = Color(0xFF1db954);
 const Color backgroundColor_d = Color(0xff065446);
 const Color accentColor_d = Color(0xFF323232);
 const Color backgroundColor = Color(0xFFFFFFFF);
-const double cardElavation = 2.0;
+const double cardElavation = 1.5;
 const double borderRadius = 16.0;
 const double screen_width = 231;
 const Color text_gray = Color(0xFF646464);
@@ -205,6 +205,7 @@ class AppTheme {
   final Color headlineColor;
   final Color primaryColor;
   final Color secondaryColor;
+  
 
   AppTheme({
     this.name,

@@ -66,12 +66,12 @@ class AppBarHeader extends StatelessWidget {
         floatingActionButton: actionButton ?? null,
         backgroundColor: Colors.white,
         body: CustomScrollView(
-          controller: _controller,
+          controller: isPage ? null : _controller,
           slivers: <Widget>[
             SliverAppBar(
               expandedHeight: isPage ? 80 : 220,
               toolbarHeight: 80,
-              flexibleSpace: !isPage ? AppBarBanner(220,title) : Container(),
+              flexibleSpace: !isPage ? AppBarBanner(220, title) : Container(),
               floating: true,
               pinned: true,
               iconTheme: IconThemeData(color: Colors.white),

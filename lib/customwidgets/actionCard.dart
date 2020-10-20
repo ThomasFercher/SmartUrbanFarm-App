@@ -17,24 +17,26 @@ class ActionCard extends StatelessWidget {
   final IconData icon;
   final String text;
   final Color iconColor;
+  final Color backgroundColor;
 
   ActionCard({
     @required this.onPressed,
     @required this.icon,
     @required this.iconColor,
     @required this.text,
+    @required this.backgroundColor,
   });
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: cardElavation,
+      elevation: cardElavation - 1,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
           Radius.circular(borderRadius),
         ),
       ),
-      color: Colors.white,
+      color: backgroundColor,
       child: Container(
         child: InkWell(
           enableFeedback: true,

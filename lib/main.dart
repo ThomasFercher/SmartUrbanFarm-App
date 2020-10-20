@@ -1,5 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flare_flutter/flare_actor.dart';
+import 'package:flare_flutter/flare_cache.dart';
+import 'package:flare_flutter/provider/asset_flare.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -28,6 +30,8 @@ void main() => {
         ),
       ),
       WidgetsFlutterBinding.ensureInitialized(),
+      FlareCache.doesPrune = false,
+
       runApp(
         MultiProvider(
           providers: [
@@ -48,6 +52,8 @@ void main() => {
         ),
       )
     };
+
+
 
 class MyApp extends StatelessWidget {
   final String assetName = 'assets/up_arrow.svg';
@@ -105,11 +111,23 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
+var _assetsToWarmup = [
+  AssetFlare(bundle: rootBundle, name: "assets/flares/moon.flr"),
+  AssetFlare(bundle: rootBundle, name: "assets/flares/sun.flr"),
+  AssetFlare(bundle: rootBundle, name: "assets/flares/grow.flr")
+];
+
 /// This function loads the inital data from the database when the app starts.
 Future<void> loadData(context) async {
   Stopwatch stopwatch = new Stopwatch()..start();
   await Provider.of<DashboardProvider>(context, listen: false).loadData();
-  await Provider.of<StorageProvider>(context, listen: false).loadImages();
+  await Provider.of<StorageProvider>(context, listen: false).loadImages(context);
+
+  //chaches the flares so they can be instantly used without loading
+  for (final asset in _assetsToWarmup) {
+    await cachedActor(asset);
+  }
+
   stopwatch.stop();
   //add a delay so the animation plays through
   return Future.delayed(
