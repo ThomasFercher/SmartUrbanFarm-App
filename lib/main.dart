@@ -43,14 +43,13 @@ void main() => {
               lazy: false,
               create: (_) => SettingsProvider(),
             ),
-            
           ],
-          child: MyApp(),
+          child: SufMobileApplication(),
         ),
       )
     };
 
-class MyApp extends StatelessWidget {
+class SufMobileApplication extends StatelessWidget {
   final String assetName = 'assets/up_arrow.svg';
 
   // This widget is the root of your application.
@@ -76,33 +75,12 @@ class MyApp extends StatelessWidget {
             );
           } else {
             // Once loaded the main page will be displayed
-            return MyHomePage(
-              title: "Smart Grow System",
-            );
+            return Home();
           }
         },
         future: loadData(context),
       ),
     );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title, this.temperature}) : super(key: key);
-
-  final temperature;
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  // This function return the Backgroundpainter for the given tab
-
-  @override
-  Widget build(BuildContext context) {
-    return Home();
   }
 }
 
@@ -121,50 +99,4 @@ Future<void> loadData(context) async {
 Future<UI.Image> loadImageAsset(String assetName) async {
   final data = await rootBundle.load(assetName);
   return decodeImageFromList(data.buffer.asUint8List());
-}
-
-class LightPainter extends CustomPainter {
-  //drawing
-  @override
-  void paint(Canvas canvas, Size size) {
-    /* var paint = Paint();
-    paint.color = Colors.white;
-    paint.style = PaintingStyle.fill;
-
-    var height = 180.0;
-    var path = new Path();
-
-    path = new Path();
-    path.addRect(Rect.fromLTWH(0, 0, size.width, size.height));
-    canvas.drawPath(path, paint);
-    path.close();*/
-
-    /*   path = new Path();
-    paint.color = getTheme().background[0];
-    path.moveTo(0, height);
-    path.quadraticBezierTo(
-        size.width * 0.25, height - 30, size.width * 0.5, height);
-    path.quadraticBezierTo(
-        size.width * 0.75, height + 30, size.width * 1.0, height);
-    path.lineTo(size.width, 0);
-    path.lineTo(0, 0);
-
-    canvas.drawPath(path, paint);-*/
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return true;
-  }
-}
-
-class CoolPainter extends CustomPainter {
-  //drawing
-  @override
-  void paint(Canvas canvas, Size size) {}
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return true;
-  }
 }

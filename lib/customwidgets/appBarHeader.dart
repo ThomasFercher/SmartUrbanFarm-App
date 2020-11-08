@@ -36,6 +36,24 @@ class AppBarHeader extends StatelessWidget {
               hasPadding: contentPadding,
             ))
         .toList();
+    /* bodyList.insert(
+        0,
+        SliverListTile(
+          hasPadding: false,
+          child: Container(
+            color: theme.primaryColor,
+            child: Container(
+              height: 25,
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(25),
+                ),
+              ),
+            ),
+          ),
+        ));*/
 
     return AnnotatedRegion(
       value: SystemUiOverlayStyle(
@@ -48,18 +66,20 @@ class AppBarHeader extends StatelessWidget {
               height: 0,
               width: 0,
             ),
+        backgroundColor: Colors.white,
         floatingActionButton: actionButton ?? null,
         body: CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
-              expandedHeight: isPage ? 80 : 220,
+              expandedHeight: isPage ? 80 : 240,
               toolbarHeight: 80,
-              flexibleSpace: !isPage ? AppBarBanner(220) : Container(),
+              flexibleSpace: !isPage ? AppBarBanner(240, theme) : Container(),
               floating: true,
+              elevation: 0,
               pinned: true,
               snap: true,
               iconTheme: IconThemeData(color: Colors.white),
-              backgroundColor: getTheme().primaryColor,
+              backgroundColor: theme.primaryColor,
               leading: isPage
                   ? Padding(
                       padding: const EdgeInsets.only(left: 10.0),
@@ -136,11 +156,14 @@ class SliverListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: hasPadding
-          ? const EdgeInsets.symmetric(horizontal: 15.0)
-          : EdgeInsets.zero,
-      child: child,
+    return ColoredBox(
+      color: Colors.white,
+      child: Padding(
+        padding: hasPadding
+            ? const EdgeInsets.symmetric(horizontal: 15.0)
+            : EdgeInsets.zero,
+        child: child,
+      ),
     );
   }
 }
