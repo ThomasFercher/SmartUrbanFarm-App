@@ -6,6 +6,7 @@ import 'package:sgs/customwidgets/smalldatachart.dart';
 import 'package:sgs/providers/dashboardProvider.dart';
 import '../styles.dart';
 import 'dart:math';
+import 'package:sgs/objects/appTheme.dart';
 
 class DataChart extends StatelessWidget {
   final List<FlSpot> spots;

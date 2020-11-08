@@ -8,6 +8,7 @@ import 'package:sgs/customwidgets/datachart.dart';
 import 'package:sgs/customwidgets/detaildialog.dart';
 import 'package:sgs/customwidgets/slider.dart';
 import 'package:sgs/customwidgets/smalldatachart.dart';
+import 'package:sgs/objects/appTheme.dart';
 import 'package:sgs/pages/advanced.dart';
 import 'package:sgs/providers/dashboardProvider.dart';
 import 'package:sgs/styles.dart';
@@ -148,18 +149,18 @@ class CardData extends StatelessWidget {
     );
   }
 
-  Widget getSmallDataChart(var name, DashboardProvider d) {
+  Widget getSmallDataChart(var name, DashboardProvider d, AppTheme theme) {
     switch (name) {
       case "Temperatur":
         return SmallDataChart(
           data: d.getTemperatures(),
-          gradientColors: [Colors.red, Colors.redAccent],
+          gradientColors: [theme.primaryColor, theme.primaryColor],
         );
         break;
       case "Luftfeuchtigkeit":
         return SmallDataChart(
           data: d.getHumiditys(),
-          gradientColors: [Colors.blue, Colors.blueAccent],
+          gradientColors: [theme.primaryColor, theme.primaryColor],
         );
         break;
       default:
@@ -198,6 +199,7 @@ class CardData extends StatelessWidget {
   }
 
   Widget detailedPopup(BuildContext context, DashboardProvider d) {
+    AppTheme theme = getTheme();
     return Consumer<DashboardProvider>(
       builder: (context, d, child) {
         return Material(
@@ -212,7 +214,7 @@ class CardData extends StatelessWidget {
             height: 350.0,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
-              color: getTheme().cardColor,
+              color: theme.cardColor,
             ),
             child: LayoutBuilder(builder: (context, contraints) {
               double height = contraints.maxHeight;
@@ -340,6 +342,7 @@ class CardData extends StatelessWidget {
                     child: getSmallDataChart(
                       label,
                       d,
+                      theme
                     ),
                   ),
                 ],

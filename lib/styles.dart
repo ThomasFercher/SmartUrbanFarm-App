@@ -6,13 +6,14 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:ui' as ui;
+import 'package:sgs/objects/appTheme.dart';
 
 const Color accentColor = Colors.white; //Color(0xFFe2e2e2);
 const Color primaryColor = Color(0xFF1db954);
 const Color backgroundColor_d = Color(0xff065446);
 const Color accentColor_d = Color(0xFF323232);
 const Color backgroundColor = Color(0xFFFFFFFF);
-const double cardElavation = 2.0;
+const double cardElavation = 0.5;
 const double borderRadius = 16.0;
 const double screen_width = 231;
 const Color text_gray = Color(0xFF646464);
@@ -196,24 +197,4 @@ EdgeInsets lerp(EdgeInsets a, EdgeInsets b, double t) {
   );
 }
 
-class AppTheme {
-  final String name;
-  final Color cardColor;
-  final List<Color> background;
-  final Color textColor;
-  final Color secondaryTextColor;
-  final Color headlineColor;
-  final Color primaryColor;
-  final Color secondaryColor;
 
-  AppTheme({
-    this.name,
-    this.cardColor,
-    this.background,
-    this.textColor,
-    this.secondaryTextColor,
-    this.headlineColor,
-    this.primaryColor,
-    this.secondaryColor,
-  });
-}

@@ -14,7 +14,7 @@ dependencies:
   weather_icons: ^2.0.1
   page_transition: ^1.1.6
   #image: ^2.1.12
-  flare_flutter: ^1.5.0
+  flare_flutter: ^2.0.6
   firebase_core: ^0.4.0+9
   firebase_database: ^3.1.1
   firebase_storage: ^3.0.8
@@ -27,8 +27,7 @@ dependencies:
   provider: ^4.3.2
   service_locator: ^1.0.0
   flutter_skeleton: ^0.1.0+1
- 
-
+  cached_network_image: ^2.3.3
   
 dev_dependencies:
   flutter_launcher_icons: "^0.7.5"

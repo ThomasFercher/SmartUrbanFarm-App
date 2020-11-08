@@ -5,7 +5,7 @@ import 'package:sgs/customwidgets/s_g_s__custom_icon_icons.dart';
 import 'package:sgs/customwidgets/sectionTitle.dart';
 import 'package:weather_icons/weather_icons.dart';
 import '../styles.dart';
-
+import 'package:sgs/objects/appTheme.dart';
 class DaySlider extends StatefulWidget {
   final Function onValueChanged;
   final String initialTimeString;
@@ -100,15 +100,18 @@ class _DaySliderState extends State<DaySlider> {
                       alignment: Alignment.center,
                       animation: "Moon Rings",
                       color: Colors.orange,
+                      
                       //  color: Colors.yellow[500],
                     ),
                   ),
                   Container(
                     constraints:
-                        BoxConstraints(maxWidth: getWidth(context) - 168),
+                        BoxConstraints(maxWidth: getWidth(context) - 140),
                     child: SliderTheme(
                       data: SliderThemeData(
-                        overlayShape: RoundSliderOverlayShape(overlayRadius: 0),
+                        overlayShape:
+                            RoundSliderOverlayShape(overlayRadius: 20),
+
                         rangeThumbShape: _CustomRangeThumbShape(
                           values: labels,
                           valuesTime: _values,
@@ -116,25 +119,26 @@ class _DaySliderState extends State<DaySlider> {
                         trackHeight: 2,
                       ),
                       child: RangeSlider(
-                        divisions: 96,
-                        values: _values,
-                        min: 0,
-                        max: 96,
-                        activeColor: theme.primaryColor,
-                        inactiveColor: Colors.black12,
-                        onChanged: (values) => setState(
-                          () {
-                            if (values.end - values.start >= 16)
-                              _values = values;
-                            labels = [
-                              getTimeString(_values.start),
-                              getTimeString(_values.end)
-                            ];
-                            suntime = _values.end / 4 - _values.start / 4;
-                            widget.onValueChanged(labels);
-                          },
-                        ),
-                      ),
+                          divisions: 96,
+                          values: _values,
+                          min: 0,
+                          max: 96,
+                          activeColor: theme.primaryColor,
+                          inactiveColor: Colors.black12,
+                          onChanged: (values) {
+                            setState(
+                              () {
+                                if (values.end - values.start >= 16)
+                                  _values = values;
+                                labels = [
+                                  getTimeString(_values.start),
+                                  getTimeString(_values.end)
+                                ];
+                                suntime = _values.end / 4 - _values.start / 4;
+                                widget.onValueChanged(labels);
+                              },
+                            );
+                          }),
                     ),
                   ),
                   Container(
@@ -191,13 +195,13 @@ class _CustomRangeThumbShape extends RangeSliderThumbShape {
   }) {
     final Canvas canvas = context.canvas;
     Path oval = Path()
-      ..addOval(new Rect.fromCenter(center: center, width: 36, height: 36));
+      ..addOval(new Rect.fromCenter(center: center, width: 48, height: 48));
     Paint shadowPaint = Paint()
       ..color = Colors.grey[800].withOpacity(0.6)
       ..maskFilter = MaskFilter.blur(BlurStyle.normal, 1.0)
       ..style = PaintingStyle.fill;
     canvas.drawPath(oval, shadowPaint);
-    canvas.drawCircle(center, 18, _paint);
+    canvas.drawCircle(center, 22, _paint);
 
     switch (thumb) {
       case Thumb.start:

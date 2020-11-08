@@ -1,5 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flare_flutter/flare_actor.dart';
+import 'package:flare_flutter/flare_cache.dart';
+import 'package:flare_flutter/provider/asset_flare.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -28,6 +30,7 @@ void main() => {
         ),
       ),
       WidgetsFlutterBinding.ensureInitialized(),
+      FlareCache.doesPrune = false,
       runApp(
         MultiProvider(
           providers: [
@@ -66,16 +69,18 @@ class SufMobileApplication extends StatelessWidget {
               projectSnap.connectionState == ConnectionState.waiting) {
             // Splashscreen using a Flare2d as a loading Animation
             return Container(
-              color: isDark(context) ? Colors.black : Colors.white,
+              color: Colors.white,
               child: FlareActor(
-                'assets/plant.flr',
+                'assets/flares/splashscreen.flr',
                 alignment: Alignment.center,
-                animation: "Growing",
+                animation: "Loading",
               ),
             );
           } else {
             // Once loaded the main page will be displayed
-            return Home();
+            return MyHomePage(
+              title: "Smart Grow Farm",
+            );
           }
         },
         future: loadData(context),
@@ -84,11 +89,43 @@ class SufMobileApplication extends StatelessWidget {
   }
 }
 
+class MyHomePage extends StatefulWidget {
+  MyHomePage({Key key, this.title, this.temperature}) : super(key: key);
+
+  final temperature;
+  final String title;
+
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  // This function return the Backgroundpainter for the given tab
+
+  @override
+  Widget build(BuildContext context) {
+    return Home();
+  }
+}
+
+var _assetsToWarmup = [
+  AssetFlare(bundle: rootBundle, name: "assets/flares/moon.flr"),
+  AssetFlare(bundle: rootBundle, name: "assets/flares/sun.flr"),
+  AssetFlare(bundle: rootBundle, name: "assets/flares/grow.flr")
+];
+
 /// This function loads the inital data from the database when the app starts.
 Future<void> loadData(context) async {
   Stopwatch stopwatch = new Stopwatch()..start();
   await Provider.of<DashboardProvider>(context, listen: false).loadData();
-  await Provider.of<StorageProvider>(context, listen: false).loadImages();
+  await Provider.of<StorageProvider>(context, listen: false)
+      .loadImages(context);
+
+  //chaches the flares so they can be instantly used without loading
+  for (final asset in _assetsToWarmup) {
+    await cachedActor(asset);
+  }
+
   stopwatch.stop();
   //add a delay so the animation plays through
   return Future.delayed(

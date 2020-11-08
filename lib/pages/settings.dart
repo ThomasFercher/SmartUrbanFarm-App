@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:sgs/customwidgets/appBarHeader.dart';
 import 'package:sgs/providers/settingsProvider.dart';
 import 'package:sgs/styles.dart';
+import 'package:sgs/objects/appTheme.dart';
 
 class SettingsPage extends StatelessWidget {
   List<Widget> getSettings(SettingsProvider pr, context) {
@@ -82,7 +83,6 @@ class SettingsPage extends StatelessWidget {
         },
       ),
       Container(
-        height: 320,
         child: Column(children: [
           ListTile(
             contentPadding: EdgeInsets.symmetric(horizontal: 0),
@@ -166,122 +166,125 @@ class ThemeCard extends StatelessWidget {
       var w = constraints.maxWidth;
       return GestureDetector(
         onTap: onSelected,
-        child: Card(
-          elevation: selected ? 3 : 1,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: CustomPaint(
-            painter: appTheme.name == "light" ? ThemePainter(appTheme) : null,
-            child: Stack(
-              alignment: Alignment.topRight,
-              children: [
-                Container(
-                  decoration: appTheme.name != "light"
-                      ? BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          gradient: LinearGradient(
-                              colors: gradient,
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter),
-                        )
-                      : null,
-                  padding: EdgeInsets.all(5),
-                  child: Column(
-                    children: [
-                      Padding(padding: EdgeInsets.only(bottom: 5)),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Card(
-                            color: cardColor,
-                            elevation: 1,
-                            child: Container(
-                              width: w / 5,
-                              height: w / 5,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(w / 5),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Padding(padding: EdgeInsets.only(bottom: 15)),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Card(
-                            color: cardColor,
-                            elevation: 1,
-                            child: Container(
-                              width: w / 5,
-                              height: w / 5,
-                            ),
-                          ),
-                          Card(
-                            color: cardColor,
-                            elevation: 1,
-                            child: Container(
-                              width: w / 5,
-                              height: w / 5,
-                            ),
-                          ),
-                          Card(
-                            color: cardColor,
-                            elevation: 1,
-                            child: Container(
-                              width: w / 5,
-                              height: w / 5,
-                            ),
+        child: SizedBox(
+          height: constraints.maxHeight + 8,
+          child: Card(
+            elevation: selected ? 3 : 1,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: CustomPaint(
+              painter: appTheme.name == "light" ? ThemePainter(appTheme) : null,
+              child: Stack(
+                alignment: Alignment.topRight,
+                children: [
+                  Container(
+                    decoration: appTheme.name != "light"
+                        ? BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            gradient: LinearGradient(
+                                colors: gradient,
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter),
                           )
-                        ],
-                      ),
-                      Padding(padding: EdgeInsets.only(bottom: 15)),
-                      Card(
-                        color: cardColor,
-                        elevation: 1,
-                        child: Container(
-                          width: w,
-                          height: w / 5,
+                        : null,
+                    padding: EdgeInsets.all(5),
+                    child: Column(
+                      children: [
+                        Padding(padding: EdgeInsets.only(bottom: 5)),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Card(
+                              color: cardColor,
+                              elevation: 1,
+                              child: Container(
+                                width: w / 5,
+                                height: w / 5,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(w / 5),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      Padding(padding: EdgeInsets.only(bottom: 15)),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Card(
-                            color: cardColor,
-                            elevation: 1,
-                            child: Container(
-                              width: 2 * w / 5,
-                              height: 2 * w / 5,
+                        Padding(padding: EdgeInsets.only(bottom: 15)),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Card(
+                              color: cardColor,
+                              elevation: 1,
+                              child: Container(
+                                width: w / 5,
+                                height: w / 5,
+                              ),
                             ),
-                          ),
-                          Card(
-                            color: cardColor,
-                            elevation: 1,
-                            child: Container(
-                              width: w / 5,
-                              height: 2 * w / 5,
+                            Card(
+                              color: cardColor,
+                              elevation: 1,
+                              child: Container(
+                                width: w / 5,
+                                height: w / 5,
+                              ),
                             ),
+                            Card(
+                              color: cardColor,
+                              elevation: 1,
+                              child: Container(
+                                width: w / 5,
+                                height: w / 5,
+                              ),
+                            )
+                          ],
+                        ),
+                        Padding(padding: EdgeInsets.only(bottom: 15)),
+                        Card(
+                          color: cardColor,
+                          elevation: 1,
+                          child: Container(
+                            width: w,
+                            height: w / 5,
                           ),
-                        ],
-                      )
-                    ],
+                        ),
+                        Padding(padding: EdgeInsets.only(bottom: 15)),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Card(
+                              color: cardColor,
+                              elevation: 1,
+                              child: Container(
+                                width: 2 * w / 5,
+                                height: 2 * w / 5,
+                              ),
+                            ),
+                            Card(
+                              color: cardColor,
+                              elevation: 1,
+                              child: Container(
+                                width: w / 5,
+                                height: 2 * w / 5,
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
-                ),
-                selected
-                    ? Container(
-                        width: 30,
-                        height: 30,
-                        margin: EdgeInsets.all(5),
-                        child: Icon(
-                          Icons.check,
-                          color: Colors.white,
-                        ),
-                      )
-                    : Container(),
-              ],
+                  selected
+                      ? Container(
+                          width: 30,
+                          height: 30,
+                          margin: EdgeInsets.all(5),
+                          child: Icon(
+                            Icons.check,
+                            color: Colors.white,
+                          ),
+                        )
+                      : Container(),
+                ],
+              ),
             ),
           ),
         ),
