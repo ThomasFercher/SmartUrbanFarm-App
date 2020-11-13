@@ -8,11 +8,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'dart:ui' as ui;
 import 'package:sgs/objects/appTheme.dart';
 
+//
+const Color backgroundColor = Color(0xFFFCFCFC);
+
 const Color accentColor = Colors.white; //Color(0xFFe2e2e2);
-const Color primaryColor = Color(0xFF1db954);
+Color secondaryColor = Color(0xFF3f51b5);
+Color primaryColor = Color(0xFF26C281);
 const Color backgroundColor_d = Color(0xff065446);
 const Color accentColor_d = Color(0xFF323232);
-const Color backgroundColor = Color(0xFFFFFFFF);
+
 const double cardElavation = 0.5;
 const double borderRadius = 16.0;
 const double screen_width = 231;
@@ -138,15 +142,6 @@ double getCardElavation(context) {
   return cardElavation;
 }
 
-SplayTreeMap<DateTime, double> sortData(Map<dynamic, dynamic> data) {
-  Map<DateTime, double> d = data.map((key, value) => MapEntry(
-      DateTime.parse(key),
-      value.runtimeType == double ? value : double.parse(value)));
-  SplayTreeMap<DateTime, double> sorted =
-      new SplayTreeMap<DateTime, double>.from(d, (a, b) => a.compareTo(b));
-  return sorted;
-}
-
 ThemeData themeData = ThemeData(
   brightness: Brightness.light,
   primarySwatch: Colors.green,
@@ -196,5 +191,3 @@ EdgeInsets lerp(EdgeInsets a, EdgeInsets b, double t) {
     ui.lerpDouble(a.bottom, b.bottom, t),
   );
 }
-
-

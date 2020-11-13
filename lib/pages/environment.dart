@@ -8,7 +8,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:sgs/customwidgets/appBarHeader.dart';
+import 'package:sgs/customwidgets/sectionTitle.dart';
 import 'package:sgs/main.dart';
+import 'package:sgs/objects/appTheme.dart';
 import 'package:sgs/objects/environmentSettings.dart';
 import 'package:sgs/providers/dashboardProvider.dart';
 import 'package:sgs/providers/storageProvider.dart';
@@ -18,10 +20,25 @@ import '../styles.dart';
 import 'editEnvironment.dart';
 
 class Environment extends StatelessWidget {
-  List<Widget> getEnvList(List<EnvironmentSettings> settings) {
+  List<Widget> getEnvList(
+      List<EnvironmentSettings> settings, EnvironmentSettings active, context) {
+    AppTheme theme = getTheme();
     List<Widget> cardlist = [];
+
+    cardlist.add(
+      Padding(
+        padding: const EdgeInsets.only(top: 20.0),
+        child: sectionTitle(
+            context,
+            "Others",
+            theme.name == "light"
+                ? theme.secondaryTextColor
+                : theme.headlineColor),
+      ),
+    );
     settings.forEach((element) {
-      cardlist.add(EnvironmentListItem(settings: element));
+      if (element != active)
+        cardlist.add(EnvironmentListItem(settings: element));
     });
     return cardlist;
   }
@@ -29,20 +46,153 @@ class Environment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<DashboardProvider>(builder: (context, d, child) {
-      List<EnvironmentSettings> settings = d.settings;
+      List<EnvironmentSettings> settings = d.environments;
+      EnvironmentSettings activeEnvironment = d.activeEnvironment;
+      var temp = activeEnvironment.temperature;
+      var hum = activeEnvironment.humidity;
+      var soil = activeEnvironment.soilMoisture;
+      var sun = activeEnvironment.suntime;
+      var water = activeEnvironment.waterConsumption;
       return AppBarHeader(
         isPage: true,
         title: "Environment Settings",
         theme: getTheme(),
-        body: getEnvList(settings),
+        body: getEnvList(settings, d.activeEnvironment, context),
+        actionButton: FloatingActionButton(
+          onPressed: () => Navigator.push(
+            context,
+            PageTransition(
+              type: PageTransitionType.leftToRightWithFade,
+              child: EditEnvironment(
+                initialSettings: new EnvironmentSettings(
+                  name: "",
+                  temperature: 0,
+                  humidity: 0,
+                  soilMoisture: 0,
+                  suntime: "06:00 - 18:00",
+                  waterConsumption: 0,
+                ),
+                create: true,
+              ),
+            ),
+          ),
+          child: Icon(
+            Icons.add,
+            color: primaryColor,
+          ),
+        ),
+        appbarBottom: PreferredSize(
+          preferredSize: Size.fromHeight(360),
+          child: Container(
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 30),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SectionTitle(
+                        title: activeEnvironment.name,
+                        color: Colors.white,
+                        fontSize: 18,
+                      ),
+                      EnvironmentActionsDropdown(
+                        activeEnvironment: activeEnvironment,
+                      ),
+                    ],
+                  ),
+                ),
+                ActiveEnvironmentListItem(
+                  icon: WeatherIcons.thermometer,
+                  lable: "Temperature",
+                  value: "$temp°C",
+                ),
+                ActiveEnvironmentListItem(
+                  icon: WeatherIcons.humidity,
+                  lable: "Humidity",
+                  value: "$hum%",
+                ),
+                ActiveEnvironmentListItem(
+                  icon: WeatherIcons.barometer,
+                  lable: "Soil Moisture",
+                  value: "$soil",
+                ),
+                ActiveEnvironmentListItem(
+                  icon: WeatherIcons.day_sunny,
+                  lable: "Suntime",
+                  value: sun,
+                ),
+                ActiveEnvironmentListItem(
+                  icon: WeatherIcons.rain,
+                  lable: "Water Consumption",
+                  value: "$water" + "l/d",
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 10),
+                )
+              ],
+            ),
+          ),
+        ),
       );
     });
   }
 }
 
+class EnvironmentActionsDropdown extends StatelessWidget {
+  const EnvironmentActionsDropdown({
+    Key key,
+    @required this.activeEnvironment,
+  }) : super(key: key);
+
+  final EnvironmentSettings activeEnvironment;
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButtonHideUnderline(
+      child: DropdownButton<String>(
+        elevation: 1,
+        icon: Icon(
+          Icons.more_horiz,
+          color: Colors.white,
+          size: 28,
+        ),
+        items: <String>['Set Active', 'Edit', 'Delete'].map((String value) {
+          return new DropdownMenuItem<String>(
+            value: value,
+            child: new Text(value),
+          );
+        }).toList(),
+        onChanged: (actions) {
+          switch (actions) {
+            case 'Set Active':
+              Provider.of<DashboardProvider>(context, listen: false)
+                  .setActiveEnvironment(activeEnvironment);
+              break;
+            case 'Edit':
+              Navigator.push(
+                context,
+                PageTransition(
+                  type: PageTransitionType.leftToRightWithFade,
+                  child: EditEnvironment(
+                      initialSettings: activeEnvironment, create: false),
+                ),
+              );
+              break;
+            case 'Delete':
+              Provider.of<DashboardProvider>(context, listen: false)
+                  .deleteEnvironment(activeEnvironment);
+              break;
+            default:
+          }
+        },
+      ),
+    );
+  }
+}
+
 class EnvironmentListItem extends StatelessWidget {
   final EnvironmentSettings settings;
-
   EnvironmentListItem({@required this.settings});
 
   @override
@@ -55,7 +205,7 @@ class EnvironmentListItem extends StatelessWidget {
 
     return Container(
       width: MediaQuery.of(context).size.width - 30,
-      margin: EdgeInsets.only(top: 20),
+      margin: EdgeInsets.only(top: 10, bottom: 10),
       child: Card(
         elevation: cardElavation,
         shape: RoundedRectangleBorder(
@@ -74,44 +224,25 @@ class EnvironmentListItem extends StatelessWidget {
                     topRight: Radius.circular(borderRadius)),
               ),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Container(
-                    
-                    padding: EdgeInsets.only(left: 15),
-                    child: Text(
-                      settings.name,
-                      style: GoogleFonts.nunito(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white,
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.only(left: 15),
+                      child: Text(
+                        settings.name,
+                        style: GoogleFonts.nunito(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.symmetric(horizontal: borderRadius),
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(21),
-                    ),
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.edit,
-                        color: getTheme().primaryColor,
-                        size: 22,
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          PageTransition(
-                            type: PageTransitionType.leftToRightWithFade,
-                            child: EditEnvironment(initialSettings: settings),
-                          ),
-                        );
-                      },
+                    padding: const EdgeInsets.only(right: borderRadius),
+                    child: EnvironmentActionsDropdown(
+                      activeEnvironment: settings,
                     ),
                   ),
                 ],
@@ -167,6 +298,7 @@ class SettingsListTile extends StatelessWidget {
   final String value_text;
   final Color color;
   final String unit;
+  final Text subtitle;
 
   const SettingsListTile({
     Key key,
@@ -176,6 +308,7 @@ class SettingsListTile extends StatelessWidget {
     this.value,
     this.value_text,
     this.unit,
+    this.subtitle,
   }) : super(key: key);
 
   @override
@@ -190,14 +323,13 @@ class SettingsListTile extends StatelessWidget {
           fontWeight: FontWeight.w400,
         ),
       ),
-      subtitle: Text("Sollwert"),
+      subtitle: subtitle ?? null,
       leading: Container(
         height: 40,
         width: 40,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: Colors.black.withOpacity(0.03),
-        ),
+            borderRadius: BorderRadius.circular(20),
+            color: getTheme().textColor.withOpacity(0.03)),
         child: Icon(
           icon,
           color: color,
@@ -234,5 +366,69 @@ class CustomTrackShape extends RoundedRectSliderTrackShape {
         offset.dy + (parentBox.size.height - trackHeight) / 2;
     final double trackWidth = parentBox.size.width - 35;
     return Rect.fromLTWH(trackLeft, trackTop, trackWidth, trackHeight);
+  }
+}
+
+class ActiveEnvironmentListItem extends StatelessWidget {
+  final String value;
+  final String lable;
+  final IconData icon;
+  final double height;
+
+  const ActiveEnvironmentListItem(
+      {Key key, this.value, this.lable, this.icon, this.height})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 25),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(
+            height: 38,
+            width: 38,
+            margin: const EdgeInsets.only(right: 15, bottom: 3, top: 3),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: Colors.white.withOpacity(0.2),
+            ),
+            child: Icon(
+              icon,
+              color: Colors.white,
+              size: 20,
+            ),
+          ),
+          Container(
+            height: 40,
+            alignment: Alignment.center,
+            child: Text(
+              lable,
+              style: GoogleFonts.nunito(
+                color: Colors.white,
+                fontWeight: FontWeight.w600,
+                fontSize: 18,
+              ),
+            ),
+          ),
+          Expanded(
+            child: Container(
+              height: 40,
+              alignment: Alignment.centerRight,
+              child: Text(
+                value,
+                style: GoogleFonts.nunito(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w100,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

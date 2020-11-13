@@ -77,7 +77,6 @@ class DataChart extends StatelessWidget {
     return Consumer<DashboardProvider>(
       builder: (context, d, child) {
         return Container(
-       
           child: Column(children: [
             sectionTitle(context, this.title,
                 theme.name == "light" ? Colors.black87 : theme.headlineColor),
@@ -89,7 +88,7 @@ class DataChart extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
                 ),
-                elevation: d.longPressed ? cardElavation + 2 : cardElavation,
+                elevation: cardElavation,
                 child: ClipPath(
                   clipper: ChartClipper(),
                   child: Container(

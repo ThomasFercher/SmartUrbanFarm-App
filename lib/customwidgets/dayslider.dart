@@ -6,6 +6,7 @@ import 'package:sgs/customwidgets/sectionTitle.dart';
 import 'package:weather_icons/weather_icons.dart';
 import '../styles.dart';
 import 'package:sgs/objects/appTheme.dart';
+
 class DaySlider extends StatefulWidget {
   final Function onValueChanged;
   final String initialTimeString;
@@ -100,7 +101,7 @@ class _DaySliderState extends State<DaySlider> {
                       alignment: Alignment.center,
                       animation: "Moon Rings",
                       color: Colors.orange,
-                      
+
                       //  color: Colors.yellow[500],
                     ),
                   ),
@@ -111,7 +112,6 @@ class _DaySliderState extends State<DaySlider> {
                       data: SliderThemeData(
                         overlayShape:
                             RoundSliderOverlayShape(overlayRadius: 20),
-
                         rangeThumbShape: _CustomRangeThumbShape(
                           values: labels,
                           valuesTime: _values,
@@ -135,7 +135,9 @@ class _DaySliderState extends State<DaySlider> {
                                   getTimeString(_values.end)
                                 ];
                                 suntime = _values.end / 4 - _values.start / 4;
-                                widget.onValueChanged(labels);
+
+                                widget.onValueChanged(
+                                    labels[0] + " - " + labels[1]);
                               },
                             );
                           }),
@@ -195,13 +197,13 @@ class _CustomRangeThumbShape extends RangeSliderThumbShape {
   }) {
     final Canvas canvas = context.canvas;
     Path oval = Path()
-      ..addOval(new Rect.fromCenter(center: center, width: 48, height: 48));
+      ..addOval(new Rect.fromCenter(center: center, width: 36, height: 36));
     Paint shadowPaint = Paint()
-      ..color = Colors.grey[800].withOpacity(0.6)
-      ..maskFilter = MaskFilter.blur(BlurStyle.normal, 1.0)
+      ..color = Colors.black.withOpacity(0.8)
+      ..maskFilter = MaskFilter.blur(BlurStyle.normal, 1)
       ..style = PaintingStyle.fill;
     canvas.drawPath(oval, shadowPaint);
-    canvas.drawCircle(center, 22, _paint);
+    canvas.drawCircle(center, 18, _paint);
 
     switch (thumb) {
       case Thumb.start:

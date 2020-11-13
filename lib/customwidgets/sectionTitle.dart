@@ -6,23 +6,23 @@ import '../styles.dart';
 class SectionTitle extends StatelessWidget {
   final String title;
   final double fontSize;
+  final Color color;
 
   const SectionTitle({
     this.title,
     this.fontSize,
+    this.color,
   });
 
   Widget build(BuildContext context) {
     AppTheme theme = getTheme();
     return Container(
-      color: Colors.white,
-      alignment: Alignment.bottomLeft,
       child: Text(
         title,
         textAlign: TextAlign.start,
         style: GoogleFonts.nunito(
           textStyle: TextStyle(
-            color: theme.secondaryTextColor,
+            color: color,
             fontWeight: FontWeight.w700,
             fontSize: fontSize,
           ),

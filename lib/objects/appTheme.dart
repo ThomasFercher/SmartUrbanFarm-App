@@ -9,7 +9,6 @@ class AppTheme {
   final Color headlineColor;
   final Color primaryColor;
   final Color secondaryColor;
-  
 
   AppTheme({
     this.name,

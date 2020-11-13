@@ -3,16 +3,24 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flare_flutter/flare_cache.dart';
+import 'package:flare_flutter/provider/asset_flare.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sgs/styles.dart';
 
 class StorageProvider extends ChangeNotifier {
-  StorageReference listref = FirebaseStorage.instance.ref();
   var dbref = FirebaseDatabase.instance.reference();
 
   Map<String, StorageReference> imgRefs = new Map();
   List<Image> images = [];
   Map<String, String> urls = {};
+
+  final _assetsToWarmup = [
+    AssetFlare(bundle: rootBundle, name: "assets/flares/moon.flr"),
+    AssetFlare(bundle: rootBundle, name: "assets/flares/sun.flr"),
+    AssetFlare(bundle: rootBundle, name: "assets/flares/grow.flr")
+  ];
 
   StorageProvider() {
     print("yeeeeee");
@@ -25,6 +33,13 @@ class StorageProvider extends ChangeNotifier {
 
   void takePicture() {
     dbref.child("photo").set(true);
+  }
+
+  Future<void> loadFlares() async {
+    //chaches the flares so they can be instantly used without loading
+    for (final asset in _assetsToWarmup) {
+      await cachedActor(asset);
+    }
   }
 
   Future<void> loadImages(context) async {
