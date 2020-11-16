@@ -111,6 +111,9 @@ TextStyle normal(context) => GoogleFonts.lato(
       ),
     );
 
+TextStyle buttonTextStyle = GoogleFonts.nunito(
+    fontSize: 20, fontWeight: FontWeight.w600, color: Colors.white);
+
 Widget sectionTitle(BuildContext context, String title, Color color) {
   return Container(
     padding: EdgeInsets.only(left: 4, bottom: 8),

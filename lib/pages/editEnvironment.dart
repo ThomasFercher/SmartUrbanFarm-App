@@ -46,9 +46,23 @@ class EditEnvironment extends StatelessWidget {
             contentPadding: false,
             bottomAction: Container(
               width: MediaQuery.of(context).size.width,
-              height: 60,
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-              color: Colors.white,
+              height: 70,
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(borderRadius),
+                  topRight: Radius.circular(borderRadius),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 2.0,
+                    spreadRadius: 0.0,
+                    offset: Offset(0.0, -2.0), // shadow direction: bottom right
+                  )
+                ],
+              ),
               child: RaisedButton(
                 onPressed: () => save(pr.getSettings(), context),
                 color: theme.primaryColor,

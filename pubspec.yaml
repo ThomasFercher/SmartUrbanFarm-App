@@ -28,7 +28,10 @@ dependencies:
   service_locator: ^1.0.0
   flutter_skeleton: ^0.1.0+1
   cached_network_image: ^2.3.3
-  
+  path_provider: ^1.6.24
+  path: ^1.7.0
+  gallery_saver: ^2.0.1
+
 dev_dependencies:
   flutter_launcher_icons: "^0.7.5"
   flutter_test:

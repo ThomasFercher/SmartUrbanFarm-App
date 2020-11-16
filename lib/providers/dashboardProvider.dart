@@ -166,7 +166,7 @@ class DashboardProvider with ChangeNotifier, DiagnosticableTreeMixin {
       EnvironmentSettings activeNoName =
           new EnvironmentSettings.fromJson(list, "NoName");
 
-      env = environments.singleWhere((e) =>
+      env = environments.firstWhere((e) =>
           e.temperature == activeNoName.temperature &&
           e.humidity == activeNoName.humidity &&
           e.soilMoisture == activeNoName.soilMoisture &&

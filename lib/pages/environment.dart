@@ -22,20 +22,8 @@ import 'editEnvironment.dart';
 class Environment extends StatelessWidget {
   List<Widget> getEnvList(
       List<EnvironmentSettings> settings, EnvironmentSettings active, context) {
-    AppTheme theme = getTheme();
     List<Widget> cardlist = [];
 
-    cardlist.add(
-      Padding(
-        padding: const EdgeInsets.only(top: 20.0),
-        child: sectionTitle(
-            context,
-            "Others",
-            theme.name == "light"
-                ? theme.secondaryTextColor
-                : theme.headlineColor),
-      ),
-    );
     settings.forEach((element) {
       if (element != active)
         cardlist.add(EnvironmentListItem(settings: element));
@@ -45,6 +33,7 @@ class Environment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppTheme theme = getTheme();
     return Consumer<DashboardProvider>(builder: (context, d, child) {
       List<EnvironmentSettings> settings = d.environments;
       EnvironmentSettings activeEnvironment = d.activeEnvironment;
@@ -57,7 +46,26 @@ class Environment extends StatelessWidget {
         isPage: true,
         title: "Environment Settings",
         theme: getTheme(),
-        body: getEnvList(settings, d.activeEnvironment, context),
+        contentPadding: false,
+        body: [
+          Padding(
+            padding: const EdgeInsets.only(left: 15, top: 20.0),
+            child: sectionTitle(
+                context,
+                "Others",
+                theme.name == "light"
+                    ? theme.secondaryTextColor
+                    : theme.headlineColor),
+          ),
+          Container(
+            height: MediaQuery.of(context).size.height - 450,
+            child: ListView(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              children: getEnvList(settings, d.activeEnvironment, context),
+            ),
+          )
+        ],
         actionButton: FloatingActionButton(
           onPressed: () => Navigator.push(
             context,
@@ -205,7 +213,7 @@ class EnvironmentListItem extends StatelessWidget {
 
     return Container(
       width: MediaQuery.of(context).size.width - 30,
-      margin: EdgeInsets.only(top: 10, bottom: 10),
+      margin: EdgeInsets.only(top: 10, bottom: 10, left: 15, right: 15),
       child: Card(
         elevation: cardElavation,
         shape: RoundedRectangleBorder(
