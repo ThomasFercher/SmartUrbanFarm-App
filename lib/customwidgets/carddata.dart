@@ -10,6 +10,7 @@ import 'package:sgs/customwidgets/slider.dart';
 import 'package:sgs/customwidgets/smalldatachart.dart';
 import 'package:sgs/objects/appTheme.dart';
 import 'package:sgs/pages/advanced.dart';
+import 'package:sgs/pages/environment.dart';
 import 'package:sgs/providers/dashboardProvider.dart';
 import 'package:sgs/styles.dart';
 import 'package:flutter/cupertino.dart';
@@ -35,117 +36,109 @@ class CardData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<DashboardProvider>(
-      builder: (context, d, child) {
-        
-        return CupertinoContextMenu(
-          actions: [
-            Container(
-              color: Colors.white,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Material(
-                   
-                    child: Container(
-                      width: 200,
-                      color: Colors.white,
-                      padding: EdgeInsets.only(top: 15, left: 15),
+    return Container(
+      child: Consumer<DashboardProvider>(
+        builder: (context, d, child) {
+          return CupertinoContextMenu(
+            actions: [
+              Material(
+                child: Container(
+                  color: Colors.white,
+                  child: ListTile(
+                    title: Text(
+                      "Show Advanced Data",
+                      softWrap: false,
+                    ),
+                    trailing: Icon(
+                      Icons.assessment,
+                      color: iconColor,
+                      size: 20,
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Advanced(),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              Material(
+                child: Container(
+                  color: Colors.white,
+                  child: ListTile(
+                    title: Text(
+                      "Go to Environment",
+                      softWrap: false,
+                    ),
+                    trailing: Icon(
+                      Icons.settings_brightness,
+                      color: iconColor,
+                      size: 20,
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Environment(),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              )
+            ],
+            previewBuilder: (context, animation, child) {
+              var curvedValue = Curves.easeOut.transform(animation.value);
+              return Opacity(
+                opacity: curvedValue,
+                child: detailedPopup(context, d),
+              );
+            },
+            child: Card(
+              elevation: cardElavation,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(borderRadius),
+              ),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(borderRadius),
+
+                  color: Colors.white, //iconColor, //getTheme().cardColor,
+                ),
+                padding: EdgeInsets.all(8),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Flexible(
+                      fit: FlexFit.tight,
+                      child: Icon(
+                        icon,
+                        size: 26,
+                        color: iconColor,
+                      ),
+                    ),
+                    Flexible(
+                      fit: FlexFit.tight,
                       child: Text(
-                        "Change Sollwert",
+                        text,
                         style: GoogleFonts.nunito(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
+                          color: Colors.black54,
+                          fontWeight: FontWeight.w200,
+                          fontSize: 26.0,
                         ),
                       ),
                     ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 15),
-                    child: MenuSlider(
-                      width: 220,
-                      color: iconColor,
-                      type: type,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Material(
-              child: Container(
-                color: Colors.white,
-                child: ListTile(
-                  title: Text(
-                    "Show Advanced Data",
-                    softWrap: false,
-                  ),
-                  trailing: Icon(
-                    Icons.assessment,
-                    color: iconColor,
-                    size: 20,
-                  ),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Advanced(),
-                      ),
-                    );
-                  },
+                  ],
                 ),
               ),
-            )
-          ],
-          previewBuilder: (context, animation, child) {
-            var curvedValue = Curves.easeOut.transform(animation.value);
-            return Opacity(
-              opacity: curvedValue,
-              child: detailedPopup(context, d),
-            );
-          },
-          child: Card(
-            elevation: cardElavation,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(borderRadius),
             ),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(borderRadius),
-
-                color: Colors.white, //iconColor, //getTheme().cardColor,
-              ),
-              padding: EdgeInsets.all(8),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Flexible(
-                    fit: FlexFit.tight,
-                    child: Icon(
-                      icon,
-                      size: 26,
-                      color: iconColor,
-                    ),
-                  ),
-                  Flexible(
-                    fit: FlexFit.tight,
-                    child: Text(
-                      text,
-                      style: GoogleFonts.nunito(
-                        color: Colors.black54,
-                        fontWeight: FontWeight.w200,
-                        fontSize: 26.0,
-
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 
@@ -223,33 +216,6 @@ class CardData extends StatelessWidget {
               rowheight = avheight < rowheight ? 0 : 35;
               return Column(
                 children: [
-                  /*   Align(
-                    alignment: Alignment.topCenter,
-                    child: Container(
-                      width: 60,
-                      height: 60,
-                      //   transform: Matrix4.translationValues(0, -25, 0),
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(borderRadius),
-                        ),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(borderRadius),
-                            color: iconColor,
-                          ),
-                          child: Hero(
-                            tag: icon.codePoint,
-                            child: new Icon(
-                              icon,
-                              size: 30,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),*/
                   Padding(padding: EdgeInsets.only(top: borderRadius)),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -339,11 +305,7 @@ class CardData extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.only(left: 10),
                     height: avheight,
-                    child: getSmallDataChart(
-                      label,
-                      d,
-                      theme
-                    ),
+                    child: getSmallDataChart(label, d, theme),
                   ),
                 ],
               );

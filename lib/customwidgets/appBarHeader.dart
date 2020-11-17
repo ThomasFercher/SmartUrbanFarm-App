@@ -17,6 +17,7 @@ class AppBarHeader extends StatelessWidget {
   final Widget actionButton;
   final Widget bottomAction;
   final _controller = ScrollController();
+  final PreferredSizeWidget appbarBottom;
   bool contentPadding = true;
 
   AppBarHeader({
@@ -28,34 +29,19 @@ class AppBarHeader extends StatelessWidget {
     this.actionButton,
     contentPadding,
     this.bottomAction,
+    this.appbarBottom,
   }) : contentPadding = contentPadding ?? true;
 
   @override
   Widget build(BuildContext context) {
     List<SliverListTile> bodyList = body
-        .map((e) => SliverListTile(
-              child: e,
-              hasPadding: contentPadding,
-            ))
-        .toList();
-    /* bodyList.insert(
-        0,
-        SliverListTile(
-          hasPadding: false,
-          child: Container(
-            color: theme.primaryColor,
-            child: Container(
-              height: 25,
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(25),
-                ),
-              ),
-            ),
+        .map(
+          (widget) => SliverListTile(
+            child: widget,
+            hasPadding: contentPadding,
           ),
-        ));*/
+        )
+        .toList();
 
     _controller.addListener(() {
       var scrollOffset = _controller.position.pixels;
@@ -83,24 +69,32 @@ class AppBarHeader extends StatelessWidget {
               width: 0,
             ),
         floatingActionButton: actionButton ?? null,
-        backgroundColor: Colors.grey[50],
         body: CustomScrollView(
           controller: isPage ? null : _controller,
           slivers: <Widget>[
             SliverAppBar(
-              expandedHeight: isPage ? 80 : 240,
+              expandedHeight: isPage ? 80 : 220,
               toolbarHeight: 80,
               flexibleSpace: !isPage ? AppBarBanner(220, title) : Container(),
               floating: true,
-              elevation: 0,
+              elevation: 2,
               pinned: true,
               iconTheme: IconThemeData(color: Colors.white),
               backgroundColor: theme.primaryColor,
+              bottom: appbarBottom ?? null,
+              automaticallyImplyLeading: true,
               leading: isPage
                   ? Padding(
                       padding: const EdgeInsets.only(left: 10.0),
                       child: IconButton(
-                        icon: Icon(Icons.arrow_back_ios),
+                        icon: IconTheme(
+                          data: IconThemeData(opacity: 1),
+                          child: Icon(
+                            Icons.arrow_back_ios,
+                            color: Colors.white,
+                            size: 30,
+                          ),
+                        ),
                         onPressed: () => Navigator.of(context).pop(),
                       ),
                     )
@@ -173,7 +167,7 @@ class SliverListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ColoredBox(
-      color: Colors.white,
+      color: backgroundColor,
       child: Padding(
         padding: hasPadding
             ? const EdgeInsets.symmetric(horizontal: 15.0)

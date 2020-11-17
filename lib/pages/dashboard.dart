@@ -21,7 +21,8 @@ import 'package:weather_icons/weather_icons.dart';
 import 'advanced.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:sgs/objects/appTheme.dart';
-class Home extends StatelessWidget {
+
+class Dashboard extends StatelessWidget {
   static const String EnvironmentSettings = 'Environment';
   static const String Settings = 'Settings';
   static const String SignOut = 'About';
@@ -31,32 +32,6 @@ class Home extends StatelessWidget {
     Settings,
     SignOut
   ];
-
-  void choiceAction(String choice, context) {
-    if (choice == Settings) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ChangeNotifierProvider.value(
-            value: Provider.of<SettingsProvider>(context),
-            child: SettingsPage(),
-          ),
-        ),
-      );
-    } else if (choice == EnvironmentSettings) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ChangeNotifierProvider.value(
-            value: Provider.of<DashboardProvider>(context),
-            child: Environment(),
-          ),
-        ),
-      );
-    } else if (choice == SignOut) {
-      print('SignOut');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -175,7 +150,7 @@ class Home extends StatelessWidget {
                   icon: Icons.assessment,
                   text: "Advanced Data",
                   iconColor: theme.primaryColor,
-                backgroundColor: Color(0xFFdcf8ec),
+                  backgroundColor: Color(0xFFdcf8ec),
                 ),
               ],
             ),
