@@ -9,7 +9,7 @@ import 'dart:ui' as ui;
 import 'package:sgs/objects/appTheme.dart';
 
 const Color accentColor = Colors.white; //Color(0xFFe2e2e2);
-const Color primaryColor = Color(0xFF1db954);
+const Color primaryColor = Color(0xFF26C281);
 const Color backgroundColor_d = Color(0xff065446);
 const Color accentColor_d = Color(0xFF323232);
 const Color backgroundColor = Color(0xFFFFFFFF);
