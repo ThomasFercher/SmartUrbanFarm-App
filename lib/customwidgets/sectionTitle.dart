@@ -15,7 +15,6 @@ class SectionTitle extends StatelessWidget {
   });
 
   Widget build(BuildContext context) {
-    AppTheme theme = getTheme();
     return Container(
       child: Text(
         title,

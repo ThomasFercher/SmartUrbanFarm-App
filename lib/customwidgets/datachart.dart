@@ -2,20 +2,26 @@ import 'dart:collection';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sgs/customwidgets/dropdownMenu.dart';
+import 'package:sgs/customwidgets/sectionTitle.dart';
 import 'package:sgs/customwidgets/smalldatachart.dart';
 import 'package:sgs/providers/dashboardProvider.dart';
 import '../styles.dart';
 import 'dart:math';
 import 'package:sgs/objects/appTheme.dart';
 
-class DataChart extends StatelessWidget {
-  final List<FlSpot> spots;
+class DataChart extends StatefulWidget {
   final List<Color> gradientColors;
   final SplayTreeMap<DateTime, double> data;
   final String title;
-  final double minY;
-  final double maxY;
-  final List<int> titlesY;
+  final List<String> filter_options = ["Current", "Day", "Month"];
+  final String unit;
+
+  static DateTime today = DateTime.now();
+  static DateTime yesterday = new DateTime(today.year, today.month,
+      today.day - 1, today.hour, today.minute, today.second);
+  static DateTime todayInMonth = new DateTime(today.year, today.month + 1,
+      today.day, today.hour, today.minute, today.second);
 
   /// This widget is a Card with a Linechart in it.
   /// You can define a custom title and inject your data with a list.
@@ -24,94 +30,152 @@ class DataChart extends StatelessWidget {
     @required this.data,
     @required this.title,
     this.gradientColors,
-  })  : spots = getSpots(data.values.toList()),
-        minY = getMinY(data.values.toList()),
-        maxY = getMaxY(data.values.toList()),
-        titlesY = getTitlesY(
-          getMinY(data.values.toList()),
-          getMaxY(data.values.toList()),
-        ); //optimize constructor
+    this.unit,
+  });
 
-  static List<FlSpot> getSpots(List<double> datalist) {
+  @override
+  _DataChartState createState() => _DataChartState();
+}
+
+class _DataChartState extends State<DataChart> {
+  String filter;
+
+  List<FlSpot> spots;
+  double minY;
+  double maxY;
+  DateTime start;
+  DateTime end;
+  List<DateTime> dates;
+
+  @override
+  void initState() {
+    filter = widget.filter_options[0];
+    super.initState();
+  }
+
+  List<FlSpot> getSpots(
+      SplayTreeMap<DateTime, double> data, DateTimeRange range) {
     List<FlSpot> spots = [];
-    for (var i = datalist.length - 1; i >= 0; i--) {
-      spots.add(new FlSpot(i.toDouble(), datalist[i]));
+    var x = 0.0;
+    dates = [];
+    if (filter == "Current") {
+      var i = 0;
+      data.forEach((key, value) {
+        if (i >= data.length - 11) {
+          spots.add(new FlSpot(x, value));
+          dates.add(key);
+          x++;
+        }
+        i++;
+      });
+    } else {
+      data.forEach((key, value) {
+        if (key.isAfter(range.start) && key.isBefore(range.end)) {
+          spots.add(new FlSpot(x, value));
+          dates.add(key);
+          x++;
+        }
+      });
     }
+    if (spots.isEmpty || spots == null) {
+      spots.add(new FlSpot(0, 1));
+    }
+
+    if (filter != "Current") {
+      if (spots.length > 10) {
+        //For day and month use 10 values equally streched over time
+
+      }
+    }
+
     return spots;
   }
 
-  static double getMaxY(List<double> datalist) {
+  double getMaxY(List<FlSpot> list) {
+    List<double> datalist = [];
+    list.forEach((element) {
+      datalist.add(element.y);
+    });
     return datalist.reduce(max);
   }
 
-  static double getMinY(List<double> datalist) {
+  double getMinY(List<FlSpot> list) {
+    List<double> datalist = [];
+    list.forEach((element) {
+      datalist.add(element.y);
+    });
     return datalist.reduce(min);
   }
 
-  static List<int> getTitlesY(double minY, double maxY) {
-    int min, max, middle;
-    double diff = maxY - minY;
-    if (diff >= 10) {
-      min = (minY / 10).ceil() * 10;
-      max = (maxY / 10).floor() * 10;
-      middle = min + ((max - min) / 2).round();
-    } else if (diff >= 5) {
-      min = (minY / 3).ceil() * 3;
-      max = (maxY / 3).floor() * 3;
-      middle = -1;
-    } else if (diff >= 3) {
-      min = (minY / 2).ceil() * 2;
-      max = (maxY / 2).floor() * 2;
-      middle = -1;
-    } else if (diff >= 1) {
-      min = minY.floor();
-      max = maxY.ceil();
-      middle = -1;
+  DateTimeRange getTimeRange() {
+    switch (filter) {
+      case "Day":
+        return DateTimeRange(start: DataChart.yesterday, end: DataChart.today);
+        break;
+      case "Month":
+        return DateTimeRange(
+            start: DataChart.yesterday, end: DataChart.todayInMonth);
+        break;
+      case "Current":
+        return DateTimeRange(start: DataChart.today, end: DataChart.today);
+        break;
+      default:
     }
-    return [min, middle, max];
   }
 
   @override
   Widget build(BuildContext context) {
-    AppTheme theme = getTheme();
+    var range = getTimeRange();
+    spots = getSpots(widget.data, range);
+    minY = getMinY(spots) - 1;
+    maxY = getMaxY(spots) + 1;
+
+    print(DataChart.today);
     return Consumer<DashboardProvider>(
       builder: (context, d, child) {
-        return Container(
-          child: Column(children: [
-            sectionTitle(context, this.title,
-                theme.name == "light" ? Colors.black87 : theme.headlineColor),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.only(bottom: 20),
-              child: Card(
-                color: getTheme().cardColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
-                ),
-                elevation: cardElavation,
-                child: ClipPath(
-                  clipper: ChartClipper(),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.only(
-                      left: 5,
+        return Padding(
+          padding: const EdgeInsets.only(left: 10.0, right: 25),
+          child: Container(
+            child: Column(children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: SectionTitle(
+                      title: widget.title + " [${widget.unit}]",
+                      fontSize: 24,
                     ),
-                    child: LineChart(mainData(context)),
                   ),
+                  DropDownMenu(
+                    actions: widget.filter_options,
+                    color: Colors.black54,
+                    onClicked: (v) {
+                      setState(() {
+                        filter = v;
+                      });
+                    },
+                  )
+                ],
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.only(bottom: 10),
+                child: LineChart(
+                  mainData(context, spots),
+                  swapAnimationDuration: Duration(milliseconds: 200),
                 ),
               ),
-            ),
-          ]),
+            ]),
+          ),
         );
       },
     );
   }
 
-  LineChartData mainData(BuildContext context) {
+  LineChartData mainData(BuildContext context, List<FlSpot> spots) {
     return LineChartData(
       lineTouchData: LineTouchData(
         touchTooltipData: LineTouchTooltipData(
-          tooltipBgColor: gradientColors[0],
+          tooltipBgColor: widget.gradientColors[0],
           getTooltipItems: (List<LineBarSpot> spots) {
             List<LineTooltipItem> l = [];
 
@@ -141,14 +205,40 @@ class DataChart extends StatelessWidget {
       titlesData: FlTitlesData(
         show: true,
         bottomTitles: SideTitles(
-          showTitles: false,
-          reservedSize: 22,
+          showTitles: true,
+          reservedSize: 20,
+          interval: 5,
           textStyle: const TextStyle(
-              color: dark_gray, fontWeight: FontWeight.bold, fontSize: 16),
+              color: dark_gray, fontWeight: FontWeight.bold, fontSize: 14),
           getTitles: (value) {
-            return '';
+            if (value < dates.length) {
+              var v = dates[value.toInt()];
+              switch (filter) {
+                case "Day":
+                  var h = v.hour;
+                  var m = v.minute;
+                  var m_s = m < 10 ? "0$m" : "$m";
+
+                  return "$h:$m_s";
+                  break;
+                case "Month":
+                  var d = v.day;
+                  var m = v.month;
+
+                  return "$d.$m";
+                  break;
+                case "Current":
+                  var h = v.hour;
+                  var m = v.minute;
+                  var m_s = m < 10 ? "0$m" : "$m";
+
+                  return "$h:$m_s";
+                  break;
+                default:
+              }
+            }
           },
-          margin: 0,
+          margin: 10,
         ),
         leftTitles: SideTitles(
           showTitles: true,
@@ -157,31 +247,31 @@ class DataChart extends StatelessWidget {
             fontWeight: FontWeight.bold,
             fontSize: 14,
           ),
+          interval: 3,
           getTitles: (value) {
-            return titlesY.contains(value.toInt())
-                ? value.toInt().toString()
-                : '';
+            return "${value.toInt()}";
           },
-          reservedSize: 18,
+          reservedSize: 20,
           margin: 5,
         ),
       ),
       minX: 0,
-      maxX: 9,
-      minY: minY - 1,
-      maxY: maxY + 1,
+      maxX: spots.length - 1.0,
+      minY: minY,
+      maxY: maxY,
       lineBarsData: [
         LineChartBarData(
           spots: spots,
           isCurved: true,
-          colors: gradientColors,
+          colors: widget.gradientColors,
           barWidth: 5,
           isStrokeCapRound: true,
           dotData: FlDotData(show: true, dotSize: 5),
           belowBarData: BarAreaData(
             show: true,
-            colors:
-                gradientColors.map((color) => color.withOpacity(0.6)).toList(),
+            colors: widget.gradientColors
+                .map((color) => color.withOpacity(0.6))
+                .toList(),
           ),
         ),
       ],

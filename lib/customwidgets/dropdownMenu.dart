@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 class DropDownMenu extends StatelessWidget {
   final Function onClicked;
   final List<String> actions;
+  final Color color;
 
   const DropDownMenu({
     Key key,
     this.onClicked,
     this.actions,
+    this.color,
   }) : super(key: key);
 
   @override
@@ -18,7 +20,7 @@ class DropDownMenu extends StatelessWidget {
         elevation: 1,
         icon: Icon(
           Icons.more_horiz,
-          color: Colors.white,
+          color: color,
           size: 28,
         ),
         items: actions.map((String value) {
