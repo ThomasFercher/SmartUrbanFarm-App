@@ -80,6 +80,7 @@ Future<void> loadData(context) async {
   await Provider.of<StorageProvider>(context, listen: false)
       .loadImages(context);
   await Provider.of<StorageProvider>(context, listen: false).loadFlares();
+  await Provider.of<StorageProvider>(context, listen: false).loadTimeLapses();
 
   stopwatch.stop();
   //add a delay so the animation plays through
