@@ -58,7 +58,9 @@ class Environment extends StatelessWidget {
                     : theme.headlineColor),
           ),
           Container(
-            height: MediaQuery.of(context).size.height - 450,
+            height: MediaQuery.of(context).size.height - 500 > 400
+                ? MediaQuery.of(context).size.height - 500
+                : 400,
             child: ListView(
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
@@ -106,6 +108,7 @@ class Environment extends StatelessWidget {
                       ),
                       EnvironmentActionsDropdown(
                         activeEnvironment: activeEnvironment,
+                        active: true,
                       ),
                     ],
                   ),
@@ -148,15 +151,20 @@ class Environment extends StatelessWidget {
 }
 
 class EnvironmentActionsDropdown extends StatelessWidget {
-  const EnvironmentActionsDropdown({
+  final List<String> options = ['Set Active', 'Edit', 'Delete'];
+  final active;
+  EnvironmentActionsDropdown({
     Key key,
     @required this.activeEnvironment,
-  }) : super(key: key);
+    this.active,
+  });
 
   final EnvironmentSettings activeEnvironment;
 
   @override
   Widget build(BuildContext context) {
+    if (active != null) options.remove('Set Active');
+
     return DropdownButtonHideUnderline(
       child: DropdownButton<String>(
         elevation: 1,
@@ -165,7 +173,7 @@ class EnvironmentActionsDropdown extends StatelessWidget {
           color: Colors.white,
           size: 28,
         ),
-        items: <String>['Set Active', 'Edit', 'Delete'].map((String value) {
+        items: options.map((String value) {
           return new DropdownMenuItem<String>(
             value: value,
             child: new Text(value),

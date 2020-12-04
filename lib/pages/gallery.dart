@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:collection';
 import 'dart:io';
+import 'dart:isolate';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ import 'package:sgs/customwidgets/appBarHeader.dart';
 import 'package:sgs/customwidgets/dropdownMenu.dart';
 import 'package:sgs/customwidgets/timelapseDialog.dart';
 import 'package:sgs/main.dart';
+import 'package:sgs/objects/photo.dart';
 import 'package:sgs/objects/timeLapse.dart';
 import 'package:sgs/providers/storageProvider.dart';
 import 'package:video_player/video_player.dart';
@@ -32,9 +34,9 @@ class _GalleryState extends State<Gallery> {
     super.initState();
   }
 
-  List<Widget> getImageList(List<Image> imgs) {
+  List<Widget> getPhotoList(List<Photo> photos) {
     List<Widget> cardlist = [Padding(padding: EdgeInsets.only(top: 15))];
-    imgs.forEach((element) {
+    photos.forEach((element) {
       cardlist.add(ImageListItem(element));
     });
     return cardlist;
@@ -50,8 +52,9 @@ class _GalleryState extends State<Gallery> {
     return cardlist;
   }
 
-  takePhoto() {
+  takePhoto() async {
     print("take Photo");
+    Provider.of<StorageProvider>(context, listen: false).takePicture();
   }
 
   createTimeLapse(context) {
@@ -63,13 +66,49 @@ class _GalleryState extends State<Gallery> {
     );
   }
 
+  Widget timeLapseActionButton(bool isLoading, context) {
+    return FloatingActionButton(
+      onPressed: () {
+        createTimeLapse(context);
+      },
+      child: isLoading
+          ? Container(
+              height: 24,
+              width: 24,
+              child: CircularProgressIndicator(
+                backgroundColor: Colors.white,
+                strokeWidth: 3,
+                valueColor: new AlwaysStoppedAnimation<Color>(primaryColor),
+              ),
+            )
+          : Icon(
+              Icons.timelapse_sharp,
+              color: primaryColor,
+              size: 30,
+            ),
+    );
+  }
+
+  Widget photoActionButton(context) {
+    return FloatingActionButton(
+      onPressed: () {
+        takePhoto();
+      },
+      child: Icon(
+        Icons.camera,
+        color: primaryColor,
+        size: 30,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
 
     return Consumer<StorageProvider>(
       builder: (context, d, child) {
-        List<Image> imgs = d.images;
+        List<Photo> photos = d.photos;
         List<TimeLapse> timelapses = d.timelapses;
         return AppBarHeader(
           isPage: true,
@@ -157,21 +196,11 @@ class _GalleryState extends State<Gallery> {
               ],
             ),
           ),
-          actionButton: FloatingActionButton(
-            onPressed: () {
-              if (tab == "Photos") {
-                takePhoto();
-              } else if (tab == "TimeLapses") {
-                createTimeLapse(context);
-              }
-            },
-            child: Icon(
-              tab == "Photos" ? Icons.camera : Icons.timelapse,
-              color: primaryColor,
-            ),
-          ),
+          actionButton: tab == "Photos"
+              ? photoActionButton(context)
+              : timeLapseActionButton(d.computingTimelapse, context),
           body: tab == "Photos"
-              ? getImageList(imgs)
+              ? getPhotoList(photos)
               : getTimeLapseList(timelapses),
         );
       },
@@ -180,16 +209,16 @@ class _GalleryState extends State<Gallery> {
 }
 
 class ImageListItem extends StatelessWidget {
-  final Image image;
+  final Photo photo;
 
-  ImageListItem(this.image);
+  ImageListItem(this.photo);
 
   saveImage(context) async {
-    Provider.of<StorageProvider>(context, listen: false).saveImage(image);
+    Provider.of<StorageProvider>(context, listen: false).savePhoto(photo);
   }
 
   delete(context) {
-    Provider.of<StorageProvider>(context, listen: false).deleteImage(image);
+    Provider.of<StorageProvider>(context, listen: false).deletePhoto(photo);
   }
 
   @override
@@ -209,14 +238,14 @@ class ImageListItem extends StatelessWidget {
             Stack(
               children: [
                 Container(
-                  width: image.width,
-                  height: image.height,
+                  width: photo.image.width,
+                  height: photo.image.height,
                   child: ClipRRect(
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(borderRadius),
                       topRight: Radius.circular(borderRadius),
                     ),
-                    child: image,
+                    child: photo.image,
                   ),
                 ),
                 Align(
@@ -245,7 +274,7 @@ class ImageListItem extends StatelessWidget {
               padding: EdgeInsets.all(10),
               alignment: Alignment.topLeft,
               child: Text(
-                image.semanticLabel,
+                photo.date,
                 style: sectionTitleStyle(context, Colors.black87),
               ),
             ),
@@ -275,21 +304,16 @@ class TimeLapseItem extends StatefulWidget {
 
 class _TimeLapseItemState extends State<TimeLapseItem> {
   VideoPlayerController _controller;
-  bool loaded;
   bool videoHasEnded;
 
   @override
   void initState() {
     super.initState();
-    loaded = false;
     videoHasEnded = false;
     _controller = VideoPlayerController.file(widget.timeLapse.file)
       ..initialize().then((_) {
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-
-        setState(() {
-          loaded = true;
-        });
+        if (mounted) setState(() {});
       });
 
     _controller.addListener(() async {
@@ -345,7 +369,7 @@ class _TimeLapseItemState extends State<TimeLapseItem> {
               children: [
                 Container(
                   padding: EdgeInsets.all(borderRadius),
-                  child: loaded
+                  child: _controller.value.initialized
                       ? AspectRatio(
                           aspectRatio: _controller.value.aspectRatio,
                           child: VideoPlayer(_controller),

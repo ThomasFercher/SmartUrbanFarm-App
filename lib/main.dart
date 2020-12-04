@@ -78,7 +78,7 @@ Future<void> loadData(context) async {
   Stopwatch stopwatch = new Stopwatch()..start();
   await Provider.of<DashboardProvider>(context, listen: false).loadData();
   await Provider.of<StorageProvider>(context, listen: false)
-      .loadImages(context);
+      .loadPhotos(context);
   await Provider.of<StorageProvider>(context, listen: false).loadFlares();
   await Provider.of<StorageProvider>(context, listen: false).loadTimeLapses();
 

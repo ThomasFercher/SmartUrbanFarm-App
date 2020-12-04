@@ -142,9 +142,7 @@ class EditEnvironment extends StatelessWidget {
                 onValueChanged: (v) => pr.changeSuntime(v),
                 initialTimeString: pr.settings.suntime,
               ),
-              PlaceDivider(
-                height: 100.0,
-              )
+              PlaceDivider()
             ],
           );
         });
@@ -177,7 +175,7 @@ class Input extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 4),
             child: SectionTitle(
               title: "Name",
-              fontSize: 24,
+              fontSize: 20,
             ),
           ),
           SizedBox(
@@ -245,7 +243,7 @@ class EditVariable extends StatelessWidget {
     AppTheme theme = getTheme();
     print(((max - min) * 2).round());
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20.0),
+      padding: EdgeInsets.only(left: 20.0, right: 20, bottom: 10),
       color: Colors.white,
       child: Column(
         children: [
@@ -254,10 +252,9 @@ class EditVariable extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Container(
-                height: 48,
                 child: SectionTitle(
                   title: title,
-                  fontSize: 24,
+                  fontSize: 20,
                 ),
               ),
               Container(
@@ -302,7 +299,7 @@ class PlaceDivider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.grey[100],
+      color: Colors.grey[50],
       height: height,
       width: MediaQuery.of(context).size.width,
     );

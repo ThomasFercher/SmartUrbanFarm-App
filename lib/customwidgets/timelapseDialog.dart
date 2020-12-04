@@ -47,10 +47,9 @@ class _TimeLapseDialogState extends State<TimeLapseDialog> {
         error = false;
       });
       Provider.of<StorageProvider>(context, listen: false)
-          .createTimelapse(range)
-          .then((value) {
-        Navigator.pop(context);
-      });
+          .createTimelapse(range);
+
+      Navigator.pop(context);
     } else {
       setState(() {
         error = true;

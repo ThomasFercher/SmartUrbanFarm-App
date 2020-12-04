@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -10,35 +11,31 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:sgs/objects/photo.dart';
 import 'package:sgs/objects/timeLapse.dart';
 import 'package:sgs/styles.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
 
 class StorageProvider extends ChangeNotifier {
+  //This class is used for the storage and processing of images and timelapses
   var dbref = FirebaseDatabase.instance.reference();
 
-  Map<String, StorageReference> imgRefs = new Map();
+  Map<String, StorageReference> photoRefs = new Map();
   Map<String, String> urls = {};
-  List<Image> images = [];
+  List<Photo> photos = [];
 
   List<TimeLapse> timelapses = [];
 
   final FlutterFFmpeg _flutterFFmpeg = new FlutterFFmpeg();
+
+  bool computingTimelapse = false;
 
   final _assetsToWarmup = [
     AssetFlare(bundle: rootBundle, name: "assets/flares/moon.flr"),
     AssetFlare(bundle: rootBundle, name: "assets/flares/sun.flr"),
     AssetFlare(bundle: rootBundle, name: "assets/flares/grow.flr")
   ];
-
-  StorageProvider() {
-    /*var subscription = dbref.reference().child('images').onValue.listen(
-      (event) {
-        loadImages();
-      },
-    );*/
-  }
 
   void takePicture() {
     dbref.child("photo").set(true);
@@ -51,68 +48,113 @@ class StorageProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> loadImages(context) async {
-    imgRefs = await getImageReferences();
+  Future<void> loadPhotos(context) async {
+    //load photos from files
+    Directory directory = await getExternalStorageDirectory();
+    await Directory("${directory.path}/photos/").create();
+    Directory photoDirectory = new Directory("${directory.path}/photos/");
+
+    photos = loadPhotosFromFiles(photoDirectory);
+
+    //load other photos from the database which dont exist locally yet
+    photoRefs = await getPhotoReferences();
 
     await Future.wait(
-      imgRefs.keys.map(
-        (key) async => urls[key] = await imgRefs[key].getDownloadURL(),
+      photoRefs.keys.map(
+        (key) async => urls[key] = await photoRefs[key].getDownloadURL(),
       ),
     );
 
-    urls.forEach((date, url) {
-      if (images.every((element) => element.semanticLabel != date))
-        images.add(
-          new Image.network(
-            url,
-            semanticLabel: date,
-            height: 360,
-          ),
-        );
-    });
+    http.Client client = new http.Client();
+
+    String dPath = directory.path;
+
+    urls.forEach(
+      (date, url) async {
+        if (photos.every((element) => element.date != date))
+          photos.add(
+            await downloadPhotoAndSafe(client, url, date, dPath),
+          );
+      },
+    );
 
     //need to call sort after all images are in the lis
 
-    images.sort((img1, img2) {
-      return img1.semanticLabel.compareTo(img2.semanticLabel);
+    photos.sort((photo1, photo2) {
+      return photo1.date.compareTo(photo2.date);
     });
 
-    images.forEach((element) {
-      precacheImage(element.image, context);
+    photos.forEach((photo) {
+      precacheImage(photo.image.image, context);
     });
 
-    print("loaded images");
+    print("loaded phtos");
 
     notifyListeners();
   }
 
+  List<Photo> loadPhotosFromFiles(Directory directory) {
+    List<Photo> photos = [];
+
+    directory.listSync().forEach((element) {
+      File f = new File(element.path);
+      List<String> pathArguments = element.path.split("_");
+      String date = pathArguments[1].replaceAll(".jpeg", "");
+
+      photos.add(
+        new Photo(
+          file: f,
+          date: date,
+          image: new Image.file(f),
+        ),
+      );
+    });
+
+    return photos;
+  }
+
+  Future<Photo> downloadPhotoAndSafe(
+      http.Client client, String url, String date, String directory) async {
+    var req = await client.get(Uri.parse(url));
+    var bytes = req.bodyBytes;
+    var fileName = "photo_$date.jpeg";
+    File file = new File("$directory/photos/$fileName");
+    await file.writeAsBytes(bytes);
+
+    return new Photo(file: file, date: date, image: Image.file(file));
+  }
+
   Future<void> loadTimeLapses() async {
     Directory eDirectory = await getExternalStorageDirectory();
-    eDirectory.listSync().forEach((element) {
-      File f = new File(element.path);
-      List<String> pathArguments = element.path.split("/");
-      String name = pathArguments[pathArguments.length - 1];
-      name = name.replaceAll(".mp4", "");
-      List<String> nameArguments = name.split("-");
-      DateTimeRange range = new DateTimeRange(
-        start: DateTime.parse(nameArguments[0].replaceAll(".", "-")),
-        end: DateTime.parse(nameArguments[1].replaceAll(".", "-")),
-      );
+    await Directory("${eDirectory.path}/timelapses/").create();
+    Directory timeLapseDirectory =
+        new Directory("${eDirectory.path}/timelapses/");
+    timeLapseDirectory
+      ..listSync().forEach((element) {
+        File f = new File(element.path);
+        List<String> pathArguments = element.path.split("/");
+        String name = pathArguments[pathArguments.length - 1];
+        name = name.replaceAll(".mp4", "");
+        List<String> nameArguments = name.split("-");
+        DateTimeRange range = new DateTimeRange(
+          start: DateTime.parse(nameArguments[0].replaceAll(".", "-")),
+          end: DateTime.parse(nameArguments[1].replaceAll(".", "-")),
+        );
 
-      TimeLapse timeLapse =
-          new TimeLapse(file: f, range: range, daterange: name);
-      if (!timelapses.any((tl) => tl.file.path == f.path)) {
-        timelapses.add(timeLapse);
-      }
-    });
+        TimeLapse timeLapse =
+            new TimeLapse(file: f, range: range, daterange: name);
+        if (!timelapses.any((tl) => tl.file.path == f.path)) {
+          timelapses.add(timeLapse);
+        }
+      });
 
     print("loaded timelapses");
 
     notifyListeners();
   }
 
-  Future<Map<String, StorageReference>> getImageReferences() async {
-    return await dbref.child("images").limitToLast(10).once().then((data) {
+  Future<Map<String, StorageReference>> getPhotoReferences() async {
+    return await dbref.child("images").once().then((data) {
       Map<String, StorageReference> imgs = new Map();
       if (data.value != null) {
         Map<String, String> map = Map.from(data.value);
@@ -125,72 +167,48 @@ class StorageProvider extends ChangeNotifier {
   }
 
   //Saves the given image to the devices gallery
-  void saveImage(Image image) async {
-    String url = await imgRefs[image.semanticLabel].getDownloadURL();
-
-    http.Client _client = new http.Client();
-    var req = await _client.get(Uri.parse(url));
-    var bytes = req.bodyBytes;
-    String directory = (await getTemporaryDirectory()).path;
-    String fileName = basename(Uri.decodeFull(url));
-    fileName = fileName.split("?")[0]; //remove access key from basename
-
-    File tempFile = new File('$directory/$fileName');
-    await tempFile.writeAsBytes(bytes);
-    print("Created temporary File at ${tempFile.path}");
-
-    GallerySaver.saveImage(tempFile, albumName: "Smart Urban Farm").then(
+  void savePhoto(Photo photo) async {
+    GallerySaver.saveImage(photo.file, albumName: "Smart Urban Farm").then(
       (bool success) {
         print("Saved to Gallery");
-        tempFile.deleteSync();
       },
     );
   }
 
-  void deleteImage(Image image) {
-    images.remove(image);
-    dbref.child("images").child(image.semanticLabel).remove();
-    imgRefs[image.semanticLabel].delete();
+  void deletePhoto(Photo photo) {
+    photos.remove(photo);
+    dbref.child("images").child(photo.date).remove();
+    photoRefs[photo.date].delete();
     notifyListeners();
   }
 
-  Future<void> createImageFile(
-      Image image, http.Client client, String directory, int i) async {
-    String url = await imgRefs[image.semanticLabel].getDownloadURL();
-    var req = await client.get(Uri.parse(url));
-    var bytes = req.bodyBytes;
-
-    String n = i.toString().padLeft(3, '0');
-    String fileName = "photo_$n.jpeg";
-    File tempFile = new File('$directory/$fileName');
-    await tempFile.writeAsBytes(bytes);
-
-    print("Created temporary File at ${tempFile.path}");
-  }
-
   Future<void> createTimelapse(DateTimeRange range) async {
+    //So we can display a loading animation
+    computingTimelapse = true;
+    notifyListeners();
+
+    Completer c = new Completer();
+
     //Get all images in the given DateTimeRange
-    List<Image> imgs = images.where((element) {
-      DateTime time = DateTime.parse(element.semanticLabel);
+    List<Photo> ph = photos.where((element) {
+      DateTime time = DateTime.parse(element.date);
       return time.isAfter(range.start) && time.isBefore(range.end);
     }).toList();
 
     // Cancels the function if the list is empty
-    if (imgs == null || imgs.length == 0) {
+    if (ph == null || ph.length == 0) {
       return;
     }
 
-    // Get a temporary Directory to save all the images in
+    // Get a temporary Directory to copy all the photos to
     Directory tDirectory = await getTemporaryDirectory();
     String tPath = tDirectory.path;
 
-    // Create a http Client to download all needed images as we dont store all
-    // the images from the gallery locally
-    http.Client _client = new http.Client();
-    for (var i = 0; i < imgs.length; i++) {
-      await createImageFile(imgs[i], _client, tPath, i);
+    // Copy Image to Cache
+    for (var i = 0; i < ph.length; i++) {
+      String n = i.toString().padLeft(3, '0');
+      await ph[i].file.copy("$tPath/photo_$n.jpeg");
     }
-    _client.close();
 
     // Gets the external Directory to save the Timelapse permanently
     Directory eDirectory = await getExternalStorageDirectory();
@@ -210,17 +228,23 @@ class StorageProvider extends ChangeNotifier {
         });
 
         File tFile = new File("$ePath/$name");
+        print(tFile.path);
+        print(tFile.parent);
         name = name.replaceAll(".mp4", "");
         TimeLapse timeLapse =
             new TimeLapse(file: tFile, range: range, daterange: name);
         timelapses.add(timeLapse);
-
+        computingTimelapse = false;
+        c.complete();
         notifyListeners();
       },
     );
+
+    return Future.wait([c.future]);
   }
 
   void deleteTimeLapse(TimeLapse tl) {
+    tl.file.deleteSync();
     timelapses.remove(tl);
     notifyListeners();
   }

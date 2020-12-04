@@ -130,7 +130,6 @@ class _DataChartState extends State<DataChart> {
     minY = getMinY(spots) - 1;
     maxY = getMaxY(spots) + 1;
 
-    print(DataChart.today);
     return Consumer<DashboardProvider>(
       builder: (context, d, child) {
         return Padding(

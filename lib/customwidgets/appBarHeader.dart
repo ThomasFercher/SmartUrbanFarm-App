@@ -59,8 +59,7 @@ class AppBarHeader extends StatelessWidget {
 
     return AnnotatedRegion(
       value: SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        systemNavigationBarColor: Colors.transparent,
+        systemNavigationBarColor: primaryColor,
       ),
       child: Scaffold(
         bottomSheet: bottomAction ??
