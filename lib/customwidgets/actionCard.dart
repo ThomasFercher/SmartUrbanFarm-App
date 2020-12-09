@@ -30,7 +30,7 @@ class ActionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: cardElavation ,
+      elevation: cardElavation,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
           Radius.circular(borderRadius),
@@ -52,13 +52,16 @@ class ActionCard extends StatelessWidget {
                   alignment: Alignment.bottomLeft,
                   margin: EdgeInsets.only(top: 40),
                   padding: EdgeInsets.only(bottom: 10, left: 10),
-                  child: Text(
-                    text,
-                    textAlign: TextAlign.start,
-                    style: GoogleFonts.nunito(
-                      color: Colors.black54,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      text,
+                      textAlign: TextAlign.start,
+                      style: GoogleFonts.nunito(
+                        color: Colors.black54,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                      ),
                     ),
                   ),
                 ),

@@ -6,7 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sgs/customwidgets/datachart.dart';
 import 'package:sgs/customwidgets/detaildialog.dart';
-import 'package:sgs/customwidgets/slider.dart';
 import 'package:sgs/customwidgets/smalldatachart.dart';
 import 'package:sgs/objects/appTheme.dart';
 import 'package:sgs/pages/advanced.dart';
@@ -164,13 +163,13 @@ class CardData extends StatelessWidget {
   getValueString(type, DashboardProvider d) {
     switch (type) {
       case Temperature:
-        return d.tempSoll.toString() + "°C";
+        return d.activeEnvironment.temperature.toString() + "°C";
         break;
       case Humidity:
-        return d.humiditySoll.toString() + "%";
+        return d.activeEnvironment.humidity.toString() + "%";
         break;
       case SoilMoisture:
-        return d.soilMoistureSoll.toString() + "%";
+        return d.activeEnvironment.soilMoisture.toString() + "%";
         break;
       default:
         return 0.0;

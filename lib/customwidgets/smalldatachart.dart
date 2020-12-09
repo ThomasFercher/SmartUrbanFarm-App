@@ -30,7 +30,7 @@ class SmallDataChart extends StatelessWidget {
 
   static List<FlSpot> getSpots(List<double> datalist) {
     List<FlSpot> spots = [];
-    for (var i = datalist.length - 1; i >= 0; i--) {
+    for (var i = datalist.length - 10; i < datalist.length - 1; i++) {
       spots.add(new FlSpot(i.toDouble(), datalist[i]));
     }
     return spots;

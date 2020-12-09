@@ -20,6 +20,7 @@ class Advanced extends StatelessWidget {
           title: "TEMPERATURES",
           data: d.getTemperatures(),
           gradientColors: temperatureGradient,
+          unit: "°C",
         ),
       ),
       Container(
@@ -28,6 +29,7 @@ class Advanced extends StatelessWidget {
           title: "HUMIDITIES",
           data: d.getHumiditys(),
           gradientColors: humidityGradient,
+          unit: "%",
         ),
       ),
     ];
@@ -42,7 +44,7 @@ class Advanced extends StatelessWidget {
           isPage: true,
           theme: getTheme(),
           body: getItems(d),
-         
+          contentPadding: false,
         );
       },
     );

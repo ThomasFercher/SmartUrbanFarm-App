@@ -11,12 +11,8 @@ import '../styles.dart';
 
 class DashboardProvider with ChangeNotifier, DiagnosticableTreeMixin {
   double temperature = 0.0;
-  double tempSoll = 25;
-
   double humidity = 0.0;
   double soilMoisture = 0.0;
-  double humiditySoll = 50;
-  double soilMoistureSoll = 50;
   double waterTankLevel = 40;
   double waterAnimationProgress;
   String suntime = "02:30 - 18:00";
@@ -43,87 +39,20 @@ class DashboardProvider with ChangeNotifier, DiagnosticableTreeMixin {
     return humiditys;
   }
 
-  void suntimeChanged(List<dynamic> suntime) {
-    String time = "${suntime[0]} - ${suntime[1]}";
-    this.suntime = time;
-    fb.reference().child('suntime').set({'suntime': time}).then((_) {});
-  }
-
-  void tempSollChanged(double v) {
-    v = num.parse(v.toStringAsFixed(1));
-    tempSoll = v;
-    fb.reference().child('temperatureSoll').set(tempSoll);
-    notifyListeners();
-  }
-
-  void humiditySollChanged(double v) {
-    v = num.parse(v.toStringAsFixed(1));
-    humiditySoll = v;
-    fb.reference().child('humiditySoll').set(humiditySoll);
-    notifyListeners();
-  }
-
-  void soilMoistureSollChanged(double v) {
-    v = num.parse(v.toStringAsFixed(1));
-    soilMoistureSoll = v;
-    fb.reference().child('soilMoistureSoll').set(soilMoistureSoll);
-    notifyListeners();
-  }
-
-  Future<SplayTreeMap<DateTime, double>> loadTemperatures() async {
-    SplayTreeMap<DateTime, double> temps;
-    await ref
-        .child("temperatures")
-        .limitToLast(10)
-        .once()
-        .then((DataSnapshot data) {
-      temps = sortData(data.value);
+  Future<SplayTreeMap<DateTime, double>> loadList(String child) async {
+    SplayTreeMap<DateTime, double> values;
+    await ref.child(child).once().then((DataSnapshot data) {
+      values = sortData(data.value);
     });
-    return temps;
+    return values;
   }
 
-  Future<double> loadTemperature() async {
-    double temp;
-    await ref.child("temperature").once().then((DataSnapshot data) {
-      temp = double.parse(data.value);
+  Future<T> loadVariable<T>(String variable) async {
+    var value;
+    await ref.child(variable).once().then((DataSnapshot data) {
+      value = T == double ? double.parse(data.value) : data.value;
     });
-    return temp;
-  }
-
-  Future<double> loadHumidity() async {
-    double humidity;
-    await ref.child("humidity").once().then((DataSnapshot data) {
-      humidity = double.parse(data.value);
-    });
-    return humidity;
-  }
-
-  Future<double> loadSoilMoisture() async {
-    double soilMoisture;
-    await ref.child("soilMoisture").once().then((DataSnapshot data) {
-      soilMoisture = double.parse(data.value);
-    });
-    return soilMoisture;
-  }
-
-  Future<String> loadSuntime() async {
-    String suntime;
-    await ref.child("suntime").once().then((DataSnapshot data) {
-      suntime = data.value;
-    });
-    return suntime;
-  }
-
-  Future<SplayTreeMap<DateTime, double>> loadHumiditys() async {
-    SplayTreeMap<DateTime, double> humitdites;
-    await ref
-        .child("humiditys")
-        .limitToLast(10)
-        .once()
-        .then((DataSnapshot data) {
-      humitdites = sortData(data.value);
-    });
-    return humitdites;
+    return value;
   }
 
   SplayTreeMap<DateTime, double> sortData(Map<dynamic, dynamic> data) {
@@ -136,15 +65,16 @@ class DashboardProvider with ChangeNotifier, DiagnosticableTreeMixin {
   }
 
   Future<void> loadData() async {
-    temperature = await loadTemperature();
-    humidity = await loadHumidity();
-    soilMoisture = await loadSoilMoisture();
-    suntime = await loadSuntime();
-    temperatures = await loadTemperatures();
-    humiditys = await loadHumiditys();
+    temperature = await loadVariable<double>("temperature");
+    humidity = await loadVariable<double>("humidity");
+    soilMoisture = await loadVariable<double>("soilMoisture");
+    suntime = await loadVariable<String>("suntime");
+    temperatures = await loadList("temperatures");
+    humiditys = await loadList("humiditys");
     environments = await loadEnvironments();
     activeEnvironment = await loadActiveEnvironment();
 
+    print(temperatures.values.toList().toString());
     notifyListeners();
   }
 
@@ -166,12 +96,14 @@ class DashboardProvider with ChangeNotifier, DiagnosticableTreeMixin {
       EnvironmentSettings activeNoName =
           new EnvironmentSettings.fromJson(list, "NoName");
 
-      env = environments.firstWhere((e) =>
-          e.temperature == activeNoName.temperature &&
-          e.humidity == activeNoName.humidity &&
-          e.soilMoisture == activeNoName.soilMoisture &&
-          e.suntime == activeNoName.suntime &&
-          e.waterConsumption == activeNoName.waterConsumption);
+      env = environments.firstWhere(
+        (e) =>
+            e.temperature == activeNoName.temperature &&
+            e.humidity == activeNoName.humidity &&
+            e.soilMoisture == activeNoName.soilMoisture &&
+            e.suntime == activeNoName.suntime &&
+            e.waterConsumption == activeNoName.waterConsumption,
+      );
     });
     return env;
   }
