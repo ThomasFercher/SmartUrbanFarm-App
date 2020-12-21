@@ -8,8 +8,10 @@ import '../styles.dart';
 class PopupMenu extends StatelessWidget {
   final List<PopupMenuOption> options;
   final Function onSelected;
+  final Color color;
 
-  const PopupMenu({Key key, this.options, this.onSelected}) : super(key: key);
+  const PopupMenu({Key key, this.options, this.onSelected, this.color})
+      : super(key: key);
 
   PopupMenuItem<String> getDropDownMenuItem(String option, Icon icon) {
     return PopupMenuItem<String>(
@@ -37,7 +39,10 @@ class PopupMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     // TODO: implement build
     return PopupMenuButton(
-        icon: Icon(Icons.more_horiz),
+        icon: Icon(
+          Icons.more_horiz,
+          color: color,
+        ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(borderRadius),

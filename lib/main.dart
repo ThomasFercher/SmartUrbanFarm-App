@@ -1,5 +1,6 @@
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flare_flutter/flare_cache.dart';
+import 'package:flare_flutter/flare_controls.dart';
 import 'package:flutter/material.dart';
 import 'package:sgs/pages/dashboard.dart';
 import 'package:sgs/providers/settingsProvider.dart';
@@ -42,6 +43,9 @@ void main() => {
 
 class SufMobileApplication extends StatelessWidget {
   // This widget is the root of your application.
+
+  //FlareControls flrctrl = new FlareControls();
+
   @override
   Widget build(BuildContext context) {
     Provider.of<DashboardProvider>(context, listen: false).loadData();
@@ -60,6 +64,10 @@ class SufMobileApplication extends StatelessWidget {
                 'assets/flares/splashscreen.flr',
                 alignment: Alignment.center,
                 animation: "Loading",
+                /*controller: flrctrl,
+                callback: (s) {
+                  flrctrl.play("Wind");
+                },*/
               ),
             );
           } else {
@@ -83,6 +91,7 @@ Future<void> loadData(context) async {
   await Provider.of<StorageProvider>(context, listen: false).loadTimeLapses();
 
   stopwatch.stop();
+  print("Time needed ${stopwatch.elapsedMilliseconds}");
   //add a delay so the animation plays through
   return Future.delayed(
     Duration(milliseconds: 3000 - stopwatch.elapsedMilliseconds),

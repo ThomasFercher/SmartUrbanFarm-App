@@ -146,6 +146,7 @@ class _DataChartState extends State<DataChart> {
                     ),
                   ),
                   PopupMenu(
+                    color: Colors.black54,
                     options: widget.filter_options
                         .map((filter) => PopupMenuOption(filter, null))
                         .toList(),

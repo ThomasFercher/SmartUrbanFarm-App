@@ -253,6 +253,7 @@ class ImageListItem extends StatelessWidget {
                 Align(
                   alignment: Alignment.topRight,
                   child: PopupMenu(
+                    color: Colors.white,
                     options: [
                       PopupMenuOption(
                         "Save Image",
@@ -375,8 +376,9 @@ class _TimeLapseItemState extends State<TimeLapseItem> {
           children: [
             Stack(
               children: [
-                Container(
-                  padding: EdgeInsets.all(borderRadius),
+                ClipRRect(
+                  borderRadius:
+                      BorderRadius.vertical(top: Radius.circular(borderRadius)),
                   child: _controller.value.initialized
                       ? AspectRatio(
                           aspectRatio: _controller.value.aspectRatio,
@@ -386,37 +388,35 @@ class _TimeLapseItemState extends State<TimeLapseItem> {
                 ),
                 Align(
                   alignment: Alignment.topRight,
-                  child: Container(
-                    margin: EdgeInsets.only(right: borderRadius),
-                    child: PopupMenu(
-                      options: [
-                        PopupMenuOption(
-                          "Save Timelapse",
-                          Icon(
-                            Icons.save,
-                            color: primaryColor,
-                          ),
+                  child: PopupMenu(
+                    color: Colors.white,
+                    options: [
+                      PopupMenuOption(
+                        "Save Timelapse",
+                        Icon(
+                          Icons.save,
+                          color: primaryColor,
                         ),
-                        PopupMenuOption(
-                          "Delete",
-                          Icon(
-                            Icons.delete,
-                            color: Colors.redAccent,
-                          ),
-                        )
-                      ],
-                      onSelected: (value) {
-                        switch (value) {
-                          case "Save Timelapse":
-                            saveTimeLapse(context);
-                            break;
-                          case "Delete":
-                            delete(context);
-                            break;
-                          default:
-                        }
-                      },
-                    ),
+                      ),
+                      PopupMenuOption(
+                        "Delete",
+                        Icon(
+                          Icons.delete,
+                          color: Colors.redAccent,
+                        ),
+                      )
+                    ],
+                    onSelected: (value) {
+                      switch (value) {
+                        case "Save Timelapse":
+                          saveTimeLapse(context);
+                          break;
+                        case "Delete":
+                          delete(context);
+                          break;
+                        default:
+                      }
+                    },
                   ),
                 )
               ],
