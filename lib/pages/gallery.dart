@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:sgs/customwidgets/appBarHeader.dart';
+import 'package:sgs/customwidgets/dropDownList.dart';
 import 'package:sgs/customwidgets/dropdownMenu.dart';
 import 'package:sgs/customwidgets/timelapseDialog.dart';
 import 'package:sgs/main.dart';
@@ -252,7 +253,8 @@ class ImageListItem extends StatelessWidget {
                   alignment: Alignment.topRight,
                   child: Container(
                     margin: EdgeInsets.only(right: borderRadius),
-                    child: DropDownMenu(
+                    child:
+                        /*DropDownMenu(
                       actions: ["Save Image", "Delete"],
                       onClicked: (action) {
                         switch (action) {
@@ -265,6 +267,12 @@ class ImageListItem extends StatelessWidget {
                           default:
                         }
                       },
+                    ),*/
+                        DropDownList(
+                      icon: Icon(
+                        Icons.more_horiz,
+                        color: Colors.black54,
+                      ),
                     ),
                   ),
                 )
