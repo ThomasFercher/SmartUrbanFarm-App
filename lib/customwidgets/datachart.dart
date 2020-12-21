@@ -2,9 +2,10 @@ import 'dart:collection';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sgs/customwidgets/dropdownMenu.dart';
+import 'package:sgs/customwidgets/popupMenu.dart';
 import 'package:sgs/customwidgets/sectionTitle.dart';
 import 'package:sgs/customwidgets/smalldatachart.dart';
+import 'package:sgs/objects/popupMenuOption.dart';
 import 'package:sgs/providers/dashboardProvider.dart';
 import '../styles.dart';
 import 'dart:math';
@@ -144,10 +145,11 @@ class _DataChartState extends State<DataChart> {
                       fontSize: 24,
                     ),
                   ),
-                  DropDownMenu(
-                    actions: widget.filter_options,
-                    color: Colors.black54,
-                    onClicked: (v) {
+                  PopupMenu(
+                    options: widget.filter_options
+                        .map((filter) => PopupMenuOption(filter, null))
+                        .toList(),
+                    onSelected: (v) {
                       setState(() {
                         filter = v;
                       });
