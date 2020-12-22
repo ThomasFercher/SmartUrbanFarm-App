@@ -1,19 +1,16 @@
-import 'dart:async';
-import 'dart:collection';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/foundation.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:sgs/customwidgets/appBarHeader.dart';
+import 'package:sgs/customwidgets/environment/activeEnvironmentListItem.dart';
+import 'package:sgs/customwidgets/environment/environmentListItem.dart';
+import 'package:sgs/customwidgets/popupMenu.dart';
 import 'package:sgs/customwidgets/sectionTitle.dart';
-import 'package:sgs/main.dart';
 import 'package:sgs/objects/appTheme.dart';
 import 'package:sgs/objects/environmentSettings.dart';
+import 'package:sgs/objects/popupMenuOption.dart';
 import 'package:sgs/providers/dashboardProvider.dart';
-import 'package:sgs/providers/storageProvider.dart';
 import 'package:weather_icons/weather_icons.dart';
 
 import '../styles.dart';
@@ -30,6 +27,11 @@ class Environment extends StatelessWidget {
     });
     return cardlist;
   }
+
+  List<PopupMenuOption> options = [
+  PopupMenuOption("Edit", Icon(Icons.edit,color: primaryColor,)),
+    PopupMenuOption("Delete", Icon(Icons.delete,color: Colors.redAccent,))
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +88,7 @@ class Environment extends StatelessWidget {
               ),
             ),
           ),
+          backgroundColor: getTheme().cardColor,
           child: Icon(
             Icons.add,
             color: primaryColor,
@@ -97,7 +100,7 @@ class Environment extends StatelessWidget {
             child: Column(
               children: [
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 30),
+                  padding: EdgeInsets.only(left: 30,right: 15),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -106,9 +109,30 @@ class Environment extends StatelessWidget {
                         color: Colors.white,
                         fontSize: 18,
                       ),
-                      EnvironmentActionsDropdown(
-                        activeEnvironment: activeEnvironment,
-                        active: true,
+                      PopupMenu(
+                        color: Colors.white,
+                        options: options,
+                        onSelected: (val) {
+                          switch (val) {
+                            case 'Edit':
+                              Navigator.push(
+                                context,
+                                PageTransition(
+                                  type: PageTransitionType.leftToRightWithFade,
+                                  child: EditEnvironment(
+                                      initialSettings: activeEnvironment,
+                                      create: false),
+                                ),
+                              );
+                              break;
+                            case 'Delete':
+                              Provider.of<DashboardProvider>(context,
+                                      listen: false)
+                                  .deleteEnvironment(activeEnvironment);
+                              break;
+                            default:
+                          }
+                        },
                       ),
                     ],
                   ),
@@ -147,304 +171,5 @@ class Environment extends StatelessWidget {
         ),
       );
     });
-  }
-}
-
-class EnvironmentActionsDropdown extends StatelessWidget {
-  final List<String> options = ['Set Active', 'Edit', 'Delete'];
-  final active;
-  EnvironmentActionsDropdown({
-    Key key,
-    @required this.activeEnvironment,
-    this.active,
-  });
-
-  final EnvironmentSettings activeEnvironment;
-
-  @override
-  Widget build(BuildContext context) {
-    if (active != null) options.remove('Set Active');
-
-    return DropdownButtonHideUnderline(
-      child: DropdownButton<String>(
-        elevation: 1,
-        icon: Icon(
-          Icons.more_horiz,
-          color: Colors.white,
-          size: 28,
-        ),
-        items: options.map((String value) {
-          return new DropdownMenuItem<String>(
-            value: value,
-            child: new Text(value),
-          );
-        }).toList(),
-        onChanged: (actions) {
-          switch (actions) {
-            case 'Set Active':
-              Provider.of<DashboardProvider>(context, listen: false)
-                  .setActiveEnvironment(activeEnvironment);
-              break;
-            case 'Edit':
-              Navigator.push(
-                context,
-                PageTransition(
-                  type: PageTransitionType.leftToRightWithFade,
-                  child: EditEnvironment(
-                      initialSettings: activeEnvironment, create: false),
-                ),
-              );
-              break;
-            case 'Delete':
-              Provider.of<DashboardProvider>(context, listen: false)
-                  .deleteEnvironment(activeEnvironment);
-              break;
-            default:
-          }
-        },
-      ),
-    );
-  }
-}
-
-class EnvironmentListItem extends StatelessWidget {
-  final EnvironmentSettings settings;
-  EnvironmentListItem({@required this.settings});
-
-  @override
-  Widget build(BuildContext context) {
-    var temperature = settings.getTemperature;
-    var humidity = settings.getHumidity;
-    var soilMoisture = settings.getSoilMoisture;
-    var suntime = settings.getSuntime;
-    var waterConsumption = settings.getWaterConsumption;
-
-    return Container(
-      width: MediaQuery.of(context).size.width - 30,
-      margin: EdgeInsets.only(top: 10, bottom: 10, left: 15, right: 15),
-      child: Card(
-        elevation: cardElavation,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(borderRadius),
-        ),
-        color: Colors.white,
-        child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-              height: 56,
-              decoration: BoxDecoration(
-                color: getTheme().primaryColor,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(borderRadius),
-                    topRight: Radius.circular(borderRadius)),
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Expanded(
-                    child: Container(
-                      padding: EdgeInsets.only(left: 15),
-                      child: Text(
-                        settings.name,
-                        style: GoogleFonts.nunito(
-                          fontSize: 24,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.only(right: borderRadius),
-                    child: EnvironmentActionsDropdown(
-                      activeEnvironment: settings,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SettingsListTile(
-              icon: WeatherIcons.thermometer,
-              color: Colors.redAccent,
-              title: "Temperature",
-              value: temperature,
-              unit: "°C",
-            ),
-            SettingsListTile(
-              icon: WeatherIcons.humidity,
-              color: Colors.blueAccent,
-              title: "Humidity",
-              value: humidity,
-              unit: "%",
-            ),
-            SettingsListTile(
-              icon: WeatherIcons.barometer,
-              color: Colors.green,
-              title: "Soil Moisture",
-              value: soilMoisture,
-              unit: "%",
-            ),
-            SettingsListTile(
-              icon: WeatherIcons.sunrise,
-              color: Colors.orange[400],
-              title: "Suntime",
-              value_text: suntime,
-              unit: "",
-            ),
-            SettingsListTile(
-              icon: WeatherIcons.rain,
-              color: Colors.lightBlue,
-              title: "Water Consumption",
-              value: waterConsumption,
-              unit: "l/d",
-            ),
-            Padding(padding: EdgeInsets.only(bottom: 10))
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class SettingsListTile extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final double value;
-  final String value_text;
-  final Color color;
-  final String unit;
-  final Text subtitle;
-
-  const SettingsListTile({
-    Key key,
-    this.color,
-    this.icon,
-    this.title,
-    this.value,
-    this.value_text,
-    this.unit,
-    this.subtitle,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    var val = value ?? value_text;
-    return ListTile(
-      title: Text(
-        title,
-        style: TextStyle(
-          color: getTheme().textColor,
-          fontSize: 18.0,
-          fontWeight: FontWeight.w400,
-        ),
-      ),
-      subtitle: subtitle ?? null,
-      leading: Container(
-        height: 40,
-        width: 40,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            color: getTheme().textColor.withOpacity(0.03)),
-        child: Icon(
-          icon,
-          color: color,
-          size: 18,
-        ),
-      ),
-      trailing: Container(
-        height: 48,
-        padding: EdgeInsets.only(top: 10),
-        child: Text(
-          "$val$unit",
-          style: TextStyle(
-            color: getTheme().textColor,
-            fontWeight: FontWeight.w100,
-            fontSize: 30.0,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class CustomTrackShape extends RoundedRectSliderTrackShape {
-  Rect getPreferredRect({
-    @required RenderBox parentBox,
-    Offset offset = Offset.zero,
-    @required SliderThemeData sliderTheme,
-    bool isEnabled = false,
-    bool isDiscrete = false,
-  }) {
-    final double trackHeight = sliderTheme.trackHeight;
-    final double trackLeft = 10;
-    final double trackTop =
-        offset.dy + (parentBox.size.height - trackHeight) / 2;
-    final double trackWidth = parentBox.size.width - 35;
-    return Rect.fromLTWH(trackLeft, trackTop, trackWidth, trackHeight);
-  }
-}
-
-class ActiveEnvironmentListItem extends StatelessWidget {
-  final String value;
-  final String lable;
-  final IconData icon;
-  final double height;
-
-  const ActiveEnvironmentListItem(
-      {Key key, this.value, this.lable, this.icon, this.height})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 25),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Container(
-            height: 38,
-            width: 38,
-            margin: const EdgeInsets.only(right: 15, bottom: 3, top: 3),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: Colors.white.withOpacity(0.2),
-            ),
-            child: Icon(
-              icon,
-              color: Colors.white,
-              size: 20,
-            ),
-          ),
-          Container(
-            height: 40,
-            alignment: Alignment.center,
-            child: Text(
-              lable,
-              style: GoogleFonts.nunito(
-                color: Colors.white,
-                fontWeight: FontWeight.w600,
-                fontSize: 18,
-              ),
-            ),
-          ),
-          Expanded(
-            child: Container(
-              height: 40,
-              alignment: Alignment.centerRight,
-              child: Text(
-                value,
-                style: GoogleFonts.nunito(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w100,
-                  fontSize: 24,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }

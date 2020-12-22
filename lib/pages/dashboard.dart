@@ -53,7 +53,7 @@ class Dashboard extends StatelessWidget {
             sectionTitle(
               context,
               "Details",
-              theme.secondaryTextColor,
+              theme.headlineColor,
             ),
             GridView.count(
               primary: false,
@@ -94,9 +94,7 @@ class Dashboard extends StatelessWidget {
             sectionTitle(
                 context,
                 "Sunlight",
-                theme.name == "light"
-                    ? theme.secondaryTextColor
-                    : theme.headlineColor),
+               theme.headlineColor),
             Container(
               child:
                   /*DaySlider(
@@ -110,9 +108,7 @@ class Dashboard extends StatelessWidget {
             sectionTitle(
                 context,
                 "Actions",
-                theme.name == "light"
-                    ? theme.secondaryTextColor
-                    : theme.headlineColor),
+               theme.headlineColor,),
             GridView.count(
               primary: false,
               crossAxisCount: 2,
@@ -158,9 +154,7 @@ class Dashboard extends StatelessWidget {
             sectionTitle(
                 context,
                 "Settings",
-                theme.name == "light"
-                    ? theme.secondaryTextColor
-                    : theme.headlineColor),
+                theme.headlineColor,),
             GridView.count(
               primary: false,
               crossAxisCount: 2,
@@ -217,9 +211,7 @@ class Dashboard extends StatelessWidget {
                       sectionTitle(
                           context,
                           "Grow Progress",
-                          theme.name == "light"
-                              ? theme.secondaryTextColor
-                              : theme.headlineColor),
+                          theme.headlineColor),
                       GrowProgress(c, 100.0)
                     ],
                   );
@@ -230,9 +222,7 @@ class Dashboard extends StatelessWidget {
                       sectionTitle(
                           context,
                           "Watertank",
-                          theme.name == "light"
-                              ? theme.secondaryTextColor
-                              : theme.headlineColor),
+                           theme.headlineColor,),
                       WaterTankLevel(
                         fullness: dashboard.waterTankLevel,
                         height: c.maxHeight - 46,

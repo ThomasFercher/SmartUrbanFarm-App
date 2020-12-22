@@ -15,7 +15,7 @@ void main() => {
       SystemChrome.setSystemUIOverlayStyle(
         SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,
-          systemNavigationBarColor: getTheme().background[1],
+          systemNavigationBarColor: getTheme().background,
         ),
       ),
       WidgetsFlutterBinding.ensureInitialized(),
@@ -51,7 +51,6 @@ class SufMobileApplication extends StatelessWidget {
     Provider.of<DashboardProvider>(context, listen: false).loadData();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: themeData,
       home: FutureBuilder(
         builder: (context, projectSnap) {
           if (projectSnap.connectionState == ConnectionState.none ||

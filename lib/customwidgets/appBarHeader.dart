@@ -57,9 +57,12 @@ class AppBarHeader extends StatelessWidget {
       }
     });
 
+
+    AppTheme theme = getTheme();
+
     return AnnotatedRegion(
       value: SystemUiOverlayStyle(
-        systemNavigationBarColor: primaryColor,
+        systemNavigationBarColor: theme.background,
       ),
       child: Scaffold(
         bottomSheet: bottomAction ??
@@ -68,7 +71,9 @@ class AppBarHeader extends StatelessWidget {
               width: 0,
             ),
         floatingActionButton: actionButton ?? null,
+        backgroundColor: theme.background,
         body: CustomScrollView(
+
           controller: isPage ? null : _controller,
           slivers: <Widget>[
             SliverAppBar(
@@ -116,6 +121,7 @@ class AppBarHeader extends StatelessWidget {
               ],
             ),
             SliverList(
+
               delegate: SliverChildListDelegate(bodyList),
             ),
           ],
@@ -166,7 +172,7 @@ class SliverListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ColoredBox(
-      color: backgroundColor,
+      color: getTheme().background,
       child: Padding(
         padding: hasPadding
             ? const EdgeInsets.symmetric(horizontal: 15.0)

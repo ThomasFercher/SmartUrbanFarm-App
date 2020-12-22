@@ -143,10 +143,11 @@ class _DataChartState extends State<DataChart> {
                     child: SectionTitle(
                       title: widget.title + " [${widget.unit}]",
                       fontSize: 24,
+                      color: getTheme().headlineColor,
                     ),
                   ),
                   PopupMenu(
-                    color: Colors.black54,
+                    color: getTheme().textColor,
                     options: widget.filter_options
                         .map((filter) => PopupMenuOption(filter, null))
                         .toList(),

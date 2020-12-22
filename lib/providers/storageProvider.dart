@@ -127,24 +127,25 @@ class StorageProvider extends ChangeNotifier {
   Future<void> loadTimeLapses() async {
     Directory eDirectory = await getExternalStorageDirectory();
     await Directory("${eDirectory.path}/timelapses/").create();
-    Directory timeLapseDirectory =
-        new Directory("${eDirectory.path}/timelapses/");
+    Directory timeLapseDirectory = new Directory("${eDirectory.path}/");
     timeLapseDirectory
       ..listSync().forEach((element) {
-        File f = new File(element.path);
-        List<String> pathArguments = element.path.split("/");
-        String name = pathArguments[pathArguments.length - 1];
-        name = name.replaceAll(".mp4", "");
-        List<String> nameArguments = name.split("-");
-        DateTimeRange range = new DateTimeRange(
-          start: DateTime.parse(nameArguments[0].replaceAll(".", "-")),
-          end: DateTime.parse(nameArguments[1].replaceAll(".", "-")),
-        );
+        if (element is File) {
+          File f = new File(element.path);
+          List<String> pathArguments = element.path.split("/");
+          String name = pathArguments[pathArguments.length - 1];
+          name = name.replaceAll(".mp4", "");
+          List<String> nameArguments = name.split("-");
+          DateTimeRange range = new DateTimeRange(
+            start: DateTime.parse(nameArguments[0].replaceAll(".", "-")),
+            end: DateTime.parse(nameArguments[1].replaceAll(".", "-")),
+          );
 
-        TimeLapse timeLapse =
-            new TimeLapse(file: f, range: range, daterange: name);
-        if (!timelapses.any((tl) => tl.file.path == f.path)) {
-          timelapses.add(timeLapse);
+          TimeLapse timeLapse =
+              new TimeLapse(file: f, range: range, daterange: name);
+          if (!timelapses.any((tl) => tl.file.path == f.path)) {
+            timelapses.add(timeLapse);
+          }
         }
       });
 
@@ -168,7 +169,7 @@ class StorageProvider extends ChangeNotifier {
 
   //Saves the given image to the devices gallery
   void savePhoto(Photo photo) async {
-    GallerySaver.saveImage(photo.file, albumName: "Smart Urban Farm").then(
+    GallerySaver.saveImage(photo.file.path, albumName: "Smart Urban Farm").then(
       (bool success) {
         print("Saved to Gallery");
       },

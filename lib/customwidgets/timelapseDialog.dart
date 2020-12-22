@@ -35,7 +35,7 @@ class _TimeLapseDialogState extends State<TimeLapseDialog> {
         borderRadius: BorderRadius.circular(borderRadius),
       ),
       elevation: 1,
-      backgroundColor: Colors.white,
+      backgroundColor: getTheme().background,
       child: contentBox(context),
     );
   }
@@ -68,6 +68,7 @@ class _TimeLapseDialogState extends State<TimeLapseDialog> {
             child: SectionTitle(
               title: "Create a Timelapse",
               fontSize: 24,
+              color: getTheme().headlineColor,
             ),
           ),
           Container(
@@ -77,6 +78,23 @@ class _TimeLapseDialogState extends State<TimeLapseDialog> {
             child: SfDateRangePicker(
               monthCellStyle: DateRangePickerMonthCellStyle(
                 todayTextStyle: TextStyle(color: primaryColor),
+                //  disabledDatesTextStyle:  TextStyle(color: primaryColor),
+                textStyle: TextStyle(color: getTheme().headlineColor),
+                
+        
+              ),
+              monthViewSettings: DateRangePickerMonthViewSettings(
+              viewHeaderStyle: DateRangePickerViewHeaderStyle(
+                textStyle: TextStyle(color: getTheme().headlineColor),
+              ),
+              ),
+              yearCellStyle: DateRangePickerYearCellStyle(
+                textStyle: TextStyle(color: getTheme().headlineColor),
+                todayTextStyle: TextStyle(color: primaryColor),
+              ),
+              headerStyle: DateRangePickerHeaderStyle(
+                textStyle: TextStyle(color: getTheme().headlineColor),
+               
               ),
               endRangeSelectionColor: primaryColor,
               startRangeSelectionColor: primaryColor,

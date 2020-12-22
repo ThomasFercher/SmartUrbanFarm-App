@@ -3,6 +3,7 @@ import 'package:flare_flutter/flare_controller.dart';
 import 'package:flare_flutter/flare_controls.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:sgs/objects/appTheme.dart';
 import 'package:sgs/styles.dart';
 
 class GrowProgress extends StatelessWidget {
@@ -14,12 +15,17 @@ class GrowProgress extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppTheme theme = getTheme();
+
+
+
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
           Radius.circular(borderRadius),
         ),
       ),
+      color: theme.cardColor,
       child: Container(
         height: c.maxHeight - 46,
         width: c.maxWidth,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sgs/objects/appTheme.dart';
 import 'package:sgs/styles.dart';
 
 class AppBarBanner extends StatelessWidget {
@@ -10,8 +11,12 @@ class AppBarBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppTheme theme = getTheme();
+
+
     return SafeArea(
       child: Container(
+        color: theme.primaryColor,
         constraints: BoxConstraints(maxHeight: maxHeight),
         height: maxHeight,
         child: LayoutBuilder(builder: (context, constraints) {

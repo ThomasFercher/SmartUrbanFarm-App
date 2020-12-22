@@ -34,6 +34,7 @@ dependencies:
   flutter_ffmpeg: ^0.3.0
   video_player: ^1.0.1
   syncfusion_flutter_datepicker: ^18.3.51-beta
+  flutter_local_notifications: ^3.0.2
 
 dev_dependencies:
   flutter_launcher_icons: "^0.7.5"

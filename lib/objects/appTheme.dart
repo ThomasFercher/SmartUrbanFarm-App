@@ -3,7 +3,7 @@ import 'dart:ui';
 class AppTheme {
   final String name;
   final Color cardColor;
-  final List<Color> background;
+  final Color background;
   final Color textColor;
   final Color secondaryTextColor;
   final Color headlineColor;

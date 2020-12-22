@@ -60,7 +60,7 @@ List<Color> temperatureGradient = [
   const Color(0xff02d39a),
 ];
 
-var selectedTheme = 0;
+var selectedTheme = 2;
 
 AppTheme getTheme() {
   return themes[selectedTheme];
@@ -70,17 +70,17 @@ List<AppTheme> themes = [
   new AppTheme(
     name: "light",
     cardColor: Colors.white,
-    background: gradient4,
+    background: Colors.white,
     textColor: Colors.black.withOpacity(0.85),
     secondaryTextColor: Colors.black.withOpacity(0.65),
-    headlineColor: Colors.white,
+    headlineColor: Colors.black.withOpacity(0.85),
     secondaryColor: Color(0xFF3f51b5),
     primaryColor: Color(0xFF26C281),
   ),
   new AppTheme(
     name: "cool",
     cardColor: background_t,
-    background: gradient2,
+    background: Colors.red,
     textColor: Colors.white,
     headlineColor: Colors.white,
     primaryColor: Colors.teal[800],
@@ -88,10 +88,12 @@ List<AppTheme> themes = [
   ),
   new AppTheme(
     name: "dark",
-    cardColor: accentColor_d,
-    background: gradient3,
+    cardColor: Colors.grey[600],
+    background: Colors.grey[800],
     textColor: Colors.white,
-    headlineColor: Colors.white,
+    headlineColor: Colors.grey[300],
+     primaryColor: Color(0xFF26C281),
+       secondaryColor: Color(0xFF3f51b5),
   )
 ];
 
@@ -144,42 +146,7 @@ double getCardElavation(context) {
   return cardElavation;
 }
 
-ThemeData themeData = ThemeData(
-  brightness: Brightness.light,
-  primarySwatch: Colors.green,
-  primaryColor: primaryColor,
-  accentColor: accentColor,
-  textTheme: TextTheme(
-    subtitle2: TextStyle(
-      color: Colors.black54,
-      fontWeight: FontWeight.w400,
-    ),
-    subtitle1: TextStyle(
-      fontSize: 18,
-      color: Colors.black87,
-      fontWeight: FontWeight.w400,
-    ),
-    headline2: TextStyle(
-      color: text_gray,
-      fontSize: 13.0,
-      fontWeight: FontWeight.w400,
-    ),
-    headline3: TextStyle(
-      color: text_gray,
-      fontSize: 15.0,
-      fontWeight: FontWeight.w600,
-    ),
-    headline6: TextStyle(
-      color: accentColor,
-      fontSize: 24,
-      fontFamily: "Lato",
-    ),
-    headline1: TextStyle(
-      color: Colors.black87,
-      fontSize: 30.0,
-    ),
-  ),
-);
+
 
 EdgeInsets lerp(EdgeInsets a, EdgeInsets b, double t) {
   assert(t != null);

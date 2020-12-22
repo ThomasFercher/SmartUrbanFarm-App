@@ -27,7 +27,7 @@ class PopupMenu extends StatelessWidget {
           Expanded(
             child: Text(
               option,
-              style: GoogleFonts.nunito(color: Colors.black54),
+              style: GoogleFonts.nunito(color: getTheme().textColor),
             ),
           ),
         ],
@@ -49,6 +49,7 @@ class PopupMenu extends StatelessWidget {
           ),
         ),
         onSelected: (value) => onSelected(value),
+        color: getTheme().cardColor,
         itemBuilder: (BuildContext context) {
           return options
               .map(

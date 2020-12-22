@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sgs/customwidgets/waterTankLevelPopup.dart';
+import 'package:sgs/objects/appTheme.dart';
 import 'package:sgs/providers/dashboardProvider.dart';
 import 'package:sgs/styles.dart';
 import 'dart:math';
@@ -27,6 +28,8 @@ class WaterTankLevel extends StatelessWidget {
     double _yOffset = (200 / 100) * (100 - fullness);
     int yOffset = _yOffset.round();
 
+    AppTheme theme = getTheme();
+
     return Card(
       elevation: cardElavation,
       shape: RoundedRectangleBorder(
@@ -34,7 +37,7 @@ class WaterTankLevel extends StatelessWidget {
           Radius.circular(borderRadius),
         ),
       ),
-      color: Colors.white,
+      color: theme.cardColor,
       child: Container(
         height: height,
         child: fullness > 8

@@ -35,6 +35,9 @@ class CardData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppTheme theme = getTheme();
+
+
     return Container(
       child: Consumer<DashboardProvider>(
         builder: (context, d, child) {
@@ -105,7 +108,7 @@ class CardData extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(borderRadius),
 
-                  color: Colors.white, //iconColor, //getTheme().cardColor,
+                  color: theme.cardColor, //iconColor, //getTheme().cardColor,
                 ),
                 padding: EdgeInsets.all(8),
                 child: Column(
@@ -125,7 +128,7 @@ class CardData extends StatelessWidget {
                       child: Text(
                         text,
                         style: GoogleFonts.nunito(
-                          color: Colors.black54,
+                          color: theme.textColor,
                           fontWeight: FontWeight.w200,
                           fontSize: 26.0,
                         ),
