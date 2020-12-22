@@ -46,7 +46,7 @@ class Dashboard extends StatelessWidget {
         return AppBarHeader(
           isPage: false,
           theme: theme,
-          title: "Smart Grow Farm",
+          title: "Smart Urban Farm",
           contentPadding: true,
           body: <Widget>[
             Padding(padding: EdgeInsets.only(top: 20)),
