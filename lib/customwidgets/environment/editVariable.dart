@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sgs/objects/appTheme.dart';
+import 'package:sgs/providers/settingsProvider.dart';
 
 import '../../styles.dart';
 import '../sectionTitle.dart';
@@ -28,13 +30,13 @@ class EditVariable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AppTheme theme = getTheme();
+    AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
     print(((max - min) * 2).round());
     return Container(
       color: Colors.grey[50],
       child: Container(
         padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 10),
-        color:  getTheme().background,
+        color: theme.background,
         child: Column(
           children: [
             Row(
@@ -45,7 +47,7 @@ class EditVariable extends StatelessWidget {
                   child: SectionTitle(
                     title: title,
                     fontSize: 20,
-                     color: getTheme().headlineColor,
+                    color: theme.headlineColor,
                   ),
                 ),
                 Container(
@@ -54,7 +56,7 @@ class EditVariable extends StatelessWidget {
                   child: Text(
                     "$value$unit",
                     style: TextStyle(
-                      color: getTheme().headlineColor,
+                      color: theme.headlineColor,
                       fontWeight: FontWeight.w100,
                       fontSize: 30.0,
                     ),
@@ -64,7 +66,6 @@ class EditVariable extends StatelessWidget {
             ),
             Container(
               width: MediaQuery.of(context).size.width,
-             
               child: CupertinoSlider(
                 value: value,
                 onChanged: (val) {

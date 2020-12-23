@@ -60,43 +60,6 @@ List<Color> temperatureGradient = [
   const Color(0xff02d39a),
 ];
 
-var selectedTheme = 2;
-
-AppTheme getTheme() {
-  return themes[selectedTheme];
-}
-
-List<AppTheme> themes = [
-  new AppTheme(
-    name: "light",
-    cardColor: Colors.white,
-    background: Colors.white,
-    textColor: Colors.black.withOpacity(0.85),
-    secondaryTextColor: Colors.black.withOpacity(0.65),
-    headlineColor: Colors.black.withOpacity(0.85),
-    secondaryColor: Color(0xFF3f51b5),
-    primaryColor: Color(0xFF26C281),
-  ),
-  new AppTheme(
-    name: "cool",
-    cardColor: background_t,
-    background: Colors.red,
-    textColor: Colors.white,
-    headlineColor: Colors.white,
-    primaryColor: Colors.teal[800],
-    secondaryColor: Colors.green[300],
-  ),
-  new AppTheme(
-    name: "dark",
-    cardColor: Colors.grey[600],
-    background: Colors.grey[800],
-    textColor: Colors.white,
-    headlineColor: Colors.grey[300],
-     primaryColor: Color(0xFF26C281),
-       secondaryColor: Color(0xFF3f51b5),
-  )
-];
-
 TextStyle sectionTitleStyle(context, Color color) => GoogleFonts.nunito(
       textStyle: TextStyle(
         color: color,
@@ -145,8 +108,6 @@ double getHeight(context) {
 double getCardElavation(context) {
   return cardElavation;
 }
-
-
 
 EdgeInsets lerp(EdgeInsets a, EdgeInsets b, double t) {
   assert(t != null);

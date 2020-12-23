@@ -11,6 +11,7 @@ import 'package:sgs/objects/appTheme.dart';
 import 'package:sgs/pages/advanced.dart';
 import 'package:sgs/pages/environment.dart';
 import 'package:sgs/providers/dashboardProvider.dart';
+import 'package:sgs/providers/settingsProvider.dart';
 import 'package:sgs/styles.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -35,8 +36,7 @@ class CardData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AppTheme theme = getTheme();
-
+    AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
 
     return Container(
       child: Consumer<DashboardProvider>(
@@ -194,7 +194,7 @@ class CardData extends StatelessWidget {
   }
 
   Widget detailedPopup(BuildContext context, DashboardProvider d) {
-    AppTheme theme = getTheme();
+    AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
     return Consumer<DashboardProvider>(
       builder: (context, d, child) {
         return Material(
@@ -232,7 +232,7 @@ class CardData extends StatelessWidget {
                             child: new Text(
                               label,
                               style: GoogleFonts.nunito(
-                                color: getTheme().textColor,
+                                color: theme.textColor,
                                 fontSize: 16.0,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -251,7 +251,7 @@ class CardData extends StatelessWidget {
                             child: new Text(
                               text,
                               style: TextStyle(
-                                color: getTheme().textColor,
+                                color: theme.textColor,
                                 fontWeight: FontWeight.w100,
                                 fontSize: 30.0,
                               ),
@@ -275,7 +275,7 @@ class CardData extends StatelessWidget {
                           child: new Text(
                             "Sollwert",
                             style: GoogleFonts.nunito(
-                              color: getTheme().textColor,
+                              color: theme.textColor,
                               fontSize: 16.0,
                               fontWeight: FontWeight.w600,
                             ),
@@ -292,7 +292,7 @@ class CardData extends StatelessWidget {
                           child: new Text(
                             getValueString(type, d),
                             style: TextStyle(
-                              color: getTheme().textColor,
+                              color: theme.textColor,
                               fontWeight: FontWeight.w100,
                               fontSize: 30.0,
                             ),

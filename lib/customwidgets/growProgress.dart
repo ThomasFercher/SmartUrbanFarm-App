@@ -3,7 +3,9 @@ import 'package:flare_flutter/flare_controller.dart';
 import 'package:flare_flutter/flare_controls.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 import 'package:sgs/objects/appTheme.dart';
+import 'package:sgs/providers/settingsProvider.dart';
 import 'package:sgs/styles.dart';
 
 class GrowProgress extends StatelessWidget {
@@ -15,9 +17,7 @@ class GrowProgress extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AppTheme theme = getTheme();
-
-
+    AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
 
     return Card(
       shape: RoundedRectangleBorder(
@@ -46,7 +46,7 @@ class GrowProgress extends StatelessWidget {
               child: Text(
                 "$progress%",
                 style: TextStyle(
-                  color: getTheme().textColor,
+                  color: theme.textColor,
                   fontWeight: FontWeight.w100,
                   fontSize: 30.0,
                 ),

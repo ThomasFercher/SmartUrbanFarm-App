@@ -13,70 +13,73 @@ import 'package:sgs/objects/appTheme.dart';
 
 class SettingsPage extends StatelessWidget {
   List<Widget> getSettings(SettingsProvider pr, context) {
+    AppTheme theme = pr.getTheme();
+    List<AppTheme> themes = pr.themes;
+
     return [
       ListTile(
         contentPadding: EdgeInsets.symmetric(horizontal: 0),
-        leading: Icon(Icons.wifi_tethering,color:getTheme().headlineColor,size: 40,),
+        leading: LeadingIcon(icon: Icons.wifi_tethering),
         title: new Text(
           "Wi-Fi Configuration",
           style: GoogleFonts.nunito(
-             color: getTheme().headlineColor,
+            color: theme.headlineColor,
           ),
         ),
         subtitle: new Text(
           "Bla wlan shit",
-        style: GoogleFonts.nunito(
-             color: getTheme().headlineColor,
+          style: GoogleFonts.nunito(
+            color: theme.headlineColor,
           ),
         ),
       ),
       CheckboxListTile(
         contentPadding: EdgeInsets.symmetric(horizontal: 0),
-        secondary: Icon( Icons.wifi_tethering,color:getTheme().headlineColor,size: 40,),
+        secondary: LeadingIcon(icon: Icons.wifi_tethering),
         onChanged: (value) => pr.setCheckbox(value),
         value: pr.checkbox,
-
         title: Text(
           "This is a CheckBoxPreference",
           style: GoogleFonts.nunito(
-             color: getTheme().headlineColor,
+            color: theme.headlineColor,
           ),
         ),
-        activeColor:getTheme().primaryColor,
+        activeColor: theme.primaryColor,
         checkColor: Colors.white,
       ),
       SwitchListTile(
         contentPadding: EdgeInsets.symmetric(horizontal: 0),
-        secondary:  Icon( Icons.camera_alt,color:getTheme().headlineColor,size: 40,),
+        secondary: LeadingIcon(icon: Icons.camera_alt),
         value: pr.takeDailyPicture,
-        activeColor: getTheme().primaryColor,
+        inactiveTrackColor: theme.contrast,
+        activeColor: theme.primaryColor,
         title: Text(
           "Take daily picture",
           style: GoogleFonts.nunito(
-             color: getTheme().headlineColor,
+            color: theme.headlineColor,
           ),
         ),
         subtitle: new Text(
           "A timelapse will be created",
-           style: GoogleFonts.nunito(
-             color: getTheme().headlineColor,
+          style: GoogleFonts.nunito(
+            color: theme.headlineColor,
           ),
         ),
         onChanged: (value) => pr.setTakeDailyPicture(value),
       ),
       ListTile(
         contentPadding: EdgeInsets.symmetric(horizontal: 0),
-        leading: Icon( Icons.info,color:getTheme().headlineColor,size: 40,),
+        leading: LeadingIcon(icon: Icons.info),
         title: Text(
           "More Information",
-         style: GoogleFonts.nunito(
-             color: getTheme().headlineColor,
+          style: GoogleFonts.nunito(
+            color: theme.headlineColor,
           ),
         ),
         subtitle: new Text(
           "Information about licenses and version number",
-        style: GoogleFonts.nunito(
-             color: getTheme().headlineColor,
+          style: GoogleFonts.nunito(
+            color: theme.headlineColor,
           ),
         ),
         onTap: () {
@@ -102,12 +105,12 @@ class SettingsPage extends StatelessWidget {
         child: Column(children: [
           ListTile(
             contentPadding: EdgeInsets.symmetric(horizontal: 0),
-            leading:  Icon( Icons.colorize,color:getTheme().headlineColor,size: 40,),
+            leading: LeadingIcon(icon: Icons.colorize),
             title: Text(
               "Select Color Theme",
-               style: GoogleFonts.nunito(
-             color: getTheme().headlineColor,
-          ),
+              style: GoogleFonts.nunito(
+                color: theme.headlineColor,
+              ),
             ),
           ),
           GridView.count(
@@ -123,7 +126,7 @@ class SettingsPage extends StatelessWidget {
                 selected: pr.getSelected(0),
                 appTheme: themes[0],
               ),
-           /*   ThemeCard(
+              /*   ThemeCard(
                 gradient: themes[1].background,
                 cardColor: themes[1].cardColor,
                 onSelected: () => {pr.setTheme(1)},
@@ -146,20 +149,14 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(
-        systemNavigationBarColor: getTheme().primaryColor,
-      ),
-      child: Consumer<SettingsProvider>(
-        builder: (context, pr, child) {
-          return AppBarHeader(
-            isPage: true,
-            title: "Settings",
-            theme: getTheme(),
-            body: getSettings(pr, context),
-          );
-        },
-      ),
+    return Consumer<SettingsProvider>(
+      builder: (context, pr, child) {
+        return AppBarHeader(
+          isPage: true,
+          title: "Settings",
+          body: getSettings(pr, context),
+        );
+      },
     );
   }
 }
@@ -171,12 +168,13 @@ class ThemeCard extends StatelessWidget {
   final Color cardColor;
   final AppTheme appTheme;
 
-  ThemeCard(
-      {this.background,
-      this.selected,
-      this.onSelected,
-      this.cardColor,
-      this.appTheme});
+  ThemeCard({
+    this.background,
+    this.selected,
+    this.onSelected,
+    this.cardColor,
+    this.appTheme,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -187,25 +185,23 @@ class ThemeCard extends StatelessWidget {
         child: SizedBox(
           height: constraints.maxHeight + 8,
           child: Card(
-            color: appTheme.textColor,
+            color:
+                appTheme.name == "light" ? Colors.grey[50] : Colors.grey[800],
             elevation: selected ? 3 : 1,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(borderRadius),
             ),
             child: CustomPaint(
-              painter:ThemePainter(appTheme) ,
+              painter: ThemePainter(appTheme),
               child: Stack(
                 alignment: Alignment.topRight,
                 children: [
                   Container(
-                  
                     padding: EdgeInsets.all(5),
                     child: Column(
                       children: [
-                     
                         Container(
                           padding: EdgeInsets.only(top: 5),
-                   
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -315,17 +311,18 @@ class LeadingIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
     return Container(
       width: 40,
       height: 40,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(23),
-        color: Colors.black.withOpacity(0.1),
+        color: theme.contrast,
       ),
       child: Icon(
         icon,
         size: 25,
-        color: getTheme().background,
+        color: theme.primaryColor,
       ),
     );
   }
@@ -343,20 +340,17 @@ class ThemePainter extends CustomPainter {
     var height = 60.0;
     var path = new Path();
 
- 
-
-  
     paint.color = appTheme.primaryColor;
     path.moveTo(0, height);
-   
-    path.lineTo(size.width, height);
-     path.lineTo(size.width, borderRadius);
-    
-    path.arcToPoint(Offset(size.width-borderRadius, 0),
-        radius: Radius.circular(borderRadius), clockwise: false);
-       path.lineTo(borderRadius, 0);   
 
-         path.arcToPoint(Offset(0, borderRadius),
+    path.lineTo(size.width, height);
+    path.lineTo(size.width, borderRadius);
+
+    path.arcToPoint(Offset(size.width - borderRadius, 0),
+        radius: Radius.circular(borderRadius), clockwise: false);
+    path.lineTo(borderRadius, 0);
+
+    path.arcToPoint(Offset(0, borderRadius),
         radius: Radius.circular(borderRadius), clockwise: false);
     canvas.drawPath(path, paint);
   }

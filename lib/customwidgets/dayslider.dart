@@ -1,8 +1,10 @@
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:sgs/customwidgets/s_g_s__custom_icon_icons.dart';
 import 'package:sgs/customwidgets/sectionTitle.dart';
+import 'package:sgs/providers/settingsProvider.dart';
 import 'package:weather_icons/weather_icons.dart';
 import '../styles.dart';
 import 'package:sgs/objects/appTheme.dart';
@@ -55,9 +57,9 @@ class _DaySliderState extends State<DaySlider> {
 
   @override
   Widget build(BuildContext context) {
-    AppTheme theme = getTheme();
+    AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
     return Container(
-       color:  getTheme().background,
+      color: theme.background,
       padding: EdgeInsets.symmetric(horizontal: 15, vertical: 0),
       child: Container(
         padding: EdgeInsets.only(top: 10, bottom: 10),

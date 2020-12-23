@@ -15,9 +15,11 @@ import 'package:sgs/customwidgets/popupMenu.dart';
 import 'package:sgs/customwidgets/timeLapseItem.dart';
 import 'package:sgs/customwidgets/timelapseDialog.dart';
 import 'package:sgs/main.dart';
+import 'package:sgs/objects/appTheme.dart';
 import 'package:sgs/objects/photo.dart';
 import 'package:sgs/objects/popupMenuOption.dart';
 import 'package:sgs/objects/timeLapse.dart';
+import 'package:sgs/providers/settingsProvider.dart';
 import 'package:sgs/providers/storageProvider.dart';
 import 'package:video_player/video_player.dart';
 
@@ -70,11 +72,12 @@ class _GalleryState extends State<Gallery> {
   }
 
   Widget timeLapseActionButton(bool isLoading, context) {
+    AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
     return FloatingActionButton(
       onPressed: () {
         createTimeLapse(context);
       },
-        backgroundColor: getTheme().cardColor,
+      backgroundColor: theme.cardColor,
       child: isLoading
           ? Container(
               height: 24,
@@ -87,21 +90,22 @@ class _GalleryState extends State<Gallery> {
             )
           : Icon(
               Icons.timelapse_sharp,
-               color: getTheme().primaryColor,
+              color: theme.primaryColor,
               size: 30,
             ),
     );
   }
 
   Widget photoActionButton(context) {
+    AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
     return FloatingActionButton(
-      backgroundColor: getTheme().cardColor,
+      backgroundColor: theme.cardColor,
       onPressed: () {
         takePhoto();
       },
       child: Icon(
         Icons.camera,
-        color: getTheme().primaryColor,
+        color: theme.primaryColor,
         size: 30,
       ),
     );
@@ -110,14 +114,13 @@ class _GalleryState extends State<Gallery> {
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
-
+    AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
     return Consumer<StorageProvider>(
       builder: (context, d, child) {
         List<Photo> photos = d.photos;
         List<TimeLapse> timelapses = d.timelapses;
         return AppBarHeader(
           isPage: true,
-          theme: getTheme(),
           title: "Gallery",
           trailling: IconButton(
             icon: Icon(Icons.video_collection),

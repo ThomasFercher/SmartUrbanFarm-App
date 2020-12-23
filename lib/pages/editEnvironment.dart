@@ -9,6 +9,7 @@ import 'package:sgs/customwidgets/environment/input.dart';
 import 'package:sgs/objects/environmentSettings.dart';
 import 'package:sgs/providers/dashboardProvider.dart';
 import 'package:sgs/providers/environmentSettingsProvider.dart';
+import 'package:sgs/providers/settingsProvider.dart';
 import 'package:weather_icons/weather_icons.dart';
 import '../styles.dart';
 import 'package:sgs/objects/appTheme.dart';
@@ -35,24 +36,22 @@ class EditEnvironment extends StatelessWidget {
     return ListenableProvider(
       create: (_) => EnvironmentSettingsProvider(initialSettings),
       builder: (context, child) {
-        AppTheme theme = getTheme();
+        AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
         //   EnvironmentSettings settings = d.getSettings();
         return Consumer<EnvironmentSettingsProvider>(
             builder: (context, pr, child) {
           return AppBarHeader(
             title: create ? "Create Environment" : "Edit $name",
             isPage: true,
-            theme: theme,
             contentPadding: false,
             bottomAction: Container(
-                 color: getTheme().cardColor,
-                          child: Container(
-                
+              color: theme.cardColor,
+              child: Container(
                 width: MediaQuery.of(context).size.width,
                 height: 70,
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 decoration: BoxDecoration(
-                  color: getTheme().background,
+                  color: theme.background,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(borderRadius),
                     topRight: Radius.circular(borderRadius),
@@ -62,7 +61,8 @@ class EditEnvironment extends StatelessWidget {
                       color: Colors.black.withOpacity(0.1),
                       blurRadius: 2.0,
                       spreadRadius: 0.0,
-                      offset: Offset(0.0, -2.0), // shadow direction: bottom right
+                      offset:
+                          Offset(0.0, -2.0), // shadow direction: bottom right
                     )
                   ],
                 ),
@@ -162,8 +162,9 @@ class PlaceDivider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
     return Container(
-      color: getTheme().cardColor,
+      color: theme.cardColor,
       height: height,
       width: MediaQuery.of(context).size.width,
     );

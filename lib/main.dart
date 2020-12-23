@@ -2,6 +2,7 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flare_flutter/flare_cache.dart';
 import 'package:flare_flutter/flare_controls.dart';
 import 'package:flutter/material.dart';
+import 'package:sgs/objects/appTheme.dart';
 import 'package:sgs/pages/dashboard.dart';
 import 'package:sgs/providers/settingsProvider.dart';
 import 'package:sgs/providers/storageProvider.dart';
@@ -15,7 +16,7 @@ void main() => {
       SystemChrome.setSystemUIOverlayStyle(
         SystemUiOverlayStyle(
           statusBarColor: Colors.transparent,
-          systemNavigationBarColor: getTheme().background,
+          systemNavigationBarColor: Colors.transparent,
         ),
       ),
       WidgetsFlutterBinding.ensureInitialized(),
@@ -48,9 +49,12 @@ class SufMobileApplication extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<DashboardProvider>(context, listen: false).loadData();
+    AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primaryColor: primaryColor,
+      ),
       home: FutureBuilder(
         builder: (context, projectSnap) {
           if (projectSnap.connectionState == ConnectionState.none ||
@@ -58,7 +62,7 @@ class SufMobileApplication extends StatelessWidget {
               projectSnap.connectionState == ConnectionState.waiting) {
             // Splashscreen using a Flare2d as a loading Animation
             return Container(
-              color: Colors.white,
+              color: theme.background,
               child: FlareActor(
                 'assets/flares/splashscreen.flr',
                 alignment: Alignment.center,

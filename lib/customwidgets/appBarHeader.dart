@@ -3,15 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:sgs/customwidgets/appBarBanner.dart';
 import 'package:sgs/objects/appTheme.dart';
+import 'package:sgs/providers/settingsProvider.dart';
 
 import '../styles.dart';
 
 class AppBarHeader extends StatelessWidget {
   final String title;
   final Widget trailling;
-  final AppTheme theme;
   final List<Widget> body;
   final bool isPage;
   final Widget actionButton;
@@ -24,7 +25,6 @@ class AppBarHeader extends StatelessWidget {
     this.isPage,
     this.title,
     this.trailling,
-    this.theme,
     this.body,
     this.actionButton,
     contentPadding,
@@ -57,8 +57,7 @@ class AppBarHeader extends StatelessWidget {
       }
     });
 
-
-    AppTheme theme = getTheme();
+    AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
 
     return AnnotatedRegion(
       value: SystemUiOverlayStyle(
@@ -73,7 +72,6 @@ class AppBarHeader extends StatelessWidget {
         floatingActionButton: actionButton ?? null,
         backgroundColor: theme.background,
         body: CustomScrollView(
-
           controller: isPage ? null : _controller,
           slivers: <Widget>[
             SliverAppBar(
@@ -121,7 +119,6 @@ class AppBarHeader extends StatelessWidget {
               ],
             ),
             SliverList(
-
               delegate: SliverChildListDelegate(bodyList),
             ),
           ],
@@ -132,7 +129,6 @@ class AppBarHeader extends StatelessWidget {
 }
 
 class DarkPainter extends CustomPainter {
-  AppTheme theme = getTheme();
   //drawing
   @override
   void paint(Canvas canvas, Size size) {
@@ -171,8 +167,10 @@ class SliverListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
+
     return ColoredBox(
-      color: getTheme().background,
+      color: theme.background,
       child: Padding(
         padding: hasPadding
             ? const EdgeInsets.symmetric(horizontal: 15.0)

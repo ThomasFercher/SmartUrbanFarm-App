@@ -3,11 +3,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:sgs/customwidgets/environment/settingsListTile.dart';
+import 'package:sgs/objects/appTheme.dart';
 import 'package:sgs/objects/environmentSettings.dart';
 import 'package:sgs/objects/popupMenuOption.dart';
 import 'package:sgs/pages/editEnvironment.dart';
 import 'package:sgs/pages/environment.dart';
 import 'package:sgs/providers/dashboardProvider.dart';
+import 'package:sgs/providers/settingsProvider.dart';
 import 'package:weather_icons/weather_icons.dart';
 
 import '../../styles.dart';
@@ -18,9 +20,24 @@ class EnvironmentListItem extends StatelessWidget {
   EnvironmentListItem({@required this.settings});
 
   List<PopupMenuOption> options = [
-    PopupMenuOption("Set Active", Icon(Icons.check,color: primaryColor,)),
-    PopupMenuOption("Edit", Icon(Icons.edit,color: primaryColor,)),
-    PopupMenuOption("Delete", Icon(Icons.delete,color: Colors.redAccent,))
+    PopupMenuOption(
+        "Set Active",
+        Icon(
+          Icons.check,
+          color: primaryColor,
+        )),
+    PopupMenuOption(
+        "Edit",
+        Icon(
+          Icons.edit,
+          color: primaryColor,
+        )),
+    PopupMenuOption(
+        "Delete",
+        Icon(
+          Icons.delete,
+          color: Colors.redAccent,
+        ))
   ];
 
   @override
@@ -30,6 +47,7 @@ class EnvironmentListItem extends StatelessWidget {
     var soilMoisture = settings.getSoilMoisture;
     var suntime = settings.getSuntime;
     var waterConsumption = settings.getWaterConsumption;
+    AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
 
     return Container(
       width: MediaQuery.of(context).size.width - 30,
@@ -39,14 +57,14 @@ class EnvironmentListItem extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadius),
         ),
-        color: getTheme().cardColor,
+        color: theme.cardColor,
         child: Column(
           children: [
             Container(
               padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
               height: 56,
               decoration: BoxDecoration(
-                color: getTheme().primaryColor,
+                color: theme.primaryColor,
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(borderRadius),
                     topRight: Radius.circular(borderRadius)),
@@ -73,8 +91,7 @@ class EnvironmentListItem extends StatelessWidget {
                     onSelected: (val) {
                       switch (val) {
                         case 'Set Active':
-                          Provider.of<DashboardProvider>(context,
-                                  listen: false)
+                          Provider.of<DashboardProvider>(context, listen: false)
                               .setActiveEnvironment(settings);
                           break;
                         case 'Edit':
@@ -88,8 +105,7 @@ class EnvironmentListItem extends StatelessWidget {
                           );
                           break;
                         case 'Delete':
-                          Provider.of<DashboardProvider>(context,
-                                  listen: false)
+                          Provider.of<DashboardProvider>(context, listen: false)
                               .deleteEnvironment(settings);
                           break;
                         default:

@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:sgs/customwidgets/popupMenu.dart';
+import 'package:sgs/objects/appTheme.dart';
 import 'package:sgs/objects/popupMenuOption.dart';
 import 'package:sgs/objects/timeLapse.dart';
+import 'package:sgs/providers/settingsProvider.dart';
 import 'package:sgs/providers/storageProvider.dart';
 import 'package:video_player/video_player.dart';
 
@@ -69,7 +71,7 @@ class _TimeLapseItemState extends State<TimeLapseItem> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-
+    AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
     return Container(
       margin: EdgeInsets.only(bottom: 20),
       width: MediaQuery.of(context).size.width - 30,
@@ -78,7 +80,7 @@ class _TimeLapseItemState extends State<TimeLapseItem> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadius),
         ),
-        color: getTheme().cardColor,
+        color: theme.cardColor,
         child: Column(
           children: [
             Stack(

@@ -9,8 +9,10 @@ class AppTheme {
   final Color headlineColor;
   final Color primaryColor;
   final Color secondaryColor;
+  final Color contrast;
 
   AppTheme({
+    this.contrast,
     this.name,
     this.cardColor,
     this.background,

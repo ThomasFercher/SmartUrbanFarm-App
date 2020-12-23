@@ -169,7 +169,7 @@ class StorageProvider extends ChangeNotifier {
 
   //Saves the given image to the devices gallery
   void savePhoto(Photo photo) async {
-    GallerySaver.saveImage(photo.file.path, albumName: "Smart Urban Farm").then(
+    GallerySaver.saveImage(photo.file, albumName: "Smart Urban Farm").then(
       (bool success) {
         print("Saved to Gallery");
       },

@@ -2,7 +2,9 @@ import 'dart:collection';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sgs/objects/appTheme.dart';
 import 'package:sgs/providers/dashboardProvider.dart';
+import 'package:sgs/providers/settingsProvider.dart';
 import '../styles.dart';
 import 'dart:math';
 
@@ -69,12 +71,13 @@ class SmallDataChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
     return Consumer<DashboardProvider>(
       builder: (context, d, child) {
         return ClipPath(
           clipper: ChartClipper(),
           child: Container(
-            color: getTheme().cardColor,
+            color: theme.cardColor,
             // width: MediaQuery.of(context).size.width,
             height: 190,
             child: LineChart(

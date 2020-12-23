@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:sgs/objects/appTheme.dart';
+import 'package:sgs/providers/settingsProvider.dart';
 import 'package:sgs/styles.dart';
 
 import '../sectionTitle.dart';
@@ -19,9 +21,11 @@ class Input extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
+
     return Container(
       padding: EdgeInsets.all(20),
-      color: getTheme().background,
+      color: theme.background,
       child: Column(
         children: [
           Container(
@@ -30,7 +34,7 @@ class Input extends StatelessWidget {
             child: SectionTitle(
               title: "Name",
               fontSize: 20,
-               color: getTheme().headlineColor,
+              color: theme.headlineColor,
             ),
           ),
           SizedBox(
@@ -59,7 +63,7 @@ class Input extends StatelessWidget {
                 }
               },
               style: GoogleFonts.nunito(
-                color: getTheme().headlineColor,
+                color: theme.headlineColor,
                 fontSize: 20,
                 height: 1,
                 fontWeight: FontWeight.w400,

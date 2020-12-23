@@ -35,7 +35,7 @@ class Dashboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AppTheme theme = getTheme();
+    AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
     return Consumer<DashboardProvider>(
       builder: (context, dashboard, child) {
         var temperature = dashboard.temperature;
@@ -45,7 +45,6 @@ class Dashboard extends StatelessWidget {
         var width = MediaQuery.of(context).size.width - 20;
         return AppBarHeader(
           isPage: false,
-          theme: theme,
           title: "Smart Urban Farm",
           contentPadding: true,
           body: <Widget>[
@@ -91,10 +90,7 @@ class Dashboard extends StatelessWidget {
               ],
             ),
             Padding(padding: EdgeInsets.only(top: 20)),
-            sectionTitle(
-                context,
-                "Sunlight",
-               theme.headlineColor),
+            sectionTitle(context, "Sunlight", theme.headlineColor),
             Container(
               child:
                   /*DaySlider(
@@ -106,9 +102,10 @@ class Dashboard extends StatelessWidget {
             ),
             Padding(padding: EdgeInsets.only(top: 20)),
             sectionTitle(
-                context,
-                "Actions",
-               theme.headlineColor,),
+              context,
+              "Actions",
+              theme.headlineColor,
+            ),
             GridView.count(
               primary: false,
               crossAxisCount: 2,
@@ -152,9 +149,10 @@ class Dashboard extends StatelessWidget {
             ),
             Padding(padding: EdgeInsets.only(top: 20)),
             sectionTitle(
-                context,
-                "Settings",
-                theme.headlineColor,),
+              context,
+              "Settings",
+              theme.headlineColor,
+            ),
             GridView.count(
               primary: false,
               crossAxisCount: 2,
@@ -209,9 +207,7 @@ class Dashboard extends StatelessWidget {
                   return Column(
                     children: [
                       sectionTitle(
-                          context,
-                          "Grow Progress",
-                          theme.headlineColor),
+                          context, "Grow Progress", theme.headlineColor),
                       GrowProgress(c, 100.0)
                     ],
                   );
@@ -220,9 +216,10 @@ class Dashboard extends StatelessWidget {
                   return Column(
                     children: [
                       sectionTitle(
-                          context,
-                          "Watertank",
-                           theme.headlineColor,),
+                        context,
+                        "Watertank",
+                        theme.headlineColor,
+                      ),
                       WaterTankLevel(
                         fullness: dashboard.waterTankLevel,
                         height: c.maxHeight - 46,

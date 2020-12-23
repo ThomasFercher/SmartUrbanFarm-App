@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:sgs/customwidgets/waterTankLevelPopup.dart';
 import 'package:sgs/objects/appTheme.dart';
 import 'package:sgs/providers/dashboardProvider.dart';
+import 'package:sgs/providers/settingsProvider.dart';
 import 'package:sgs/styles.dart';
 import 'dart:math';
 import 'dart:ui' as ui;
@@ -28,7 +29,7 @@ class WaterTankLevel extends StatelessWidget {
     double _yOffset = (200 / 100) * (100 - fullness);
     int yOffset = _yOffset.round();
 
-    AppTheme theme = getTheme();
+    AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
 
     return Card(
       elevation: cardElavation,
@@ -64,7 +65,7 @@ class WaterTankLevel extends StatelessWidget {
                     child: Text(
                       "$fullness%",
                       style: TextStyle(
-                        color: getTheme().textColor,
+                        color: theme.textColor,
                         fontWeight: FontWeight.w100,
                         fontSize: 30.0,
                       ),

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
@@ -11,6 +10,7 @@ import 'package:sgs/objects/appTheme.dart';
 import 'package:sgs/objects/environmentSettings.dart';
 import 'package:sgs/objects/popupMenuOption.dart';
 import 'package:sgs/providers/dashboardProvider.dart';
+import 'package:sgs/providers/settingsProvider.dart';
 import 'package:weather_icons/weather_icons.dart';
 
 import '../styles.dart';
@@ -29,13 +29,23 @@ class Environment extends StatelessWidget {
   }
 
   List<PopupMenuOption> options = [
-  PopupMenuOption("Edit", Icon(Icons.edit,color: primaryColor,)),
-    PopupMenuOption("Delete", Icon(Icons.delete,color: Colors.redAccent,))
+    PopupMenuOption(
+        "Edit",
+        Icon(
+          Icons.edit,
+          color: primaryColor,
+        )),
+    PopupMenuOption(
+        "Delete",
+        Icon(
+          Icons.delete,
+          color: Colors.redAccent,
+        ))
   ];
 
   @override
   Widget build(BuildContext context) {
-    AppTheme theme = getTheme();
+    AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
     return Consumer<DashboardProvider>(builder: (context, d, child) {
       List<EnvironmentSettings> settings = d.environments;
       EnvironmentSettings activeEnvironment = d.activeEnvironment;
@@ -47,7 +57,6 @@ class Environment extends StatelessWidget {
       return AppBarHeader(
         isPage: true,
         title: "Environment Settings",
-        theme: getTheme(),
         contentPadding: false,
         body: [
           Padding(
@@ -88,7 +97,7 @@ class Environment extends StatelessWidget {
               ),
             ),
           ),
-          backgroundColor: getTheme().cardColor,
+          backgroundColor: theme.cardColor,
           child: Icon(
             Icons.add,
             color: primaryColor,
@@ -100,7 +109,7 @@ class Environment extends StatelessWidget {
             child: Column(
               children: [
                 Padding(
-                  padding: EdgeInsets.only(left: 30,right: 15),
+                  padding: EdgeInsets.only(left: 30, right: 15),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:sgs/objects/appTheme.dart';
+import 'package:sgs/providers/settingsProvider.dart';
 
 import '../../styles.dart';
 
@@ -25,11 +28,12 @@ class SettingsListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var val = value ?? value_text;
+    AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
     return ListTile(
       title: Text(
         title,
         style: TextStyle(
-          color: getTheme().textColor,
+          color: theme.textColor,
           fontSize: 18.0,
           fontWeight: FontWeight.w400,
         ),
@@ -40,7 +44,7 @@ class SettingsListTile extends StatelessWidget {
         width: 40,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-            color: getTheme().textColor.withOpacity(0.03)),
+            color: theme.textColor.withOpacity(0.03)),
         child: Icon(
           icon,
           color: color,
@@ -53,7 +57,7 @@ class SettingsListTile extends StatelessWidget {
         child: Text(
           "$val$unit",
           style: TextStyle(
-            color: getTheme().textColor,
+            color: theme.textColor,
             fontWeight: FontWeight.w100,
             fontSize: 30.0,
           ),

@@ -7,6 +7,7 @@ import 'package:sgs/customwidgets/sectionTitle.dart';
 import 'package:sgs/customwidgets/smalldatachart.dart';
 import 'package:sgs/objects/popupMenuOption.dart';
 import 'package:sgs/providers/dashboardProvider.dart';
+import 'package:sgs/providers/settingsProvider.dart';
 import '../styles.dart';
 import 'dart:math';
 import 'package:sgs/objects/appTheme.dart';
@@ -130,6 +131,7 @@ class _DataChartState extends State<DataChart> {
     spots = getSpots(widget.data, range);
     minY = getMinY(spots) - 1;
     maxY = getMaxY(spots) + 1;
+    AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
 
     return Consumer<DashboardProvider>(
       builder: (context, d, child) {
@@ -143,11 +145,11 @@ class _DataChartState extends State<DataChart> {
                     child: SectionTitle(
                       title: widget.title + " [${widget.unit}]",
                       fontSize: 24,
-                      color: getTheme().headlineColor,
+                      color: theme.headlineColor,
                     ),
                   ),
                   PopupMenu(
-                    color: getTheme().textColor,
+                    color: theme.textColor,
                     options: widget.filter_options
                         .map((filter) => PopupMenuOption(filter, null))
                         .toList(),

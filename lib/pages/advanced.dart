@@ -42,7 +42,7 @@ class Advanced extends StatelessWidget {
         return AppBarHeader(
           title: "Advanced Data",
           isPage: true,
-          theme: getTheme(),
+          //     theme: getTheme(),
           body: getItems(d),
           contentPadding: false,
         );

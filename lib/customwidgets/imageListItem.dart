@@ -1,11 +1,10 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sgs/customwidgets/popupMenu.dart';
 import 'package:sgs/objects/appTheme.dart';
 import 'package:sgs/objects/photo.dart';
 import 'package:sgs/objects/popupMenuOption.dart';
+import 'package:sgs/providers/settingsProvider.dart';
 import 'package:sgs/providers/storageProvider.dart';
 
 import '../styles.dart';
@@ -26,9 +25,7 @@ class ImageListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    AppTheme theme = getTheme();
-
-
+    AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
 
     return Container(
       margin: EdgeInsets.only(bottom: 20),
