@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sgs/customwidgets/waterTankLevelPopup.dart';
 import 'package:sgs/objects/appTheme.dart';
-import 'package:sgs/providers/dashboardProvider.dart';
+import 'package:sgs/providers/dataProvider.dart';
 import 'package:sgs/providers/settingsProvider.dart';
 import 'package:sgs/styles.dart';
 import 'dart:math';

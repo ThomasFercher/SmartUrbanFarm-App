@@ -72,114 +72,118 @@ class _TimeLapseItemState extends State<TimeLapseItem> {
   Widget build(BuildContext context) {
     // TODO: implement build
     AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
-    return Container(
-      margin: EdgeInsets.only(bottom: 20),
-      width: MediaQuery.of(context).size.width - 30,
-      child: Card(
-        elevation: cardElavation + 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(borderRadius),
-        ),
-        color: theme.cardColor,
-        child: Column(
-          children: [
-            Stack(
-              children: [
-                ClipRRect(
-                  borderRadius:
-                      BorderRadius.vertical(top: Radius.circular(borderRadius)),
-                  child: _controller.value.initialized
-                      ? AspectRatio(
-                          aspectRatio: _controller.value.aspectRatio,
-                          child: VideoPlayer(_controller),
+    return AnimatedOpacity(
+      opacity: _controller.value.initialized ? 1.0 : 0.0,
+      duration: Duration(milliseconds: 250),
+      child: Container(
+        margin: EdgeInsets.only(bottom: 20),
+        width: MediaQuery.of(context).size.width - 30,
+        child: Card(
+          elevation: cardElavation + 2,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(borderRadius),
+          ),
+          color: theme.cardColor,
+          child: Column(
+            children: [
+              Stack(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(borderRadius)),
+                    child: _controller.value.initialized
+                        ? AspectRatio(
+                            aspectRatio: _controller.value.aspectRatio,
+                            child: VideoPlayer(_controller),
+                          )
+                        : Container(),
+                  ),
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: PopupMenu(
+                      color: Colors.white,
+                      options: [
+                        PopupMenuOption(
+                          "Save Timelapse",
+                          Icon(
+                            Icons.save,
+                            color: primaryColor,
+                          ),
+                        ),
+                        PopupMenuOption(
+                          "Delete",
+                          Icon(
+                            Icons.delete,
+                            color: Colors.redAccent,
+                          ),
                         )
-                      : Container(),
+                      ],
+                      onSelected: (value) {
+                        switch (value) {
+                          case "Save Timelapse":
+                            saveTimeLapse(context);
+                            break;
+                          case "Delete":
+                            delete(context);
+                            break;
+                          default:
+                        }
+                      },
+                    ),
+                  )
+                ],
+              ),
+              Container(
+                padding: EdgeInsets.all(10),
+                alignment: Alignment.topLeft,
+                child: Text(
+                  widget.timeLapse.name,
+                  style: sectionTitleStyle(context, theme.headlineColor),
                 ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: PopupMenu(
-                    color: Colors.white,
-                    options: [
-                      PopupMenuOption(
-                        "Save Timelapse",
-                        Icon(
-                          Icons.save,
-                          color: primaryColor,
+              ),
+              ClipRRect(
+                borderRadius: BorderRadius.vertical(
+                    bottom: Radius.circular(borderRadius)),
+                child: Container(
+                  color: theme.cardColor,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: IconButton(
+                            icon: Icon(
+                              Icons.play_arrow,
+                              size: 36,
+                              color: theme.headlineColor,
+                            ),
+                            onPressed: () async {
+                              _controller.play();
+
+                              //       _controller.seekTo(Duration(seconds: 0));
+                            },
+                          ),
                         ),
                       ),
-                      PopupMenuOption(
-                        "Delete",
-                        Icon(
-                          Icons.delete,
-                          color: Colors.redAccent,
+                      Expanded(
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: IconButton(
+                            icon: Icon(
+                              Icons.pause,
+                              size: 36,
+                              color: theme.headlineColor,
+                            ),
+                            onPressed: () => {_controller.pause()},
+                          ),
                         ),
                       )
                     ],
-                    onSelected: (value) {
-                      switch (value) {
-                        case "Save Timelapse":
-                          saveTimeLapse(context);
-                          break;
-                        case "Delete":
-                          delete(context);
-                          break;
-                        default:
-                      }
-                    },
                   ),
-                )
-              ],
-            ),
-            Container(
-              padding: EdgeInsets.all(10),
-              alignment: Alignment.topLeft,
-              child: Text(
-                widget.timeLapse.daterange,
-                style: sectionTitleStyle(context, Colors.black87),
-              ),
-            ),
-            ClipRRect(
-              borderRadius:
-                  BorderRadius.vertical(bottom: Radius.circular(borderRadius)),
-              child: Container(
-                color: primaryColor,
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        alignment: Alignment.center,
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.play_arrow,
-                            size: 36,
-                            color: Colors.white,
-                          ),
-                          onPressed: () async {
-                            _controller.play();
-
-                            //       _controller.seekTo(Duration(seconds: 0));
-                          },
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Container(
-                        alignment: Alignment.center,
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.pause,
-                            size: 36,
-                            color: Colors.white,
-                          ),
-                          onPressed: () => {_controller.pause()},
-                        ),
-                      ),
-                    )
-                  ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

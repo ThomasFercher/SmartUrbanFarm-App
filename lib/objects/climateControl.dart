@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:sgs/styles.dart';
 
-class EnvironmentSettings {
+class ClimateControl {
+  String id;
   String name;
   double temperature;
   double humidity;
@@ -33,8 +35,12 @@ class EnvironmentSettings {
 
   String get getName => name;
 
+  String get getID => id;
+
   Map<String, String> getJson() {
     return <String, String>{
+      "id": id,
+      "name": name,
       "tempSoll": temperature.toString(),
       "humiditySoll": humidity.toString(),
       "soilMoistureSoll": soilMoisture.toString(),
@@ -43,22 +49,24 @@ class EnvironmentSettings {
     };
   }
 
-  EnvironmentSettings.fromJson(Map<dynamic, dynamic> json, String name) {
-    this.name = name;
+  ClimateControl.fromJson(Map<dynamic, dynamic> json) {
+    this.id = json["id"];
+    this.name = json["name"];
     this.temperature = double.parse(json["tempSoll"]);
     this.humidity = double.parse(json["humiditySoll"]);
     this.soilMoisture = double.parse(json["soilMoistureSoll"]);
     this.suntime = json["suntime"];
     this.waterConsumption = double.parse(json["waterConsumption"]);
-    print("a");
   }
 
-  EnvironmentSettings({
+  ClimateControl({
     @required this.name,
     @required this.temperature,
     @required this.humidity,
     @required this.soilMoisture,
     @required this.suntime,
     @required this.waterConsumption,
-  });
+  }) {
+    this.id = uuid.v1(); // create random time based id
+  }
 }

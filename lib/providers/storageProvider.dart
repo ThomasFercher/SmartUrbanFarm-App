@@ -19,10 +19,10 @@ import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
 
 class StorageProvider extends ChangeNotifier {
   //This class is used for the storage and processing of images and timelapses
-  var dbref = FirebaseDatabase.instance.reference();
+  var firebase = FirebaseDatabase.instance.reference();
 
   Map<String, StorageReference> photoRefs = new Map();
-  Map<String, String> urls = {};
+  Map<String, String> photoUrls = {};
   List<Photo> photos = [];
 
   List<TimeLapse> timelapses = [];
@@ -37,8 +37,20 @@ class StorageProvider extends ChangeNotifier {
     AssetFlare(bundle: rootBundle, name: "assets/flares/grow.flr")
   ];
 
-  void takePicture() {
-    dbref.child("photo").set(true);
+  StorageProvider() {
+    // Reload Photos once photo is taken
+    firebase.child("photo").onValue.listen((event) async {
+      var value = event.snapshot.value;
+      if (!value) {
+        Directory directory = await getExternalStorageDirectory();
+        downloadAndSafePhotos(directory);
+        notifyListeners();
+      }
+    });
+  }
+
+  void takePhoto() {
+    firebase.child("photo").set(true);
   }
 
   Future<void> loadFlares() async {
@@ -48,20 +60,12 @@ class StorageProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> loadPhotos(context) async {
-    //load photos from files
-    Directory directory = await getExternalStorageDirectory();
-    await Directory("${directory.path}/photos/").create();
-    Directory photoDirectory = new Directory("${directory.path}/photos/");
-
-    photos = loadPhotosFromFiles(photoDirectory);
-
+  Future<void> downloadAndSafePhotos(Directory directory) async {
     //load other photos from the database which dont exist locally yet
     photoRefs = await getPhotoReferences();
-
     await Future.wait(
       photoRefs.keys.map(
-        (key) async => urls[key] = await photoRefs[key].getDownloadURL(),
+        (key) async => photoUrls[key] = await photoRefs[key].getDownloadURL(),
       ),
     );
 
@@ -69,7 +73,7 @@ class StorageProvider extends ChangeNotifier {
 
     String dPath = directory.path;
 
-    urls.forEach(
+    photoUrls.forEach(
       (date, url) async {
         if (photos.every((element) => element.date != date))
           photos.add(
@@ -77,9 +81,19 @@ class StorageProvider extends ChangeNotifier {
           );
       },
     );
+  }
+
+  Future<void> loadPhotos(context) async {
+    //load photos from files
+    Directory directory = await getExternalStorageDirectory();
+    await Directory("${directory.path}/photos/").create();
+    Directory photoDirectory = new Directory("${directory.path}/photos/");
+    photos = loadPhotosFromFiles(photoDirectory);
+
+    //load other photos from the database which dont exist locally yet
+    downloadAndSafePhotos(directory);
 
     //need to call sort after all images are in the lis
-
     photos.sort((photo1, photo2) {
       return photo1.date.compareTo(photo2.date);
     });
@@ -125,37 +139,43 @@ class StorageProvider extends ChangeNotifier {
   }
 
   Future<void> loadTimeLapses() async {
+    // Get External Storage Directory
     Directory eDirectory = await getExternalStorageDirectory();
+    // If Directory doesnt exist create it
     await Directory("${eDirectory.path}/timelapses/").create();
+    // Get Directory Object for the Timelapses
     Directory timeLapseDirectory = new Directory("${eDirectory.path}/");
+    // Go trough each File and create a TimeLapse from it
     timeLapseDirectory
       ..listSync().forEach((element) {
         if (element is File) {
-          File f = new File(element.path);
-          List<String> pathArguments = element.path.split("/");
+          File file = new File(element.path);
+          // Create name
+          List<String> pathArguments = file.path.split("/");
           String name = pathArguments[pathArguments.length - 1];
           name = name.replaceAll(".mp4", "");
           List<String> nameArguments = name.split("-");
+          // Create DateTimeRange from name
           DateTimeRange range = new DateTimeRange(
             start: DateTime.parse(nameArguments[0].replaceAll(".", "-")),
             end: DateTime.parse(nameArguments[1].replaceAll(".", "-")),
           );
-
+          // Create TimeLapse Object
           TimeLapse timeLapse =
-              new TimeLapse(file: f, range: range, daterange: name);
-          if (!timelapses.any((tl) => tl.file.path == f.path)) {
+              new TimeLapse(file: file, range: range, name: name);
+          // Only add the TimeLapse to List if it doesnt exist yet
+          if (!timelapses.any((tl) => tl.file.path == file.path)) {
             timelapses.add(timeLapse);
           }
         }
       });
 
     print("loaded timelapses");
-
     notifyListeners();
   }
 
   Future<Map<String, StorageReference>> getPhotoReferences() async {
-    return await dbref.child("images").once().then((data) {
+    return await firebase.child("images").once().then((data) {
       Map<String, StorageReference> imgs = new Map();
       if (data.value != null) {
         Map<String, String> map = Map.from(data.value);
@@ -178,7 +198,7 @@ class StorageProvider extends ChangeNotifier {
 
   void deletePhoto(Photo photo) {
     photos.remove(photo);
-    dbref.child("images").child(photo.date).remove();
+    firebase.child("images").child(photo.date).remove();
     photoRefs[photo.date].delete();
     notifyListeners();
   }
@@ -196,7 +216,7 @@ class StorageProvider extends ChangeNotifier {
       return time.isAfter(range.start) && time.isBefore(range.end);
     }).toList();
 
-    // Cancels the function if the list is empty
+    // Cancels the function if the list is empty or null
     if (ph == null || ph.length == 0) {
       return;
     }
@@ -214,8 +234,11 @@ class StorageProvider extends ChangeNotifier {
     // Gets the external Directory to save the Timelapse permanently
     Directory eDirectory = await getExternalStorageDirectory();
     String ePath = eDirectory.path;
-    String name =
-        "${range.start.toString().split(" ")[0].replaceAll("-", ".")}-${range.end.toString().split(" ")[0].replaceAll("-", ".")}.mp4";
+
+    // Create name of the timelapse
+    String start = range.start.toString().split(" ")[0].replaceAll("-", ".");
+    String end = range.end.toString().split(" ")[0].replaceAll("-", ".");
+    String name = "$start-$end.mp4";
 
     _flutterFFmpeg
         .execute("-framerate 24 -i $tPath/photo_%03d.jpeg $ePath/$name")
@@ -228,12 +251,12 @@ class StorageProvider extends ChangeNotifier {
           element.deleteSync();
         });
 
-        File tFile = new File("$ePath/$name");
-        print(tFile.path);
-        print(tFile.parent);
+        File timeLapseFile = new File("$ePath/$name");
+        print("File created at: ${timeLapseFile.path}");
+
         name = name.replaceAll(".mp4", "");
         TimeLapse timeLapse =
-            new TimeLapse(file: tFile, range: range, daterange: name);
+            new TimeLapse(file: timeLapseFile, range: range, name: name);
         timelapses.add(timeLapse);
         computingTimelapse = false;
         c.complete();

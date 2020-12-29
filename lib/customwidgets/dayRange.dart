@@ -5,6 +5,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sgs/styles.dart';
 
 class DayRange extends StatelessWidget {
+  final String suntime;
+  String start;
+  String end;
+
+  DayRange({@required this.suntime})
+      : start = suntime.split("-")[0],
+        end = suntime.split("-")[1];
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -39,7 +47,7 @@ class DayRange extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 15.0),
                   child: Text(
-                    "06:00",
+                    start,
                     style:
                         GoogleFonts.nunito(color: Colors.white, fontSize: 24),
                   ),
@@ -48,7 +56,7 @@ class DayRange extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(right: 15.0),
                 child: Text(
-                  "18:00",
+                  end,
                   style: GoogleFonts.nunito(color: Colors.white, fontSize: 24),
                 ),
               ),

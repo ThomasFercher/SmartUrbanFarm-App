@@ -3,45 +3,45 @@ import 'dart:io';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:sgs/objects/environmentSettings.dart';
+import 'package:sgs/objects/climateControl.dart';
 import 'package:sgs/styles.dart';
 
-class EnvironmentSettingsProvider extends ChangeNotifier {
-  EnvironmentSettings settings;
+class ClimateControlProvider extends ChangeNotifier {
+  ClimateControl climateSettings;
 
-  EnvironmentSettingsProvider(settings) : this.settings = settings;
+  ClimateControlProvider(settings) : this.climateSettings = settings;
 
-  EnvironmentSettings getSettings() {
-    return settings;
+  ClimateControl getSettings() {
+    return climateSettings;
   }
 
   changeTemperature(v) {
-    settings.setTemperature = v;
+    climateSettings.setTemperature = v;
     notifyListeners();
   }
 
   changeHumidity(v) {
-    settings.setHumidity = v;
+    climateSettings.setHumidity = v;
     notifyListeners();
   }
 
   changeWaterConsumption(v) {
-    settings.setWaterConsumption = v;
+    climateSettings.setWaterConsumption = v;
     notifyListeners();
   }
 
   changeSoilMoisture(v) {
-    settings.setSoilMoisture = v;
+    climateSettings.setSoilMoisture = v;
     notifyListeners();
   }
 
   changeName(v) {
-    settings.setName = v;
+    climateSettings.setName = v;
     notifyListeners();
   }
 
   changeSuntime(v) {
-    settings.setSuntime = v;
+    climateSettings.setSuntime = v;
     notifyListeners();
   }
 }

@@ -7,6 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:ui' as ui;
 import 'package:sgs/objects/appTheme.dart';
+import 'package:uuid/uuid.dart';
+
+var uuid = Uuid();
 
 //
 const Color backgroundColor = Color(0xFFFCFCFC);

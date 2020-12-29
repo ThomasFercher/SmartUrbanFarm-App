@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flare_flutter/flare_cache.dart';
 import 'package:flare_flutter/flare_controls.dart';
@@ -6,7 +7,7 @@ import 'package:sgs/objects/appTheme.dart';
 import 'package:sgs/pages/dashboard.dart';
 import 'package:sgs/providers/settingsProvider.dart';
 import 'package:sgs/providers/storageProvider.dart';
-import 'providers/dashboardProvider.dart';
+import 'providers/dataProvider.dart';
 import 'styles.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
@@ -24,9 +25,9 @@ void main() => {
       runApp(
         MultiProvider(
           providers: [
-            ChangeNotifierProvider<DashboardProvider>(
+            ChangeNotifierProvider<DataProvider>(
               lazy: false,
-              create: (_) => DashboardProvider(),
+              create: (_) => DataProvider(),
             ),
             ChangeNotifierProvider<StorageProvider>(
               lazy: true,
@@ -49,11 +50,20 @@ class SufMobileApplication extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
+    //  AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: primaryColor,
+        pageTransitionsTheme: const PageTransitionsTheme(
+          builders: <TargetPlatform, PageTransitionsBuilder>{
+            TargetPlatform.android: SharedAxisPageTransitionsBuilder(
+              transitionType: SharedAxisTransitionType.scaled,
+              fillColor: primaryColor,
+            ),
+            TargetPlatform.iOS: FadeThroughPageTransitionsBuilder()
+          },
+        ),
       ),
       home: FutureBuilder(
         builder: (context, projectSnap) {
@@ -62,7 +72,7 @@ class SufMobileApplication extends StatelessWidget {
               projectSnap.connectionState == ConnectionState.waiting) {
             // Splashscreen using a Flare2d as a loading Animation
             return Container(
-              color: theme.background,
+              color: primaryColor,
               child: FlareActor(
                 'assets/flares/splashscreen.flr',
                 alignment: Alignment.center,
@@ -87,11 +97,12 @@ class SufMobileApplication extends StatelessWidget {
 /// This function loads the inital data from the database when the app starts.
 Future<void> loadData(context) async {
   Stopwatch stopwatch = new Stopwatch()..start();
-  await Provider.of<DashboardProvider>(context, listen: false).loadData();
+  await Provider.of<DataProvider>(context, listen: false).loadData();
   await Provider.of<StorageProvider>(context, listen: false)
       .loadPhotos(context);
   await Provider.of<StorageProvider>(context, listen: false).loadFlares();
   await Provider.of<StorageProvider>(context, listen: false).loadTimeLapses();
+  await Provider.of<SettingsProvider>(context, listen: false).loadSettings();
 
   stopwatch.stop();
   print("Time needed ${stopwatch.elapsedMilliseconds}");

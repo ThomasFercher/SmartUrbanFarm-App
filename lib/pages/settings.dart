@@ -17,40 +17,13 @@ class SettingsPage extends StatelessWidget {
     List<AppTheme> themes = pr.themes;
 
     return [
-      ListTile(
-        contentPadding: EdgeInsets.symmetric(horizontal: 0),
-        leading: LeadingIcon(icon: Icons.wifi_tethering),
-        title: new Text(
-          "Wi-Fi Configuration",
-          style: GoogleFonts.nunito(
-            color: theme.headlineColor,
-          ),
-        ),
-        subtitle: new Text(
-          "Bla wlan shit",
-          style: GoogleFonts.nunito(
-            color: theme.headlineColor,
-          ),
-        ),
-      ),
-      CheckboxListTile(
-        contentPadding: EdgeInsets.symmetric(horizontal: 0),
-        secondary: LeadingIcon(icon: Icons.wifi_tethering),
-        onChanged: (value) => pr.setCheckbox(value),
-        value: pr.checkbox,
-        title: Text(
-          "This is a CheckBoxPreference",
-          style: GoogleFonts.nunito(
-            color: theme.headlineColor,
-          ),
-        ),
-        activeColor: theme.primaryColor,
-        checkColor: Colors.white,
+      Padding(
+        padding: EdgeInsets.only(top: 20),
       ),
       SwitchListTile(
         contentPadding: EdgeInsets.symmetric(horizontal: 0),
         secondary: LeadingIcon(icon: Icons.camera_alt),
-        value: pr.takeDailyPicture,
+        value: pr.settings.automaticTimeLapse,
         inactiveTrackColor: theme.contrast,
         activeColor: theme.primaryColor,
         title: Text(
@@ -65,7 +38,7 @@ class SettingsPage extends StatelessWidget {
             color: theme.headlineColor,
           ),
         ),
-        onChanged: (value) => pr.setTakeDailyPicture(value),
+        onChanged: (value) => pr.setAutomaticTimeLapse(value),
       ),
       ListTile(
         contentPadding: EdgeInsets.symmetric(horizontal: 0),
@@ -134,11 +107,11 @@ class SettingsPage extends StatelessWidget {
                 appTheme: themes[1],
               ),*/
               ThemeCard(
-                background: themes[2].background,
-                cardColor: themes[2].cardColor,
-                onSelected: () => {pr.setTheme(2)},
-                selected: pr.getSelected(2),
-                appTheme: themes[2],
+                background: themes[1].background,
+                cardColor: themes[1].cardColor,
+                onSelected: () => {pr.setTheme(1)},
+                selected: pr.getSelected(1),
+                appTheme: themes[1],
               ),
             ],
           ),

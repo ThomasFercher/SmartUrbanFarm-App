@@ -10,7 +10,7 @@ import 'package:sgs/customwidgets/smalldatachart.dart';
 import 'package:sgs/objects/appTheme.dart';
 import 'package:sgs/pages/advanced.dart';
 import 'package:sgs/pages/environment.dart';
-import 'package:sgs/providers/dashboardProvider.dart';
+import 'package:sgs/providers/dataProvider.dart';
 import 'package:sgs/providers/settingsProvider.dart';
 import 'package:sgs/styles.dart';
 import 'package:flutter/cupertino.dart';
@@ -39,7 +39,7 @@ class CardData extends StatelessWidget {
     AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
 
     return Container(
-      child: Consumer<DashboardProvider>(
+      child: Consumer<DataProvider>(
         builder: (context, d, child) {
           return CupertinoContextMenu(
             actions: [
@@ -144,7 +144,7 @@ class CardData extends StatelessWidget {
     );
   }
 
-  Widget getSmallDataChart(var name, DashboardProvider d, AppTheme theme) {
+  Widget getSmallDataChart(var name, DataProvider d, AppTheme theme) {
     switch (name) {
       case "Temperatur":
         return SmallDataChart(
@@ -163,16 +163,16 @@ class CardData extends StatelessWidget {
     }
   }
 
-  getValueString(type, DashboardProvider d) {
+  getValueString(type, DataProvider d) {
     switch (type) {
       case Temperature:
-        return d.activeEnvironment.temperature.toString() + "°C";
+        return d.activeClimate.temperature.toString() + "°C";
         break;
       case Humidity:
-        return d.activeEnvironment.humidity.toString() + "%";
+        return d.activeClimate.humidity.toString() + "%";
         break;
       case SoilMoisture:
-        return d.activeEnvironment.soilMoisture.toString() + "%";
+        return d.activeClimate.soilMoisture.toString() + "%";
         break;
       default:
         return 0.0;
@@ -193,9 +193,9 @@ class CardData extends StatelessWidget {
     }
   }
 
-  Widget detailedPopup(BuildContext context, DashboardProvider d) {
+  Widget detailedPopup(BuildContext context, DataProvider d) {
     AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
-    return Consumer<DashboardProvider>(
+    return Consumer<DataProvider>(
       builder: (context, d, child) {
         return Material(
           color: Colors.transparent,

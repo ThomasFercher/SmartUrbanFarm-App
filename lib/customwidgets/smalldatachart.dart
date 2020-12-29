@@ -3,7 +3,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sgs/objects/appTheme.dart';
-import 'package:sgs/providers/dashboardProvider.dart';
+import 'package:sgs/providers/dataProvider.dart';
 import 'package:sgs/providers/settingsProvider.dart';
 import '../styles.dart';
 import 'dart:math';
@@ -72,7 +72,7 @@ class SmallDataChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
-    return Consumer<DashboardProvider>(
+    return Consumer<DataProvider>(
       builder: (context, d, child) {
         return ClipPath(
           clipper: ChartClipper(),

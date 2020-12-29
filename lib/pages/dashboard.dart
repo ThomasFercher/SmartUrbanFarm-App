@@ -8,18 +8,19 @@ import 'package:sgs/customwidgets/dayRange.dart';
 import 'package:sgs/customwidgets/dayslider.dart';
 import 'package:sgs/customwidgets/actionCard.dart';
 import 'package:sgs/customwidgets/growProgress.dart';
+import 'package:sgs/customwidgets/pageTransistion.dart';
 import 'package:sgs/customwidgets/waterTankLevel.dart';
+import 'package:sgs/objects/liveData.dart';
 import 'package:sgs/pages/advanced.dart';
 import 'package:sgs/pages/environment.dart';
 import 'package:sgs/pages/gallery.dart';
 import 'package:sgs/pages/settings.dart';
-import 'package:sgs/providers/dashboardProvider.dart';
+import 'package:sgs/providers/dataProvider.dart';
 import 'package:sgs/providers/settingsProvider.dart';
 import 'package:sgs/styles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:weather_icons/weather_icons.dart';
 import 'advanced.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:sgs/objects/appTheme.dart';
 
 class Dashboard extends StatelessWidget {
@@ -36,11 +37,10 @@ class Dashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
-    return Consumer<DashboardProvider>(
-      builder: (context, dashboard, child) {
-        var temperature = dashboard.temperature;
-        var humidity = dashboard.humidity;
-        var soilMoisture = dashboard.soilMoisture;
+    return Consumer<DataProvider>(
+      builder: (context, data, child) {
+        LiveData d = data.liveData;
+        var suntime = data.activeClimate.suntime;
 
         var width = MediaQuery.of(context).size.width - 20;
         return AppBarHeader(
@@ -66,7 +66,7 @@ class Dashboard extends StatelessWidget {
                 CardData(
                   icon: WeatherIcons.thermometer,
                   label: "Temperatur",
-                  text: "$temperature°C",
+                  text: "${d.temperature}°C",
                   iconColor: theme.primaryColor,
                   type: Temperature,
                   key: GlobalKey(),
@@ -74,7 +74,7 @@ class Dashboard extends StatelessWidget {
                 CardData(
                   icon: WeatherIcons.humidity,
                   label: "Luftfeuchtigkeit",
-                  text: "$humidity%",
+                  text: "${d.humidity}%",
                   iconColor: theme.primaryColor,
                   type: Humidity,
                   key: GlobalKey(),
@@ -82,7 +82,7 @@ class Dashboard extends StatelessWidget {
                 CardData(
                   icon: WeatherIcons.barometer,
                   label: "Bodenfeuchtigkeit",
-                  text: "$soilMoisture%",
+                  text: "${d.soilMoisture}%",
                   iconColor: theme.primaryColor,
                   type: SoilMoisture,
                   key: GlobalKey(),
@@ -98,7 +98,9 @@ class Dashboard extends StatelessWidget {
                 onValueChanged: (_timeRange) =>
                     {dashboard.suntimeChanged(_timeRange)},
               ),*/
-                  DayRange(),
+                  DayRange(
+                suntime: suntime,
+              ),
             ),
             Padding(padding: EdgeInsets.only(top: 20)),
             sectionTitle(
@@ -121,10 +123,13 @@ class Dashboard extends StatelessWidget {
                   onPressed: () => {
                     Navigator.push(
                       context,
-                      PageTransition(
-                          type: PageTransitionType.leftToRightWithFade,
-                          child: Gallery()),
-                    )
+                      MaterialPageRoute(
+                        settings: RouteSettings(),
+                        builder: (context) {
+                          return Gallery();
+                        },
+                      ),
+                    ),
                   },
                   icon: Icons.photo,
                   text: "Gallery",
@@ -135,9 +140,9 @@ class Dashboard extends StatelessWidget {
                   onPressed: () => {
                     Navigator.push(
                       context,
-                      PageTransition(
-                          type: PageTransitionType.rightToLeftWithFade,
-                          child: Advanced()),
+                      MaterialPageRoute(builder: (context) {
+                        return Advanced();
+                      }),
                     ),
                   },
                   icon: Icons.assessment,
@@ -168,9 +173,9 @@ class Dashboard extends StatelessWidget {
                   onPressed: () => {
                     Navigator.push(
                       context,
-                      PageTransition(
-                          type: PageTransitionType.leftToRightWithFade,
-                          child: Environment()),
+                      MaterialPageRoute(builder: (context) {
+                        return Environment();
+                      }),
                     ),
                   },
                   icon: Icons.settings_system_daydream,
@@ -182,10 +187,9 @@ class Dashboard extends StatelessWidget {
                   onPressed: () => {
                     Navigator.push(
                       context,
-                      PageTransition(
-                        type: PageTransitionType.leftToRightWithFade,
-                        child: SettingsPage(),
-                      ),
+                      MaterialPageRoute(builder: (context) {
+                        return SettingsPage();
+                      }),
                     ),
                   },
                   icon: Icons.settings,
@@ -208,7 +212,7 @@ class Dashboard extends StatelessWidget {
                     children: [
                       sectionTitle(
                           context, "Grow Progress", theme.headlineColor),
-                      GrowProgress(c, 100.0)
+                      GrowProgress(c, d.growProgress)
                     ],
                   );
                 }),
@@ -221,7 +225,7 @@ class Dashboard extends StatelessWidget {
                         theme.headlineColor,
                       ),
                       WaterTankLevel(
-                        fullness: dashboard.waterTankLevel,
+                        fullness: d.waterTankLevel,
                         height: c.maxHeight - 46,
                       ),
                     ],

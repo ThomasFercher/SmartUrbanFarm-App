@@ -6,11 +6,11 @@ import 'package:flutter/material.dart';
 class TimeLapse {
   final File file;
   final DateTimeRange range;
-  final String daterange;
+  final String name;
 
   TimeLapse({
     @required this.file,
     this.range,
-    this.daterange,
+    this.name,
   });
 }

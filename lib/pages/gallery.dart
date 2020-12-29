@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:collection';
 import 'dart:io';
 import 'dart:isolate';
+import 'package:animations/animations.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ import 'package:sgs/customwidgets/appBarHeader.dart';
 import 'package:sgs/customwidgets/imageListItem.dart';
 import 'package:sgs/customwidgets/popupMenu.dart';
 import 'package:sgs/customwidgets/timeLapseItem.dart';
-import 'package:sgs/customwidgets/timelapseDialog.dart';
+import 'package:sgs/customwidgets/dateRangeSelect.dart';
 import 'package:sgs/main.dart';
 import 'package:sgs/objects/appTheme.dart';
 import 'package:sgs/objects/photo.dart';
@@ -39,10 +40,23 @@ class _GalleryState extends State<Gallery> {
     super.initState();
   }
 
+  Tween a = new Tween(begin: 0.0, end: 1.0);
+
   List<Widget> getPhotoList(List<Photo> photos) {
     List<Widget> cardlist = [Padding(padding: EdgeInsets.only(top: 15))];
     photos.forEach((element) {
-      cardlist.add(ImageListItem(element));
+      cardlist.add(
+        TweenAnimationBuilder(
+          tween: a,
+          duration: Duration(milliseconds: 250),
+          builder: (context, value, child) {
+            return Opacity(
+              opacity: value,
+              child: (ImageListItem(element)),
+            );
+          },
+        ),
+      );
     });
     return cardlist;
   }
@@ -59,14 +73,19 @@ class _GalleryState extends State<Gallery> {
 
   takePhoto() async {
     print("take Photo");
-    Provider.of<StorageProvider>(context, listen: false).takePicture();
+    Provider.of<StorageProvider>(context, listen: false).takePhoto();
   }
 
   createTimeLapse(context) {
-    showDialog(
+    showModal(
+      configuration: FadeScaleTransitionConfiguration(
+        transitionDuration: Duration(milliseconds: 250),
+        barrierDismissible: true,
+        reverseTransitionDuration: Duration(milliseconds: 250),
+      ),
       context: context,
       builder: (context) {
-        return TimeLapseDialog();
+        return DateRangeSelect();
       },
     );
   }
@@ -115,10 +134,14 @@ class _GalleryState extends State<Gallery> {
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
+
     return Consumer<StorageProvider>(
       builder: (context, d, child) {
         List<Photo> photos = d.photos;
         List<TimeLapse> timelapses = d.timelapses;
+        List<Widget> tabList = tab == "Photos"
+            ? getPhotoList(photos)
+            : getTimeLapseList(timelapses);
         return AppBarHeader(
           isPage: true,
           title: "Gallery",
@@ -207,9 +230,7 @@ class _GalleryState extends State<Gallery> {
           actionButton: tab == "Photos"
               ? photoActionButton(context)
               : timeLapseActionButton(d.computingTimelapse, context),
-          body: tab == "Photos"
-              ? getPhotoList(photos)
-              : getTimeLapseList(timelapses),
+          body: tabList,
         );
       },
     );

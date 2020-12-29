@@ -6,27 +6,27 @@ import 'package:sgs/customwidgets/appBarHeader.dart';
 import 'package:sgs/customwidgets/dayslider.dart';
 import 'package:sgs/customwidgets/environment/editVariable.dart';
 import 'package:sgs/customwidgets/environment/input.dart';
-import 'package:sgs/objects/environmentSettings.dart';
-import 'package:sgs/providers/dashboardProvider.dart';
-import 'package:sgs/providers/environmentSettingsProvider.dart';
+import 'package:sgs/objects/climateControl.dart';
+import 'package:sgs/providers/dataProvider.dart';
+import 'package:sgs/providers/climateControlProvider.dart';
 import 'package:sgs/providers/settingsProvider.dart';
 import 'package:weather_icons/weather_icons.dart';
 import '../styles.dart';
 import 'package:sgs/objects/appTheme.dart';
 
 class EditEnvironment extends StatelessWidget {
-  EnvironmentSettings initialSettings;
+  ClimateControl initialSettings;
   bool create;
 
   EditEnvironment({@required this.initialSettings, @required this.create});
 
-  save(EnvironmentSettings settings, context) {
+  save(ClimateControl settings, context) {
     print(settings);
     create
-        ? Provider.of<DashboardProvider>(context, listen: false)
-            .createEnvironment(settings)
-        : Provider.of<DashboardProvider>(context, listen: false)
-            .editEnvironment(this.initialSettings, settings);
+        ? Provider.of<DataProvider>(context, listen: false)
+            .createClimate(settings)
+        : Provider.of<DataProvider>(context, listen: false)
+            .editClimate(this.initialSettings, settings);
     Navigator.pop(context);
   }
 
@@ -34,12 +34,11 @@ class EditEnvironment extends StatelessWidget {
   Widget build(BuildContext context) {
     var name = initialSettings.name;
     return ListenableProvider(
-      create: (_) => EnvironmentSettingsProvider(initialSettings),
+      create: (_) => ClimateControlProvider(initialSettings),
       builder: (context, child) {
         AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
         //   EnvironmentSettings settings = d.getSettings();
-        return Consumer<EnvironmentSettingsProvider>(
-            builder: (context, pr, child) {
+        return Consumer<ClimateControlProvider>(builder: (context, pr, child) {
           return AppBarHeader(
             title: create ? "Create Environment" : "Edit $name",
             isPage: true,
@@ -86,12 +85,12 @@ class EditEnvironment extends StatelessWidget {
             body: [
               Input(
                 theme: theme,
-                initialValue: pr.settings.name,
+                initialValue: pr.climateSettings.name,
                 valChanged: (val) => pr.changeName(val),
               ),
               PlaceDivider(),
               EditVariable(
-                value: pr.settings.temperature,
+                value: pr.climateSettings.temperature,
                 color: Colors.redAccent,
                 title: "Temperature",
                 unit: "°C",
@@ -104,7 +103,7 @@ class EditEnvironment extends StatelessWidget {
               ),
               PlaceDivider(),
               EditVariable(
-                value: pr.settings.humidity,
+                value: pr.climateSettings.humidity,
                 color: Colors.blueAccent,
                 title: "Humidty",
                 unit: "%",
@@ -117,7 +116,7 @@ class EditEnvironment extends StatelessWidget {
               ),
               PlaceDivider(),
               EditVariable(
-                value: pr.settings.soilMoisture,
+                value: pr.climateSettings.soilMoisture,
                 color: Colors.brown,
                 title: "Soil Moisture",
                 unit: "%",
@@ -130,7 +129,7 @@ class EditEnvironment extends StatelessWidget {
               ),
               PlaceDivider(),
               EditVariable(
-                value: pr.settings.waterConsumption,
+                value: pr.climateSettings.waterConsumption,
                 color: Colors.lightBlueAccent,
                 title: "Water Consumption",
                 unit: "l/d",
@@ -144,7 +143,7 @@ class EditEnvironment extends StatelessWidget {
               PlaceDivider(),
               DaySlider(
                 onValueChanged: (v) => pr.changeSuntime(v),
-                initialTimeString: pr.settings.suntime,
+                initialTimeString: pr.climateSettings.suntime,
               ),
               PlaceDivider()
             ],

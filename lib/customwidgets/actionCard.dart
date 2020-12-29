@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:sgs/customwidgets/datachart.dart';
 import 'package:sgs/customwidgets/detaildialog.dart';
 import 'package:sgs/customwidgets/smalldatachart.dart';
-import 'package:sgs/providers/dashboardProvider.dart';
+import 'package:sgs/providers/dataProvider.dart';
 import 'package:sgs/styles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';

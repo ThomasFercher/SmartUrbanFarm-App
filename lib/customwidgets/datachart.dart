@@ -6,7 +6,7 @@ import 'package:sgs/customwidgets/popupMenu.dart';
 import 'package:sgs/customwidgets/sectionTitle.dart';
 import 'package:sgs/customwidgets/smalldatachart.dart';
 import 'package:sgs/objects/popupMenuOption.dart';
-import 'package:sgs/providers/dashboardProvider.dart';
+import 'package:sgs/providers/dataProvider.dart';
 import 'package:sgs/providers/settingsProvider.dart';
 import '../styles.dart';
 import 'dart:math';
@@ -133,7 +133,7 @@ class _DataChartState extends State<DataChart> {
     maxY = getMaxY(spots) + 1;
     AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
 
-    return Consumer<DashboardProvider>(
+    return Consumer<DataProvider>(
       builder: (context, d, child) {
         return Padding(
           padding: const EdgeInsets.only(left: 10.0, right: 25),

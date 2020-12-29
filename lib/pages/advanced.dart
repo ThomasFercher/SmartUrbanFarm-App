@@ -7,11 +7,11 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:sgs/customwidgets/appBarHeader.dart';
 import 'package:sgs/customwidgets/datachart.dart';
-import 'package:sgs/providers/dashboardProvider.dart';
+import 'package:sgs/providers/dataProvider.dart';
 import '../styles.dart';
 
 class Advanced extends StatelessWidget {
-  List<Widget> getItems(DashboardProvider d) {
+  List<Widget> getItems(DataProvider d) {
     return [
       Padding(padding: EdgeInsets.only(top: borderRadius)),
       Container(
@@ -37,7 +37,7 @@ class Advanced extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<DashboardProvider>(
+    return Consumer<DataProvider>(
       builder: (context, d, child) {
         return AppBarHeader(
           title: "Advanced Data",
