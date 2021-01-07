@@ -6,7 +6,7 @@ import 'package:flutter_skeleton/flutter_skeleton.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:sgs/customwidgets/appBarHeader.dart';
+import 'package:sgs/customwidgets/general/appBarHeader.dart';
 import 'package:sgs/providers/settingsProvider.dart';
 import 'package:sgs/styles.dart';
 import 'package:sgs/objects/appTheme.dart';
@@ -39,6 +39,26 @@ class SettingsPage extends StatelessWidget {
           ),
         ),
         onChanged: (value) => pr.setAutomaticTimeLapse(value),
+      ),
+      SwitchListTile(
+        contentPadding: EdgeInsets.symmetric(horizontal: 0),
+        secondary: LeadingIcon(icon: Icons.notifications),
+        value: pr.settings.notifications,
+        inactiveTrackColor: theme.contrast,
+        activeColor: theme.primaryColor,
+        title: Text(
+          "Notifications",
+          style: GoogleFonts.nunito(
+            color: theme.headlineColor,
+          ),
+        ),
+        subtitle: new Text(
+          "Enable or Disable Notifications",
+          style: GoogleFonts.nunito(
+            color: theme.headlineColor,
+          ),
+        ),
+        onChanged: (value) => pr.setNotifications(value),
       ),
       ListTile(
         contentPadding: EdgeInsets.symmetric(horizontal: 0),

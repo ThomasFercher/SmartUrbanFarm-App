@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sgs/customwidgets/popupMenu.dart';
+import 'package:sgs/customwidgets/general/popupMenu.dart';
 import 'package:sgs/objects/appTheme.dart';
 import 'package:sgs/objects/photo.dart';
 import 'package:sgs/objects/popupMenuOption.dart';
 import 'package:sgs/providers/settingsProvider.dart';
 import 'package:sgs/providers/storageProvider.dart';
 
-import '../styles.dart';
+import '../../styles.dart';
 
-class ImageListItem extends StatelessWidget {
+class ImageItem extends StatelessWidget {
   final Photo photo;
 
-  ImageListItem(this.photo);
+  ImageItem(this.photo);
 
   saveImage(context) async {
     Provider.of<StorageProvider>(context, listen: false).savePhoto(photo);

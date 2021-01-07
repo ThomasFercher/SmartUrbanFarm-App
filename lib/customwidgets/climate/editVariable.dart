@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sgs/customwidgets/general/sectionTitle.dart';
 import 'package:sgs/objects/appTheme.dart';
 import 'package:sgs/providers/settingsProvider.dart';
 
 import '../../styles.dart';
-import '../sectionTitle.dart';
 
 class EditVariable extends StatelessWidget {
   final double value;

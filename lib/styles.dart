@@ -26,7 +26,7 @@ const Color text_gray = Color(0xFF646464);
 const Color dark_gray = Color(0xFFb4b4b4);
 const Color d_text_gray = Color(0xFFedeae4);
 Image logo = new Image(image: null);
-final fb = FirebaseDatabase.instance;
+final firebaseDatabase = FirebaseDatabase.instance;
 const Color gray = Color(0xFF1f1f1f);
 
 const String Temperature = 'Temperature';

@@ -10,7 +10,7 @@ import 'package:sgs/styles.dart';
 class SettingsProvider extends ChangeNotifier {
   Settings settings;
 
-  final ref = fb.reference().child("appSettings");
+  final ref = firebaseDatabase.reference().child("appSettings");
 
   List<AppTheme> themes = [
     new AppTheme(

@@ -2,11 +2,10 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:sgs/customwidgets/s_g_s__custom_icon_icons.dart';
-import 'package:sgs/customwidgets/sectionTitle.dart';
+import 'package:sgs/customwidgets/general/sectionTitle.dart';
 import 'package:sgs/providers/settingsProvider.dart';
 import 'package:weather_icons/weather_icons.dart';
-import '../styles.dart';
+import '../../styles.dart';
 import 'package:sgs/objects/appTheme.dart';
 
 class DaySlider extends StatefulWidget {
@@ -72,7 +71,8 @@ class _DaySliderState extends State<DaySlider> {
                   padding: const EdgeInsets.only(left: 5.0),
                   child: SectionTitle(
                     title: "Suntime",
-                    fontSize: 24,
+                    fontSize: 20,
+                    color: theme.headlineColor,
                   ),
                 ),
                 Padding(

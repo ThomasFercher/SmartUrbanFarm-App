@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class ActiveEnvironmentListItem extends StatelessWidget {
+class ActiveClimateControlItem extends StatelessWidget {
   final String value;
   final String lable;
   final IconData icon;
   final double height;
 
-  const ActiveEnvironmentListItem(
+  const ActiveClimateControlItem(
       {Key key, this.value, this.lable, this.icon, this.height})
       : super(key: key);
 

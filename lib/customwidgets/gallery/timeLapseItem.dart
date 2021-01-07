@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:sgs/customwidgets/popupMenu.dart';
+import 'package:sgs/customwidgets/general/popupMenu.dart';
 import 'package:sgs/objects/appTheme.dart';
 import 'package:sgs/objects/popupMenuOption.dart';
 import 'package:sgs/objects/timeLapse.dart';
@@ -9,7 +9,7 @@ import 'package:sgs/providers/settingsProvider.dart';
 import 'package:sgs/providers/storageProvider.dart';
 import 'package:video_player/video_player.dart';
 
-import '../styles.dart';
+import '../../styles.dart';
 
 class TimeLapseItem extends StatefulWidget {
   final TimeLapse timeLapse;

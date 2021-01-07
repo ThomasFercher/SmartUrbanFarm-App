@@ -6,7 +6,7 @@ import 'package:sgs/objects/appTheme.dart';
 import 'package:sgs/objects/popupMenuOption.dart';
 import 'package:sgs/providers/settingsProvider.dart';
 
-import '../styles.dart';
+import '../../styles.dart';
 
 class PopupMenu extends StatelessWidget {
   final List<PopupMenuOption> options;

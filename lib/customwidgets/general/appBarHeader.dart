@@ -4,11 +4,11 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:sgs/customwidgets/appBarBanner.dart';
+import 'package:sgs/customwidgets/general/appBarBanner.dart';
 import 'package:sgs/objects/appTheme.dart';
 import 'package:sgs/providers/settingsProvider.dart';
 
-import '../styles.dart';
+import '../../styles.dart';
 
 class AppBarHeader extends StatelessWidget {
   final String title;

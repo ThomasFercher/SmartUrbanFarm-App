@@ -2,10 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:sgs/customwidgets/appBarHeader.dart';
-import 'package:sgs/customwidgets/dayslider.dart';
-import 'package:sgs/customwidgets/environment/editVariable.dart';
-import 'package:sgs/customwidgets/environment/input.dart';
+import 'package:sgs/customwidgets/general/appBarHeader.dart';
+import 'package:sgs/customwidgets/climate/dayslider.dart';
+import 'package:sgs/customwidgets/climate/editVariable.dart';
+import 'package:sgs/customwidgets/climate/input.dart';
 import 'package:sgs/objects/climateControl.dart';
 import 'package:sgs/providers/dataProvider.dart';
 import 'package:sgs/providers/climateControlProvider.dart';
@@ -40,7 +40,7 @@ class EditEnvironment extends StatelessWidget {
         //   EnvironmentSettings settings = d.getSettings();
         return Consumer<ClimateControlProvider>(builder: (context, pr, child) {
           return AppBarHeader(
-            title: create ? "Create Environment" : "Edit $name",
+            title: create ? "Create Climate" : "Edit $name",
             isPage: true,
             contentPadding: false,
             bottomAction: Container(

@@ -2,8 +2,7 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:sgs/customwidgets/environment/settingsListTile.dart';
-import 'package:sgs/customwidgets/pageTransistion.dart';
+import 'package:sgs/customwidgets/climate/settingsListTile.dart';
 import 'package:sgs/objects/appTheme.dart';
 import 'package:sgs/objects/climateControl.dart';
 import 'package:sgs/objects/popupMenuOption.dart';
@@ -14,11 +13,11 @@ import 'package:sgs/providers/settingsProvider.dart';
 import 'package:weather_icons/weather_icons.dart';
 
 import '../../styles.dart';
-import '../popupMenu.dart';
+import '../general/popupMenu.dart';
 
-class EnvironmentListItem extends StatelessWidget {
+class ClimateControlItem extends StatelessWidget {
   final ClimateControl settings;
-  EnvironmentListItem({@required this.settings});
+  ClimateControlItem({@required this.settings});
 
   List<PopupMenuOption> options = [
     PopupMenuOption(
@@ -55,6 +54,7 @@ class EnvironmentListItem extends StatelessWidget {
       margin: EdgeInsets.only(top: 10, bottom: 10, left: 15, right: 15),
       child: OpenContainer(
         closedColor: theme.background,
+        closedElevation: 0.0,
         openBuilder: (_, closeContainer) {
           return EditEnvironment(
             initialSettings: settings,

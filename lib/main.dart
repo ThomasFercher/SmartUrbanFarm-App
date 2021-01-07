@@ -1,4 +1,5 @@
 import 'package:animations/animations.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flare_flutter/flare_cache.dart';
 import 'package:flare_flutter/flare_controls.dart';
@@ -13,35 +14,35 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-void main() => {
-      SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(
-          statusBarColor: Colors.transparent,
-          systemNavigationBarColor: Colors.transparent,
+void main() {
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      systemNavigationBarColor: Colors.transparent,
+    ),
+  );
+  WidgetsFlutterBinding.ensureInitialized();
+  FlareCache.doesPrune = false;
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<DataProvider>(
+          lazy: false,
+          create: (_) => DataProvider(),
         ),
-      ),
-      WidgetsFlutterBinding.ensureInitialized(),
-      FlareCache.doesPrune = false,
-      runApp(
-        MultiProvider(
-          providers: [
-            ChangeNotifierProvider<DataProvider>(
-              lazy: false,
-              create: (_) => DataProvider(),
-            ),
-            ChangeNotifierProvider<StorageProvider>(
-              lazy: true,
-              create: (_) => StorageProvider(),
-            ),
-            ChangeNotifierProvider<SettingsProvider>(
-              lazy: false,
-              create: (_) => SettingsProvider(),
-            ),
-          ],
-          child: SufMobileApplication(),
+        ChangeNotifierProvider<StorageProvider>(
+          lazy: true,
+          create: (_) => StorageProvider(),
         ),
-      )
-    };
+        ChangeNotifierProvider<SettingsProvider>(
+          lazy: false,
+          create: (_) => SettingsProvider(),
+        ),
+      ],
+      child: SufMobileApplication(),
+    ),
+  );
+}
 
 class SufMobileApplication extends StatelessWidget {
   // This widget is the root of your application.
@@ -88,14 +89,17 @@ class SufMobileApplication extends StatelessWidget {
             return Dashboard();
           }
         },
-        future: loadData(context),
+        future: loadInitialData(context),
       ),
     );
   }
 }
 
 /// This function loads the inital data from the database when the app starts.
-Future<void> loadData(context) async {
+Future<void> loadInitialData(context) async {
+  // Log into Firebase to be able to access data
+  await FirebaseAuth.instance.signInAnonymously();
+
   Stopwatch stopwatch = new Stopwatch()..start();
   await Provider.of<DataProvider>(context, listen: false).loadData();
   await Provider.of<StorageProvider>(context, listen: false)

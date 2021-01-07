@@ -5,8 +5,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:sgs/customwidgets/appBarHeader.dart';
-import 'package:sgs/customwidgets/datachart.dart';
+import 'package:sgs/customwidgets/general/appBarHeader.dart';
+import 'package:sgs/customwidgets/advanced/datachart.dart';
 import 'package:sgs/providers/dataProvider.dart';
 import '../styles.dart';
 

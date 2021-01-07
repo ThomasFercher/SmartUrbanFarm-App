@@ -15,8 +15,8 @@ class ClimateControlProvider extends ChangeNotifier {
     return climateSettings;
   }
 
-  changeTemperature(v) {
-    climateSettings.setTemperature = v;
+  changeTemperature(newTemp) {
+    climateSettings.setTemperature = newTemp;
     notifyListeners();
   }
 

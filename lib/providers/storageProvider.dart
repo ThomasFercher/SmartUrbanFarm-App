@@ -31,7 +31,7 @@ class StorageProvider extends ChangeNotifier {
 
   bool computingTimelapse = false;
 
-  final _assetsToWarmup = [
+  final _flaresToWarmup = [
     AssetFlare(bundle: rootBundle, name: "assets/flares/moon.flr"),
     AssetFlare(bundle: rootBundle, name: "assets/flares/sun.flr"),
     AssetFlare(bundle: rootBundle, name: "assets/flares/grow.flr")
@@ -55,7 +55,7 @@ class StorageProvider extends ChangeNotifier {
 
   Future<void> loadFlares() async {
     //chaches the flares so they can be instantly used without loading
-    for (final asset in _assetsToWarmup) {
+    for (final asset in _flaresToWarmup) {
       await cachedActor(asset);
     }
   }
@@ -70,9 +70,9 @@ class StorageProvider extends ChangeNotifier {
     );
 
     http.Client client = new http.Client();
-
     String dPath = directory.path;
 
+    // for each url download file if it doesnt exist locally
     photoUrls.forEach(
       (date, url) async {
         if (photos.every((element) => element.date != date))
@@ -91,7 +91,7 @@ class StorageProvider extends ChangeNotifier {
     photos = loadPhotosFromFiles(photoDirectory);
 
     //load other photos from the database which dont exist locally yet
-    downloadAndSafePhotos(directory);
+    await downloadAndSafePhotos(directory);
 
     //need to call sort after all images are in the lis
     photos.sort((photo1, photo2) {
@@ -109,12 +109,12 @@ class StorageProvider extends ChangeNotifier {
 
   List<Photo> loadPhotosFromFiles(Directory directory) {
     List<Photo> photos = [];
-
     directory.listSync().forEach((element) {
       File f = new File(element.path);
+      // Get DatTime out of filename
       List<String> pathArguments = element.path.split("_");
       String date = pathArguments[1].replaceAll(".jpeg", "");
-
+      // Add to local List
       photos.add(
         new Photo(
           file: f,

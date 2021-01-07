@@ -1,12 +1,11 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sgs/customwidgets/appBarHeader.dart';
-import 'package:sgs/customwidgets/environment/activeEnvironmentListItem.dart';
-import 'package:sgs/customwidgets/environment/environmentListItem.dart';
-import 'package:sgs/customwidgets/pageTransistion.dart';
-import 'package:sgs/customwidgets/popupMenu.dart';
-import 'package:sgs/customwidgets/sectionTitle.dart';
+import 'package:sgs/customwidgets/general/appBarHeader.dart';
+import 'package:sgs/customwidgets/climate/activeClimateControlItem.dart';
+import 'package:sgs/customwidgets/climate/climateControlItem.dart';
+import 'package:sgs/customwidgets/general/popupMenu.dart';
+import 'package:sgs/customwidgets/general/sectionTitle.dart';
 import 'package:sgs/objects/appTheme.dart';
 import 'package:sgs/objects/climateControl.dart';
 import 'package:sgs/objects/popupMenuOption.dart';
@@ -24,7 +23,7 @@ class Environment extends StatelessWidget {
 
     climates.forEach((element) {
       if (element.getID != active.getID)
-        cardlist.add(EnvironmentListItem(settings: element));
+        cardlist.add(ClimateControlItem(settings: element));
     });
     return cardlist;
   }
@@ -51,7 +50,7 @@ class Environment extends StatelessWidget {
       var water = activeClimate.waterConsumption;
       return AppBarHeader(
         isPage: true,
-        title: "Environment Settings",
+        title: "Climate Control",
         contentPadding: false,
         body: [
           Padding(
@@ -80,11 +79,12 @@ class Environment extends StatelessWidget {
               onPressed: openContainer,
               backgroundColor: theme.cardColor,
               child: Icon(Icons.add, color: primaryColor),
+              elevation: 2.0,
             );
           },
-          closedShape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-          closedColor: theme.cardColor,
+          closedShape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(100))),
+          closedColor: theme.background,
           openBuilder: (_, closeContainer) {
             return EditEnvironment(
               initialSettings: new ClimateControl(
@@ -140,27 +140,27 @@ class Environment extends StatelessWidget {
                           ],
                         ),
                       ),
-                      ActiveEnvironmentListItem(
+                      ActiveClimateControlItem(
                         icon: WeatherIcons.thermometer,
                         lable: "Temperature",
                         value: "$temp°C",
                       ),
-                      ActiveEnvironmentListItem(
+                      ActiveClimateControlItem(
                         icon: WeatherIcons.humidity,
                         lable: "Humidity",
                         value: "$hum%",
                       ),
-                      ActiveEnvironmentListItem(
+                      ActiveClimateControlItem(
                         icon: WeatherIcons.barometer,
                         lable: "Soil Moisture",
                         value: "$soil",
                       ),
-                      ActiveEnvironmentListItem(
+                      ActiveClimateControlItem(
                         icon: WeatherIcons.day_sunny,
                         lable: "Suntime",
                         value: sun,
                       ),
-                      ActiveEnvironmentListItem(
+                      ActiveClimateControlItem(
                         icon: WeatherIcons.rain,
                         lable: "Water Consumption",
                         value: "$water" + "l/d",

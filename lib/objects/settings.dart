@@ -11,7 +11,7 @@ class Settings {
 
   Settings.fromJson(Map<dynamic, dynamic> json) {
     this.theme = json["theme"];
-    this.automaticTimeLapse = json["automaticTimelapse"];
+    this.automaticTimeLapse = json["automaticTimeLapse"];
     this.notifications = json["notifications"];
   }
 }

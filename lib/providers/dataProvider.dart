@@ -30,7 +30,7 @@ class DataProvider with ChangeNotifier, DiagnosticableTreeMixin {
   List<ClimateControl> climates = [];
 
   //Reference to the Firebase
-  final firebase = fb.reference();
+  final firebase = firebaseDatabase.reference();
 
   DataProvider() {}
 
@@ -120,7 +120,12 @@ class DataProvider with ChangeNotifier, DiagnosticableTreeMixin {
       Map<dynamic, dynamic> activeClimateJson = data.value;
       env = new ClimateControl.fromJson(activeClimateJson);
     });
-    return env;
+    //return env;
+
+    await firebase.child("nameofchild").once().then((DataSnapshot data) {
+      Map<dynamic, dynamic> json = data.value;
+      print(json);
+    });
   }
 
   void editClimate(ClimateControl initial, ClimateControl newClimate) {
@@ -134,7 +139,7 @@ class DataProvider with ChangeNotifier, DiagnosticableTreeMixin {
     // edit in local list
     climates[climates.indexOf(clim)] = newClimate;
     // edit in firebase
-    fb
+    firebaseDatabase
         .reference()
         .child('climates')
         .child(initial.getID)
@@ -147,7 +152,7 @@ class DataProvider with ChangeNotifier, DiagnosticableTreeMixin {
     // add Climate to local List
     climates.add(newClimate);
     // add Climate to Firebase
-    fb
+    firebaseDatabase
         .reference()
         .child('climates')
         .child(newClimate.getID)
@@ -157,7 +162,7 @@ class DataProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
   void setActiveClimate(ClimateControl climate) {
     activeClimate = climate;
-    fb.reference().child('activeClimate').set(climate.getJson());
+    firebaseDatabase.reference().child('activeClimate').set(climate.getJson());
     notifyListeners();
   }
 
@@ -165,7 +170,11 @@ class DataProvider with ChangeNotifier, DiagnosticableTreeMixin {
     // Remove Climate locally
     climates.remove(climate);
     // Remove Climate in firebase
-    fb.reference().child('climates').child(climate.getID).remove();
+    firebaseDatabase
+        .reference()
+        .child('climates')
+        .child(climate.getID)
+        .remove();
     notifyListeners();
   }
 }

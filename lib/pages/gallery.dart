@@ -10,11 +10,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:sgs/customwidgets/appBarHeader.dart';
-import 'package:sgs/customwidgets/imageListItem.dart';
-import 'package:sgs/customwidgets/popupMenu.dart';
-import 'package:sgs/customwidgets/timeLapseItem.dart';
-import 'package:sgs/customwidgets/dateRangeSelect.dart';
+import 'package:sgs/customwidgets/general/appBarHeader.dart';
+import 'package:sgs/customwidgets/gallery/imageListItem.dart';
+import 'package:sgs/customwidgets/general/popupMenu.dart';
+import 'package:sgs/customwidgets/gallery/timeLapseItem.dart';
+import 'package:sgs/customwidgets/gallery/dateRangeSelect.dart';
 import 'package:sgs/main.dart';
 import 'package:sgs/objects/appTheme.dart';
 import 'package:sgs/objects/photo.dart';
@@ -52,7 +52,7 @@ class _GalleryState extends State<Gallery> {
           builder: (context, value, child) {
             return Opacity(
               opacity: value,
-              child: (ImageListItem(element)),
+              child: (ImageItem(element)),
             );
           },
         ),

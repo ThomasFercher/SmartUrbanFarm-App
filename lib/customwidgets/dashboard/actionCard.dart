@@ -3,14 +3,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
-import 'package:sgs/customwidgets/datachart.dart';
-import 'package:sgs/customwidgets/detaildialog.dart';
-import 'package:sgs/customwidgets/smalldatachart.dart';
-import 'package:sgs/providers/dataProvider.dart';
 import 'package:sgs/styles.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:outline_material_icons/outline_material_icons.dart';
 
 class ActionCard extends StatelessWidget {
   final Function onPressed;
