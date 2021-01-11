@@ -29,40 +29,51 @@ class SettingsListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     var val = value ?? value_text;
     AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
-    return ListTile(
-      title: Text(
-        title,
-        style: TextStyle(
-          color: theme.textColor,
-          fontSize: 18.0,
-          fontWeight: FontWeight.w400,
-        ),
-      ),
-      subtitle: subtitle ?? null,
-      leading: Container(
-        height: 40,
-        width: 40,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            color: theme.textColor.withOpacity(0.03)),
-        child: Icon(
-          icon,
-          color: color,
-          size: 18,
-        ),
-      ),
-      trailing: Container(
-        height: 48,
-        padding: EdgeInsets.only(top: 10),
-        child: Text(
-          "$val$unit",
-          style: TextStyle(
-            color: theme.textColor,
-            fontWeight: FontWeight.w100,
-            fontSize: 30.0,
+    return LayoutBuilder(builder: (context, constraints) {
+      var height = constraints.maxHeight;
+
+      return Container(
+        child: ListTile(
+          title: Container(
+            height: height,
+            alignment: Alignment.centerLeft,
+            child: Text(
+              title,
+              style: TextStyle(
+                color: theme.textColor,
+                fontSize: 18.0,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ),
+          subtitle: subtitle ?? null,
+          leading: Container(
+            height: height - 8,
+            width: height - 8,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(
+                (height - 8) / 3.2,
+              ),
+              color: theme.textColor.withOpacity(0.03),
+            ),
+            child: Icon(
+              icon,
+              color: color,
+              size: height / 3,
+            ),
+          ),
+          trailing: Container(
+            child: Text(
+              "$val$unit",
+              style: TextStyle(
+                color: theme.textColor,
+                fontWeight: FontWeight.w100,
+                fontSize: 26.0,
+              ),
+            ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 }

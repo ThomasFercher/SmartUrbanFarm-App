@@ -32,7 +32,7 @@ class SettingsProvider extends ChangeNotifier {
       headlineColor: Colors.grey[300],
       primaryColor: Color(0xFF26C281),
       secondaryColor: Color(0xFF3f51b5),
-      contrast: Colors.grey[800],
+      contrast: Colors.grey[850],
     )
   ];
 

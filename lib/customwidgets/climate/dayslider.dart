@@ -58,107 +58,100 @@ class _DaySliderState extends State<DaySlider> {
   Widget build(BuildContext context) {
     AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
     return Container(
-      color: theme.background,
-      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 0),
-      child: Container(
-        padding: EdgeInsets.only(top: 10, bottom: 10),
-        child: Column(
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 5.0),
-                  child: SectionTitle(
+      padding: EdgeInsets.only(left: 10, right: 10, top: 2.5, bottom: 80),
+      child: Card(
+        color: theme.cardColor,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        child: Container(
+          padding: EdgeInsets.only(top: 10, bottom: 10, left: 15, right: 15),
+          child: Column(
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SectionTitle(
                     title: "Suntime",
                     fontSize: 20,
                     color: theme.headlineColor,
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 5),
-                  child: new Text(
+                  Text(
                     "${getTimeString(suntime * 4)} hours",
                     style: TextStyle(
-                      color: theme.secondaryTextColor,
+                      color: theme.headlineColor,
                       fontWeight: FontWeight.w100,
-                      fontSize: 26.0,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Container(
-              padding: EdgeInsets.only(top: 10, bottom: 5),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(left: 5),
-                    width: 50,
-                    height: 50,
-                    child: FlareActor(
-                      'assets/flares/sun.flr',
-                      alignment: Alignment.center,
-                      animation: "Moon Rings",
-                      color: Colors.orange,
-
-                      //  color: Colors.yellow[500],
-                    ),
-                  ),
-                  Container(
-                    constraints:
-                        BoxConstraints(maxWidth: getWidth(context) - 140),
-                    child: SliderTheme(
-                      data: SliderThemeData(
-                        overlayShape:
-                            RoundSliderOverlayShape(overlayRadius: 20),
-                        rangeThumbShape: _CustomRangeThumbShape(
-                          values: labels,
-                          valuesTime: _values,
-                        ),
-                        trackHeight: 2,
-                      ),
-                      child: RangeSlider(
-                          divisions: 96,
-                          values: _values,
-                          min: 0,
-                          max: 96,
-                          activeColor: theme.primaryColor,
-                          inactiveColor: Colors.black12,
-                          onChanged: (values) {
-                            setState(
-                              () {
-                                if (values.end - values.start >= 16)
-                                  _values = values;
-                                labels = [
-                                  getTimeString(_values.start),
-                                  getTimeString(_values.end)
-                                ];
-                                suntime = _values.end / 4 - _values.start / 4;
-
-                                widget.onValueChanged(
-                                    labels[0] + " - " + labels[1]);
-                              },
-                            );
-                          }),
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(right: 5),
-                    width: 50,
-                    height: 50,
-                    child: FlareActor(
-                      'assets/flares/moon.flr',
-                      alignment: Alignment.center,
-                      animation: "Moon Rings",
+                      fontSize: 30.0,
                     ),
                   ),
                 ],
               ),
-            ),
-          ],
+              Container(
+                padding: EdgeInsets.only(top: 10, bottom: 5),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      width: 40,
+                      height: 50,
+                      child: FlareActor(
+                        'assets/flares/sun.flr',
+                        alignment: Alignment.center,
+                        animation: "Moon Rings",
+                        color: Colors.orange,
+
+                        //  color: Colors.yellow[500],
+                      ),
+                    ),
+                    Expanded(
+                      child: SliderTheme(
+                        data: SliderThemeData(
+                          overlayShape:
+                              RoundSliderOverlayShape(overlayRadius: 15),
+                          rangeThumbShape: _CustomRangeThumbShape(
+                            values: labels,
+                            valuesTime: _values,
+                          ),
+                          trackHeight: 2,
+                        ),
+                        child: RangeSlider(
+                            divisions: 96,
+                            values: _values,
+                            min: 0,
+                            max: 96,
+                            activeColor: theme.primaryColor,
+                            inactiveColor: Colors.black12,
+                            onChanged: (values) {
+                              setState(
+                                () {
+                                  if (values.end - values.start >= 16)
+                                    _values = values;
+                                  labels = [
+                                    getTimeString(_values.start),
+                                    getTimeString(_values.end)
+                                  ];
+                                  suntime = _values.end / 4 - _values.start / 4;
+
+                                  widget.onValueChanged(
+                                      labels[0] + " - " + labels[1]);
+                                },
+                              );
+                            }),
+                      ),
+                    ),
+                    Container(
+                      width: 40,
+                      height: 50,
+                      child: FlareActor(
+                        'assets/flares/moon.flr',
+                        alignment: Alignment.center,
+                        animation: "Moon Rings",
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -199,13 +192,32 @@ class _CustomRangeThumbShape extends RangeSliderThumbShape {
   }) {
     final Canvas canvas = context.canvas;
     Path oval = Path()
-      ..addOval(new Rect.fromCenter(center: center, width: 36, height: 36));
+      ..addRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromCenter(
+            center: center,
+            height: 30,
+            width: 42,
+          ),
+          Radius.circular(15),
+        ),
+      );
     Paint shadowPaint = Paint()
-      ..color = Colors.black.withOpacity(0.8)
-      ..maskFilter = MaskFilter.blur(BlurStyle.normal, 1)
+      ..color = Colors.black.withOpacity(0.3)
+      ..maskFilter = MaskFilter.blur(BlurStyle.normal, 2)
       ..style = PaintingStyle.fill;
     canvas.drawPath(oval, shadowPaint);
-    canvas.drawCircle(center, 18, _paint);
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(
+        Rect.fromCenter(
+          center: center,
+          height: 30,
+          width: 42,
+        ),
+        Radius.circular(15),
+      ),
+      _paint,
+    );
 
     switch (thumb) {
       case Thumb.start:

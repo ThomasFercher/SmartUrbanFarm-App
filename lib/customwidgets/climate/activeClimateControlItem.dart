@@ -14,53 +14,44 @@ class ActiveClimateControlItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 25),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Container(
-            height: 38,
-            width: 38,
-            margin: const EdgeInsets.only(right: 15, bottom: 3, top: 3),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: Colors.white.withOpacity(0.2),
-            ),
-            child: Icon(
-              icon,
+    return LayoutBuilder(builder: (context, constraints) {
+      var height = constraints.maxHeight;
+
+      return ListTile(
+        leading: Container(
+          height: height - 8,
+          width: height - 8,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: Colors.white.withOpacity(0.2),
+          ),
+          child: Icon(
+            icon,
+            color: Colors.white,
+            size: height / 3,
+          ),
+        ),
+        title: Container(
+          height: height,
+          alignment: Alignment.centerLeft,
+          child: Text(
+            lable,
+            style: GoogleFonts.nunito(
               color: Colors.white,
-              size: 20,
+              fontWeight: FontWeight.w600,
+              fontSize: 18,
             ),
           ),
-          Container(
-            height: 40,
-            alignment: Alignment.center,
-            child: Text(
-              lable,
-              style: GoogleFonts.nunito(
-                color: Colors.white,
-                fontWeight: FontWeight.w600,
-                fontSize: 18,
-              ),
-            ),
+        ),
+        trailing: Text(
+          value,
+          style: GoogleFonts.nunito(
+            color: Colors.white,
+            fontWeight: FontWeight.w100,
+            fontSize: 26,
           ),
-          Expanded(
-            child: Container(
-              height: 40,
-              alignment: Alignment.centerRight,
-              child: Text(
-                value,
-                style: GoogleFonts.nunito(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w100,
-                  fontSize: 24,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+        ),
+      );
+    });
   }
 }

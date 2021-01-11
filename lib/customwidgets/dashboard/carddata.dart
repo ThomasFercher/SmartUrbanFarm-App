@@ -40,38 +40,31 @@ class CardData extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(borderRadius),
             ),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(borderRadius),
-
-                color: theme.cardColor, //iconColor, //getTheme().cardColor,
-              ),
-              padding: EdgeInsets.all(8),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Flexible(
-                    fit: FlexFit.tight,
-                    child: Icon(
-                      icon,
-                      size: 26,
-                      color: iconColor,
+            color: theme.cardColor, //icon
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Flexible(
+                  fit: FlexFit.tight,
+                  child: Icon(
+                    icon,
+                    size: 26,
+                    color: iconColor,
+                  ),
+                ),
+                Flexible(
+                  fit: FlexFit.tight,
+                  child: Text(
+                    text,
+                    style: GoogleFonts.nunito(
+                      color: theme.textColor,
+                      fontWeight: FontWeight.w200,
+                      fontSize: 26.0,
                     ),
                   ),
-                  Flexible(
-                    fit: FlexFit.tight,
-                    child: Text(
-                      text,
-                      style: GoogleFonts.nunito(
-                        color: theme.textColor,
-                        fontWeight: FontWeight.w200,
-                        fontSize: 26.0,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           );
         },

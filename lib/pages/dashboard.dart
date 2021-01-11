@@ -129,8 +129,8 @@ class Dashboard extends StatelessWidget {
                   },
                   icon: Icons.photo,
                   text: "Gallery",
-                  iconColor: theme.primaryColor,
-                  backgroundColor: Color(0xFFdcf8ec),
+                  iconColor: Color(0xFFdcf8ec),
+                  backgroundColor: theme.primaryColor,
                 ),
                 ActionCard(
                   onPressed: () => {
@@ -143,8 +143,8 @@ class Dashboard extends StatelessWidget {
                   },
                   icon: Icons.assessment,
                   text: "Advanced Data",
-                  iconColor: theme.primaryColor,
-                  backgroundColor: Color(0xFFdcf8ec),
+                  iconColor: Color(0xFFdcf8ec),
+                  backgroundColor: theme.primaryColor,
                 ),
               ],
             ),
@@ -176,8 +176,8 @@ class Dashboard extends StatelessWidget {
                   },
                   icon: Icons.settings_system_daydream,
                   text: "Environment",
-                  iconColor: theme.secondaryColor,
-                  backgroundColor: Color(0xFFe1e4f4),
+                  iconColor: Color(0xFFe1e4f4),
+                  backgroundColor: theme.secondaryColor,
                 ),
                 ActionCard(
                   onPressed: () => {
@@ -190,8 +190,8 @@ class Dashboard extends StatelessWidget {
                   },
                   icon: Icons.settings,
                   text: "App Settings",
-                  iconColor: theme.secondaryColor,
-                  backgroundColor: Color(0xFFe1e4f4),
+                  iconColor: Color(0xFFe1e4f4),
+                  backgroundColor: theme.secondaryColor,
                 ),
               ],
             ),

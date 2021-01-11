@@ -120,12 +120,7 @@ class DataProvider with ChangeNotifier, DiagnosticableTreeMixin {
       Map<dynamic, dynamic> activeClimateJson = data.value;
       env = new ClimateControl.fromJson(activeClimateJson);
     });
-    //return env;
-
-    await firebase.child("nameofchild").once().then((DataSnapshot data) {
-      Map<dynamic, dynamic> json = data.value;
-      print(json);
-    });
+    return env;
   }
 
   void editClimate(ClimateControl initial, ClimateControl newClimate) {

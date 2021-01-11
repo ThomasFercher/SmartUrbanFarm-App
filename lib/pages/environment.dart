@@ -40,6 +40,11 @@ class Environment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
+    var height = MediaQuery.of(context).size.height / 2;
+    print(height);
+    height = height < 280 ? 280 : height;
+    var h2 = MediaQuery.of(context).size.height - height - 32;
+    print(h2);
     return Consumer<DataProvider>(builder: (context, d, child) {
       List<ClimateControl> climates = d.climates;
       ClimateControl activeClimate = d.activeClimate;
@@ -52,20 +57,10 @@ class Environment extends StatelessWidget {
         isPage: true,
         title: "Climate Control",
         contentPadding: false,
+        bottomBarColor: theme.background,
         body: [
-          Padding(
-            padding: const EdgeInsets.only(left: 15, top: 20.0),
-            child: sectionTitle(
-                context,
-                "Others",
-                theme.name == "light"
-                    ? theme.secondaryTextColor
-                    : theme.headlineColor),
-          ),
           Container(
-            height: MediaQuery.of(context).size.height - 500 > 400
-                ? MediaQuery.of(context).size.height - 500
-                : 400,
+            height: h2,
             child: ListView(
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
@@ -100,7 +95,7 @@ class Environment extends StatelessWidget {
           },
         ),
         appbarBottom: PreferredSize(
-          preferredSize: Size.fromHeight(360),
+          preferredSize: Size.fromHeight(height),
           child: OpenContainer(
               closedElevation: 0.0,
               closedColor: primaryColor,
@@ -112,34 +107,30 @@ class Environment extends StatelessWidget {
               },
               closedBuilder: (_, openContainer) {
                 return Container(
-                  child: Column(
+                  height: height - 60,
+                  child: ListView(
+                    itemExtent: (height - 80) / 6,
                     children: [
-                      Padding(
-                        padding: EdgeInsets.only(left: 30, right: 15),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SectionTitle(
-                              title: activeClimate.name,
-                              color: Colors.white,
-                              fontSize: 18,
-                            ),
-                            PopupMenu(
-                              color: Colors.white,
-                              options: options,
-                              onSelected: (val) {
-                                switch (val) {
-                                  case 'Edit':
-                                    openContainer();
-                                    break;
+                      ListTile(
+                          contentPadding: EdgeInsets.only(left: 15, right: 0),
+                          title: SectionTitle(
+                            title: activeClimate.name,
+                            color: Colors.white,
+                            fontSize: 18,
+                          ),
+                          trailing: PopupMenu(
+                            color: Colors.white,
+                            options: options,
+                            onSelected: (val) {
+                              switch (val) {
+                                case 'Edit':
+                                  openContainer();
+                                  break;
 
-                                  default:
-                                }
-                              },
-                            )
-                          ],
-                        ),
-                      ),
+                                default:
+                              }
+                            },
+                          )),
                       ActiveClimateControlItem(
                         icon: WeatherIcons.thermometer,
                         lable: "Temperature",
@@ -165,9 +156,6 @@ class Environment extends StatelessWidget {
                         lable: "Water Consumption",
                         value: "$water" + "l/d",
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 10),
-                      )
                     ],
                   ),
                 );

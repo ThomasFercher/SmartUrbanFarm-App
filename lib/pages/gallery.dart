@@ -135,104 +135,118 @@ class _GalleryState extends State<Gallery> {
     var width = MediaQuery.of(context).size.width;
     AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
 
-    return Consumer<StorageProvider>(
-      builder: (context, d, child) {
-        List<Photo> photos = d.photos;
-        List<TimeLapse> timelapses = d.timelapses;
-        List<Widget> tabList = tab == "Photos"
-            ? getPhotoList(photos)
-            : getTimeLapseList(timelapses);
-        return AppBarHeader(
-          isPage: true,
-          title: "Gallery",
-          trailling: IconButton(
-            icon: Icon(Icons.video_collection),
-            onPressed: () {},
-          ),
-          appbarBottom: PreferredSize(
-            preferredSize: Size.fromHeight(130),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            tab = "Photos";
-                          });
-                        },
-                        child: Container(
-                          height: 50,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.photo,
-                                color: Colors.white,
-                              ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 4),
-                              ),
-                              Text(
-                                "Photos",
-                                style: buttonTextStyle,
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            tab = "TimeLapses";
-                          });
-                        },
-                        child: Container(
-                          height: 50,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.video_collection,
-                                color: Colors.white,
-                              ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 4),
-                              ),
-                              Text(
-                                "TimeLapses",
-                                style: buttonTextStyle,
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                AnimatedContainer(
-                  duration: Duration(milliseconds: 200),
-                  curve: Curves.easeIn,
-                  height: 2,
-                  margin: EdgeInsets.only(
-                    left: tab == "Photos" ? 0 : width / 2,
-                    right: tab == "Photos" ? width / 2 : 0,
-                  ),
-                  width: MediaQuery.of(context).size.width,
-                  color: Colors.white,
-                ),
-              ],
-            ),
-          ),
-          actionButton: tab == "Photos"
-              ? photoActionButton(context)
-              : timeLapseActionButton(d.computingTimelapse, context),
-          body: tabList,
-        );
+    return GestureDetector(
+      onHorizontalDragEnd: (details) {
+        var vel = details.velocity.pixelsPerSecond;
+        if (vel.dx > 0) {
+          setState(() {
+            tab = "Photos";
+          });
+        } else {
+          setState(() {
+            tab = "TimeLapses";
+          });
+        }
       },
+      child: Consumer<StorageProvider>(
+        builder: (context, d, child) {
+          List<Photo> photos = d.photos;
+          List<TimeLapse> timelapses = d.timelapses;
+          List<Widget> tabList = tab == "Photos"
+              ? getPhotoList(photos)
+              : getTimeLapseList(timelapses);
+          return AppBarHeader(
+            isPage: true,
+            title: "Gallery",
+            trailling: IconButton(
+              icon: Icon(Icons.video_collection),
+              onPressed: () {},
+            ),
+            appbarBottom: PreferredSize(
+              preferredSize: Size.fromHeight(130),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              tab = "Photos";
+                            });
+                          },
+                          child: Container(
+                            height: 50,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.photo,
+                                  color: Colors.white,
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 4),
+                                ),
+                                Text(
+                                  "Photos",
+                                  style: buttonTextStyle,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              tab = "TimeLapses";
+                            });
+                          },
+                          child: Container(
+                            height: 50,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.video_collection,
+                                  color: Colors.white,
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 4),
+                                ),
+                                Text(
+                                  "TimeLapses",
+                                  style: buttonTextStyle,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  AnimatedContainer(
+                    duration: Duration(milliseconds: 200),
+                    curve: Curves.easeIn,
+                    height: 2,
+                    margin: EdgeInsets.only(
+                      left: tab == "Photos" ? 0 : width / 2,
+                      right: tab == "Photos" ? width / 2 : 0,
+                    ),
+                    width: MediaQuery.of(context).size.width,
+                    color: Colors.white,
+                  ),
+                ],
+              ),
+            ),
+            actionButton: tab == "Photos"
+                ? photoActionButton(context)
+                : timeLapseActionButton(d.computingTimelapse, context),
+            body: tabList,
+          );
+        },
+      ),
     );
   }
 }

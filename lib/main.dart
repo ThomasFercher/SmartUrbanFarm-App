@@ -4,8 +4,10 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flare_flutter/flare_cache.dart';
 import 'package:flare_flutter/flare_controls.dart';
 import 'package:flutter/material.dart';
+import 'package:sgs/PushNotificationManager.dart';
 import 'package:sgs/objects/appTheme.dart';
 import 'package:sgs/pages/dashboard.dart';
+import 'package:sgs/providers/notificationProvider.dart';
 import 'package:sgs/providers/settingsProvider.dart';
 import 'package:sgs/providers/storageProvider.dart';
 import 'providers/dataProvider.dart';
@@ -14,14 +16,21 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
+import 'styles.dart';
+import 'styles.dart';
+
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+    [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
+  );
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
-      systemNavigationBarColor: Colors.transparent,
+      systemNavigationBarColor: primaryColor,
     ),
   );
-  WidgetsFlutterBinding.ensureInitialized();
+
   FlareCache.doesPrune = false;
   runApp(
     MultiProvider(
@@ -47,20 +56,21 @@ void main() {
 class SufMobileApplication extends StatelessWidget {
   // This widget is the root of your application.
 
-  //FlareControls flrctrl = new FlareControls();
+  FlareControls flrctrl = new FlareControls();
 
   @override
   Widget build(BuildContext context) {
     //  AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      color: primaryColor,
       theme: ThemeData(
         primaryColor: primaryColor,
         pageTransitionsTheme: const PageTransitionsTheme(
           builders: <TargetPlatform, PageTransitionsBuilder>{
             TargetPlatform.android: SharedAxisPageTransitionsBuilder(
               transitionType: SharedAxisTransitionType.scaled,
-              fillColor: primaryColor,
+              fillColor: Colors.transparent,
             ),
             TargetPlatform.iOS: FadeThroughPageTransitionsBuilder()
           },
@@ -78,10 +88,10 @@ class SufMobileApplication extends StatelessWidget {
                 'assets/flares/splashscreen.flr',
                 alignment: Alignment.center,
                 animation: "Loading",
-                /*controller: flrctrl,
+                controller: flrctrl,
                 callback: (s) {
                   flrctrl.play("Wind");
-                },*/
+                },
               ),
             );
           } else {
@@ -97,6 +107,8 @@ class SufMobileApplication extends StatelessWidget {
 
 /// This function loads the inital data from the database when the app starts.
 Future<void> loadInitialData(context) async {
+  // Init PushNotificationsManager for notfications
+  await PushNotificationsManager().init();
   // Log into Firebase to be able to access data
   await FirebaseAuth.instance.signInAnonymously();
 

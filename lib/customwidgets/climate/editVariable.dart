@@ -33,52 +33,59 @@ class EditVariable extends StatelessWidget {
     AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
     print(((max - min) * 2).round());
     return Container(
-      color: Colors.grey[50],
-      child: Container(
-        padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 10),
-        color: theme.background,
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Container(
-                  child: SectionTitle(
-                    title: title,
-                    fontSize: 20,
-                    color: theme.headlineColor,
-                  ),
-                ),
-                Container(
-                  height: 48,
-                  alignment: Alignment.bottomRight,
-                  child: Text(
-                    "$value$unit",
-                    style: TextStyle(
+      color: theme.background,
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2.5),
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        color: theme.cardColor,
+        child: Container(
+          padding: const EdgeInsets.only(
+              left: 15.0, right: 15.0, bottom: 10, top: 5),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Container(
+                    child: SectionTitle(
+                      title: title,
+                      fontSize: 20,
                       color: theme.headlineColor,
-                      fontWeight: FontWeight.w100,
-                      fontSize: 30.0,
                     ),
                   ),
-                ),
-              ],
-            ),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              child: CupertinoSlider(
-                value: value,
-                onChanged: (val) {
-                  val = double.parse((val).toStringAsFixed(2));
-                  onValueChanged(val);
-                },
-                activeColor: color,
-                max: max,
-                min: min,
-                divisions: ((max - min) * 2).round(),
+                  Container(
+                    height: 48,
+                    alignment: Alignment.bottomRight,
+                    child: Text(
+                      "$value$unit",
+                      style: TextStyle(
+                        color: theme.headlineColor,
+                        fontWeight: FontWeight.w100,
+                        fontSize: 30.0,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
+              Container(
+                width: MediaQuery.of(context).size.width,
+                child: CupertinoSlider(
+                  value: value,
+                  onChanged: (val) {
+                    val = double.parse((val).toStringAsFixed(2));
+                    onValueChanged(val);
+                  },
+                  activeColor: color,
+                  max: max,
+                  min: min,
+                  divisions: ((max - min) * 2).round(),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

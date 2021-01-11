@@ -23,53 +23,60 @@ class Input extends StatelessWidget {
     AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
 
     return Container(
-      padding: EdgeInsets.all(20),
-      color: theme.background,
-      child: Column(
-        children: [
-          Container(
-            alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.only(bottom: 4),
-            child: SectionTitle(
-              title: "Name",
-              fontSize: 20,
-              color: theme.headlineColor,
-            ),
-          ),
-          SizedBox(
-            height: 48,
-            child: TextFormField(
-              cursorColor: theme.primaryColor,
-              initialValue: initialValue,
-              decoration: InputDecoration(
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.grey[400]),
-                  borderRadius: BorderRadius.circular(5.0),
+      padding: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 2.5),
+      child: Card(
+        color: theme.cardColor,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        child: Container(
+          padding: EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 15),
+          child: Column(
+            children: [
+              Container(
+                alignment: Alignment.centerLeft,
+                padding: const EdgeInsets.only(bottom: 4),
+                child: SectionTitle(
+                  title: "Name",
+                  fontSize: 20,
+                  color: theme.headlineColor,
                 ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: theme.primaryColor),
-                  borderRadius: BorderRadius.circular(5.0),
-                ),
+              ),
+              SizedBox(
+                height: 48,
+                child: TextFormField(
+                  cursorColor: theme.primaryColor,
+                  initialValue: initialValue,
+                  decoration: InputDecoration(
+                    border: UnderlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Colors.grey[200], width: 1.5),
+                    ),
 
-                //fillColor: Colors.green
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide:
+                          BorderSide(color: theme.primaryColor, width: 1.5),
+                    ),
+
+                    //fillColor: Colors.green
+                  ),
+                  onChanged: (value) => valChanged(value),
+                  validator: (val) {
+                    if (val.length == 0) {
+                      return "Name cannot be empty!";
+                    } else {
+                      return null;
+                    }
+                  },
+                  style: GoogleFonts.nunito(
+                    color: theme.headlineColor,
+                    fontSize: 20,
+                    height: 1,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
               ),
-              onChanged: (value) => valChanged(value),
-              validator: (val) {
-                if (val.length == 0) {
-                  return "Name cannot be empty!";
-                } else {
-                  return null;
-                }
-              },
-              style: GoogleFonts.nunito(
-                color: theme.headlineColor,
-                fontSize: 20,
-                height: 1,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

@@ -43,18 +43,14 @@ class EditEnvironment extends StatelessWidget {
             title: create ? "Create Climate" : "Edit $name",
             isPage: true,
             contentPadding: false,
+            bottomBarColor: theme.cardColor,
             bottomAction: Container(
-              color: theme.cardColor,
               child: Container(
                 width: MediaQuery.of(context).size.width,
                 height: 70,
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 decoration: BoxDecoration(
-                  color: theme.background,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(borderRadius),
-                    topRight: Radius.circular(borderRadius),
-                  ),
+                  color: theme.cardColor,
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withOpacity(0.1),
@@ -76,7 +72,7 @@ class EditEnvironment extends StatelessWidget {
                   ),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(
-                      Radius.circular(25),
+                      Radius.circular(15),
                     ),
                   ),
                 ),
@@ -88,7 +84,6 @@ class EditEnvironment extends StatelessWidget {
                 initialValue: pr.climateSettings.name,
                 valChanged: (val) => pr.changeName(val),
               ),
-              PlaceDivider(),
               EditVariable(
                 value: pr.climateSettings.temperature,
                 color: Colors.redAccent,
@@ -101,7 +96,6 @@ class EditEnvironment extends StatelessWidget {
                   pr.changeTemperature(v);
                 },
               ),
-              PlaceDivider(),
               EditVariable(
                 value: pr.climateSettings.humidity,
                 color: Colors.blueAccent,
@@ -114,7 +108,6 @@ class EditEnvironment extends StatelessWidget {
                   pr.changeHumidity(v);
                 },
               ),
-              PlaceDivider(),
               EditVariable(
                 value: pr.climateSettings.soilMoisture,
                 color: Colors.brown,
@@ -127,7 +120,6 @@ class EditEnvironment extends StatelessWidget {
                   pr.changeSoilMoisture(v);
                 },
               ),
-              PlaceDivider(),
               EditVariable(
                 value: pr.climateSettings.waterConsumption,
                 color: Colors.lightBlueAccent,
@@ -140,12 +132,10 @@ class EditEnvironment extends StatelessWidget {
                   pr.changeWaterConsumption(v);
                 },
               ),
-              PlaceDivider(),
               DaySlider(
                 onValueChanged: (v) => pr.changeSuntime(v),
                 initialTimeString: pr.climateSettings.suntime,
               ),
-              PlaceDivider()
             ],
           );
         });
@@ -157,13 +147,13 @@ class EditEnvironment extends StatelessWidget {
 class PlaceDivider extends StatelessWidget {
   double height;
 
-  PlaceDivider({height}) : height = height ?? 15.0;
+  PlaceDivider({height}) : height = height ?? 8.0;
 
   @override
   Widget build(BuildContext context) {
     AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
     return Container(
-      color: theme.cardColor,
+      color: Colors.green[50],
       height: height,
       width: MediaQuery.of(context).size.width,
     );

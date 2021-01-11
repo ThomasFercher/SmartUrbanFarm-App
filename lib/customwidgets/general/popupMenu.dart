@@ -43,25 +43,28 @@ class PopupMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
     // TODO: implement build
-    return PopupMenuButton(
-        icon: Icon(
-          Icons.more_horiz,
-          color: color,
-        ),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(borderRadius),
+    return Container(
+      height: 40,
+      child: PopupMenuButton(
+          icon: Icon(
+            Icons.more_horiz,
+            color: color,
           ),
-        ),
-        onSelected: (value) => onSelected(value),
-        color: theme.cardColor,
-        itemBuilder: (BuildContext context) {
-          return options
-              .map(
-                (opt) =>
-                    getDropDownMenuItem(opt.value, opt.icon, context, theme),
-              )
-              .toList();
-        });
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(borderRadius),
+            ),
+          ),
+          onSelected: (value) => onSelected(value),
+          color: theme.cardColor,
+          itemBuilder: (BuildContext context) {
+            return options
+                .map(
+                  (opt) =>
+                      getDropDownMenuItem(opt.value, opt.icon, context, theme),
+                )
+                .toList();
+          }),
+    );
   }
 }

@@ -52,7 +52,7 @@ class ActionCard extends StatelessWidget {
                       text,
                       textAlign: TextAlign.start,
                       style: GoogleFonts.nunito(
-                        color: Colors.black54,
+                        color: Colors.white,
                         fontWeight: FontWeight.w600,
                         fontSize: 14,
                       ),

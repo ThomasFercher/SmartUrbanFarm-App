@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -19,6 +21,7 @@ class AppBarHeader extends StatelessWidget {
   final Widget bottomAction;
   final _controller = ScrollController();
   final PreferredSizeWidget appbarBottom;
+  final Color bottomBarColor;
   bool contentPadding = true;
 
   AppBarHeader({
@@ -30,6 +33,7 @@ class AppBarHeader extends StatelessWidget {
     contentPadding,
     this.bottomAction,
     this.appbarBottom,
+    this.bottomBarColor,
   }) : contentPadding = contentPadding ?? true;
 
   @override
@@ -48,12 +52,18 @@ class AppBarHeader extends StatelessWidget {
       var scrollDirection = _controller.position.userScrollDirection;
 
       if (scrollOffset < 140 && scrollDirection == ScrollDirection.reverse) {
-        _controller.animateTo(140,
-            duration: Duration(milliseconds: 100), curve: Curves.slowMiddle);
+        Timer(
+          Duration(milliseconds: 1),
+          () async => await _controller.animateTo(140,
+              duration: Duration(milliseconds: 80), curve: Curves.slowMiddle),
+        );
       } else if (scrollOffset < 140 &&
           scrollDirection == ScrollDirection.forward) {
-        _controller.animateTo(0,
-            duration: Duration(milliseconds: 100), curve: Curves.slowMiddle);
+        Timer(
+          Duration(milliseconds: 1),
+          () async => await _controller.animateTo(0,
+              duration: Duration(milliseconds: 80), curve: Curves.slowMiddle),
+        );
       }
     });
 
@@ -61,7 +71,8 @@ class AppBarHeader extends StatelessWidget {
 
     return AnnotatedRegion(
       value: SystemUiOverlayStyle(
-        systemNavigationBarColor: theme.background,
+        systemNavigationBarColor:
+            bottomBarColor == null ? theme.background : bottomBarColor,
       ),
       child: Scaffold(
         bottomSheet: bottomAction ??
