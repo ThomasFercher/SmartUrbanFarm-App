@@ -9,6 +9,7 @@ class ClimateControl {
   double soilMoisture;
   String suntime;
   double waterConsumption;
+  bool automatic_watering;
 
   double get getTemperature => temperature;
 
@@ -33,12 +34,13 @@ class ClimateControl {
 
   set setName(String name) => this.name = name;
 
+  set setAutomaticWatering(bool aut)=> this.automatic_watering = aut;
   String get getName => name;
 
   String get getID => id;
 
-  Map<String, String> getJson() {
-    return <String, String>{
+  Map<String, dynamic> getJson() {
+    return <String, dynamic>{
       "id": id,
       "name": name,
       "tempSoll": temperature.toString(),
@@ -46,6 +48,7 @@ class ClimateControl {
       "soilMoistureSoll": soilMoisture.toString(),
       "suntime": suntime,
       "waterConsumption": waterConsumption.toString(),
+      "automaticWatering": automatic_watering,
     };
   }
 
@@ -57,16 +60,17 @@ class ClimateControl {
     this.soilMoisture = double.parse(json["soilMoistureSoll"]);
     this.suntime = json["suntime"];
     this.waterConsumption = double.parse(json["waterConsumption"]);
+    this.automatic_watering =json["automaticWatering"];
   }
 
-  ClimateControl({
-    @required this.name,
-    @required this.temperature,
-    @required this.humidity,
-    @required this.soilMoisture,
-    @required this.suntime,
-    @required this.waterConsumption,
-  }) {
+  ClimateControl(
+      {@required this.name,
+      @required this.temperature,
+      @required this.humidity,
+      @required this.soilMoisture,
+      @required this.suntime,
+      @required this.waterConsumption,
+      @required this.automatic_watering}) {
     this.id = uuid.v1(); // create random time based id
   }
 }

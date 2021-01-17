@@ -30,9 +30,13 @@ class DataProvider with ChangeNotifier, DiagnosticableTreeMixin {
   List<ClimateControl> climates = [];
 
   //Reference to the Firebase
-  final firebase = firebaseDatabase.reference();
+ 
+  final ref = firebaseDatabase.reference();
+  
 
-  DataProvider() {}
+  DataProvider() {
+  
+  }
 
   SplayTreeMap<DateTime, double> getTemperatures() {
     return temperatures;
@@ -44,7 +48,7 @@ class DataProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
   Future<SplayTreeMap<DateTime, double>> loadMap(String child) async {
     SplayTreeMap<DateTime, double> map;
-    await firebase.child(child).once().then((DataSnapshot data) {
+    await ref.child(child).once().then((DataSnapshot data) {
       map = sortData(data.value);
     });
     return map;
@@ -53,12 +57,12 @@ class DataProvider with ChangeNotifier, DiagnosticableTreeMixin {
   Future<LiveData> getLiveData() async {
     LiveData initialLiveData;
     // Load the inital value
-    await firebase.child("liveClimate").once().then((DataSnapshot data) {
+    await ref.child("liveClimate").once().then((DataSnapshot data) {
       initialLiveData = new LiveData.fromJson(data.value);
     });
 
     // On value changes update the liveData Object
-    firebase.child("liveClimate").onValue.listen((event) {
+    ref.child("liveClimate").onValue.listen((event) {
       var liveClimateJson = event.snapshot.value;
       liveData = LiveData.fromJson(liveClimateJson);
       notifyListeners();
@@ -101,7 +105,7 @@ class DataProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
   Future<List<ClimateControl>> loadClimates() async {
     List<ClimateControl> envList = [];
-    await firebase.child("climates").once().then((DataSnapshot data) {
+    await ref.child("climates").once().then((DataSnapshot data) {
       Map<dynamic, dynamic> list = data.value;
       if (list == null || list.isEmpty) {
         return [];
@@ -116,7 +120,7 @@ class DataProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
   Future<ClimateControl> loadActiveClimate() async {
     ClimateControl env;
-    await firebase.child("activeClimate").once().then((DataSnapshot data) {
+    await ref.child("activeClimate").once().then((DataSnapshot data) {
       Map<dynamic, dynamic> activeClimateJson = data.value;
       env = new ClimateControl.fromJson(activeClimateJson);
     });

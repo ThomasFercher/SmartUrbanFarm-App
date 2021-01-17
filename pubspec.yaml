@@ -38,6 +38,8 @@ dependencies:
   flutter_local_notifications: ^3.0.2
   uuid: 2.2.2
   animations: ^1.1.2
+  connectivity: ^2.0.2
+  expandable: ^4.1.4
 
 dev_dependencies:
   flutter_launcher_icons: "^0.7.5"

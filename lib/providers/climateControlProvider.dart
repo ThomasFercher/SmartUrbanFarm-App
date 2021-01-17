@@ -44,4 +44,9 @@ class ClimateControlProvider extends ChangeNotifier {
     climateSettings.setSuntime = v;
     notifyListeners();
   }
+
+  changeAutomaticWatering(v) {
+    climateSettings.automatic_watering = v;
+    notifyListeners();
+  }
 }

@@ -51,7 +51,7 @@ class ClimateControlItem extends StatelessWidget {
     AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
 
     return Container(
-      height: 400,
+      // height: 400,
       width: MediaQuery.of(context).size.width - 30,
       margin: EdgeInsets.only(top: 10, bottom: 10, left: 15, right: 15),
       child: OpenContainer(
@@ -68,12 +68,12 @@ class ClimateControlItem extends StatelessWidget {
             builder: (context, constraints) {
               print(constraints.maxHeight);
               var itemheight =
-                  ((constraints.maxHeight - 24) / 6).roundToDouble();
+                  ((constraints.maxHeight - 24) / 5).roundToDouble();
 
               return Card(
                 elevation: cardElavation,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(borderRadius),
                 ),
                 color: theme.cardColor,
                 child: Container(
@@ -87,8 +87,8 @@ class ClimateControlItem extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: theme.primaryColor,
                           borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(10),
-                              topRight: Radius.circular(10)),
+                              topLeft: Radius.circular(borderRadius),
+                              topRight: Radius.circular(borderRadius)),
                         ),
                         child: Row(
                           children: [
@@ -99,12 +99,13 @@ class ClimateControlItem extends StatelessWidget {
                                 child: SectionTitle(
                                   title: settings.name,
                                   color: Colors.white,
-                                  fontSize: 20,
+                                  fontSize: 24,
                                 ),
                               ),
                             ),
                             PopupMenu(
                               color: Colors.white,
+
                               options: options,
                               onSelected: (val) {
                                 switch (val) {
@@ -142,26 +143,27 @@ class ClimateControlItem extends StatelessWidget {
                         value: humidity,
                         unit: "%",
                       ),
-                      SettingsListTile(
-                        icon: WeatherIcons.barometer,
-                        color: Colors.green,
-                        title: "Soil Moisture",
-                        value: soilMoisture,
-                        unit: "%",
-                      ),
+                      settings.automatic_watering
+                          ? SettingsListTile(
+                              icon: WeatherIcons.barometer,
+                              color: Colors.green,
+                              title: "Soil Moisture",
+                              value: soilMoisture,
+                              unit: "%",
+                            )
+                          : SettingsListTile(
+                              icon: WeatherIcons.rain,
+                              color: Colors.lightBlue,
+                              title: "Water Consumption",
+                              value: waterConsumption,
+                              unit: "l/d",
+                            ),
                       SettingsListTile(
                         icon: WeatherIcons.sunrise,
                         color: Colors.orange[400],
                         title: "Suntime",
                         value_text: suntime,
                         unit: "",
-                      ),
-                      SettingsListTile(
-                        icon: WeatherIcons.rain,
-                        color: Colors.lightBlue,
-                        title: "Water Consumption",
-                        value: waterConsumption,
-                        unit: "l/d",
                       ),
                     ],
                   ),

@@ -30,7 +30,8 @@ void main() {
       systemNavigationBarColor: primaryColor,
     ),
   );
-
+  firebaseDatabase.setPersistenceEnabled(true);
+  firebaseDatabase.setPersistenceCacheSizeBytes(10000000);
   FlareCache.doesPrune = false;
   runApp(
     MultiProvider(
@@ -66,6 +67,7 @@ class SufMobileApplication extends StatelessWidget {
       color: primaryColor,
       theme: ThemeData(
         primaryColor: primaryColor,
+        primarySwatch:Colors.green,
         pageTransitionsTheme: const PageTransitionsTheme(
           builders: <TargetPlatform, PageTransitionsBuilder>{
             TargetPlatform.android: SharedAxisPageTransitionsBuilder(

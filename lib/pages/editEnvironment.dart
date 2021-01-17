@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:sgs/customwidgets/climate/editWaterSoil.dart';
 import 'package:sgs/customwidgets/general/appBarHeader.dart';
 import 'package:sgs/customwidgets/climate/dayslider.dart';
 import 'package:sgs/customwidgets/climate/editVariable.dart';
@@ -108,7 +109,7 @@ class EditEnvironment extends StatelessWidget {
                   pr.changeHumidity(v);
                 },
               ),
-              EditVariable(
+             /* EditVariable(
                 value: pr.climateSettings.soilMoisture,
                 color: Colors.brown,
                 title: "Soil Moisture",
@@ -119,8 +120,8 @@ class EditEnvironment extends StatelessWidget {
                 onValueChanged: (v) {
                   pr.changeSoilMoisture(v);
                 },
-              ),
-              EditVariable(
+              ),*/
+          /*    EditVariable(
                 value: pr.climateSettings.waterConsumption,
                 color: Colors.lightBlueAccent,
                 title: "Water Consumption",
@@ -131,6 +132,9 @@ class EditEnvironment extends StatelessWidget {
                 onValueChanged: (v) {
                   pr.changeWaterConsumption(v);
                 },
+              ),*/
+              EditWaterSoil(
+                pr: pr,
               ),
               DaySlider(
                 onValueChanged: (v) => pr.changeSuntime(v),

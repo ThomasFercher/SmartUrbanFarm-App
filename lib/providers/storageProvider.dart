@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flare_flutter/flare_cache.dart';
@@ -91,7 +92,10 @@ class StorageProvider extends ChangeNotifier {
     photos = loadPhotosFromFiles(photoDirectory);
 
     //load other photos from the database which dont exist locally yet
-    await downloadAndSafePhotos(directory);
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult != ConnectivityResult.none) {
+      await downloadAndSafePhotos(directory);
+    }
 
     //need to call sort after all images are in the lis
     photos.sort((photo1, photo2) {
@@ -99,7 +103,7 @@ class StorageProvider extends ChangeNotifier {
     });
 
     photos.forEach((photo) {
-      precacheImage(photo.image.image, context);
+      //  precacheImage(photo.image.image, context);
     });
 
     print("loaded phtos");

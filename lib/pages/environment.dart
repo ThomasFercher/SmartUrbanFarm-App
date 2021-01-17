@@ -42,7 +42,7 @@ class Environment extends StatelessWidget {
     AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
     var height = MediaQuery.of(context).size.height / 2;
     print(height);
-    height = height < 280 ? 280 : height;
+    height = height>400?400:height;
     var h2 = MediaQuery.of(context).size.height - height - 32;
     print(h2);
     return Consumer<DataProvider>(builder: (context, d, child) {
@@ -89,6 +89,7 @@ class Environment extends StatelessWidget {
                 soilMoisture: 0,
                 suntime: "06:00 - 18:00",
                 waterConsumption: 0,
+                automatic_watering: true,
               ),
               create: true,
             );
@@ -109,14 +110,14 @@ class Environment extends StatelessWidget {
                 return Container(
                   height: height - 60,
                   child: ListView(
-                    itemExtent: (height - 80) / 6,
+                    itemExtent: (height - 80) / 5,
                     children: [
                       ListTile(
                           contentPadding: EdgeInsets.only(left: 15, right: 0),
                           title: SectionTitle(
                             title: activeClimate.name,
                             color: Colors.white,
-                            fontSize: 18,
+                            fontSize: 24,
                           ),
                           trailing: PopupMenu(
                             color: Colors.white,
@@ -141,20 +142,21 @@ class Environment extends StatelessWidget {
                         lable: "Humidity",
                         value: "$hum%",
                       ),
-                      ActiveClimateControlItem(
-                        icon: WeatherIcons.barometer,
-                        lable: "Soil Moisture",
-                        value: "$soil",
-                      ),
+                      activeClimate.automatic_watering
+                          ? ActiveClimateControlItem(
+                              icon: WeatherIcons.barometer,
+                              lable: "Soil Moisture",
+                              value: "$soil%",
+                            )
+                          : ActiveClimateControlItem(
+                              icon: WeatherIcons.rain,
+                              lable: "Water Consumption",
+                              value: "$water" + "l/d",
+                            ),
                       ActiveClimateControlItem(
                         icon: WeatherIcons.day_sunny,
                         lable: "Suntime",
                         value: sun,
-                      ),
-                      ActiveClimateControlItem(
-                        icon: WeatherIcons.rain,
-                        lable: "Water Consumption",
-                        value: "$water" + "l/d",
                       ),
                     ],
                   ),

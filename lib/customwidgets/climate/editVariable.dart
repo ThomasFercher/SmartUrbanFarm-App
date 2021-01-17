@@ -16,6 +16,7 @@ class EditVariable extends StatelessWidget {
   final Function onValueChanged;
   final double min;
   final double max;
+   bool isChild;
 
   EditVariable({
     this.value,
@@ -26,19 +27,27 @@ class EditVariable extends StatelessWidget {
     this.onValueChanged,
     this.min,
     this.max,
-  });
+    this.isChild
+  }){
+    isChild = isChild??false;
+  }
 
   @override
   Widget build(BuildContext context) {
     AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
-    print(((max - min) * 2).round());
+   
     return Container(
-      color: theme.background,
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2.5),
+    
+      padding:isChild?const EdgeInsets.all(0): const EdgeInsets.symmetric(horizontal: 10, vertical: 2.5),
+      decoration: BoxDecoration(
+           borderRadius: BorderRadius.circular(10),
+      //(color: theme.background,
+      ),
       child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
+        elevation: isChild?0:1,
         color: theme.cardColor,
         child: Container(
           padding: const EdgeInsets.only(

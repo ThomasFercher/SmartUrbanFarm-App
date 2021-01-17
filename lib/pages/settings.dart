@@ -91,6 +91,7 @@ class SettingsPage extends StatelessWidget {
             applicationVersion: "0.4.4",
             useRootNavigator: true,
             applicationName: "SGS",
+            
           );
         },
       ),

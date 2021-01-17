@@ -11,6 +11,9 @@ import 'package:uuid/uuid.dart';
 
 var uuid = Uuid();
 
+
+final firebaseDatabase = FirebaseDatabase.instance;
+
 //
 const Color backgroundColor = Color(0xFFFCFCFC);
 
@@ -26,7 +29,6 @@ const Color text_gray = Color(0xFF646464);
 const Color dark_gray = Color(0xFFb4b4b4);
 const Color d_text_gray = Color(0xFFedeae4);
 Image logo = new Image(image: null);
-final firebaseDatabase = FirebaseDatabase.instance;
 const Color gray = Color(0xFF1f1f1f);
 
 const String Temperature = 'Temperature';

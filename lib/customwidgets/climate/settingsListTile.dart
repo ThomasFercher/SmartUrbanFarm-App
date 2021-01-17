@@ -31,7 +31,8 @@ class SettingsListTile extends StatelessWidget {
     AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
     return LayoutBuilder(builder: (context, constraints) {
       var height = constraints.maxHeight;
-
+      var width = height > 64.0 ? 64.0 : height;
+      print(height);
       return Container(
         child: ListTile(
           title: Container(
@@ -49,20 +50,19 @@ class SettingsListTile extends StatelessWidget {
           subtitle: subtitle ?? null,
           leading: Container(
             height: height - 8,
-            width: height - 8,
+            width: width - 8,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(
-                (height - 8) / 3.2,
-              ),
-              color: theme.textColor.withOpacity(0.03),
-            ),
+                color: theme.textColor.withOpacity(0.03),
+                borderRadius:
+                    BorderRadius.all(Radius.circular(width / 4.toDouble()))),
             child: Icon(
               icon,
               color: color,
-              size: height / 3,
+              //  size: height / 3,
             ),
           ),
           trailing: Container(
+            padding: EdgeInsets.symmetric(vertical: (height - 26) / 4),
             child: Text(
               "$val$unit",
               style: TextStyle(
