@@ -2,13 +2,14 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:sgs/customwidgets/climate/editVariable.dart';
 import 'package:sgs/customwidgets/general/sectionTitle.dart';
 import 'package:sgs/objects/appTheme.dart';
 import 'package:sgs/providers/climateControlProvider.dart';
 import 'package:sgs/providers/settingsProvider.dart';
-import 'package:weather_icons/weather_icons.dart';
+import 'package:sgs/styles.dart';
 
 class EditWaterSoil extends StatefulWidget {
   final ClimateControlProvider pr;
@@ -20,11 +21,8 @@ class EditWaterSoil extends StatefulWidget {
 }
 
 class _EditWaterSoilState extends State<EditWaterSoil> {
- 
   @override
   void initState() {
-  
-    
     super.initState();
   }
 
@@ -46,13 +44,12 @@ class _EditWaterSoilState extends State<EditWaterSoil> {
     AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
 
     return Consumer<ClimateControlProvider>(builder: (context, pr, child) {
-
       return Container(
         color: theme.background,
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2.5),
         child: Card(
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(borderRadius),
             ),
             color: theme.cardColor,
             child: Column(
@@ -71,7 +68,7 @@ class _EditWaterSoilState extends State<EditWaterSoil> {
                         child: SectionTitle(
                           title: "Irrigation",
                           color: theme.headlineColor,
-                          fontSize: 20
+                          fontSize: 24,
                         ),
                       ),
                       Container(
@@ -82,25 +79,25 @@ class _EditWaterSoilState extends State<EditWaterSoil> {
                           children: [
                             InputChip(
                               onSelected: (value) {
-                             
                                 pr.changeAutomaticWatering(false);
                               },
                               showCheckmark: false,
                               selectedColor: theme.secondaryColor,
                               avatar: Icon(
                                 Icons.tune,
-                                color:
-                                    !pr.climateSettings.automatic_watering ? Colors.white : Colors.black87,
+                                color: !pr.climateSettings.automaticWatering
+                                    ? Colors.white
+                                    : Colors.black87,
                               ),
                               backgroundColor: theme.textColor,
                               isEnabled: true,
-                              selected: !pr.climateSettings.automatic_watering,
+                              selected: !pr.climateSettings.automaticWatering,
                               label: Container(
                                 height: 32,
                                 alignment: Alignment.center,
                                 child: SectionTitle(
                                     title: "Regulated",
-                                    color: !pr.climateSettings.automatic_watering
+                                    color: !pr.climateSettings.automaticWatering
                                         ? Colors.white
                                         : Colors.black87),
                               ),
@@ -108,23 +105,23 @@ class _EditWaterSoilState extends State<EditWaterSoil> {
                             InputChip(
                               showCheckmark: false,
                               onSelected: (value) {
-                            
                                 pr.changeAutomaticWatering(true);
                               },
                               avatar: Icon(
                                 Icons.tune,
-                                color:
-                                    pr.climateSettings.automatic_watering ? Colors.white : Colors.black87,
+                                color: pr.climateSettings.automaticWatering
+                                    ? Colors.white
+                                    : Colors.black87,
                               ),
                               backgroundColor: theme.textColor,
-                              selected: pr.climateSettings.automatic_watering,
+                              selected: pr.climateSettings.automaticWatering,
                               selectedColor: theme.primaryColor,
                               label: Container(
                                 height: 32,
                                 alignment: Alignment.center,
                                 child: SectionTitle(
                                     title: "Automatic",
-                                    color: pr.climateSettings.automatic_watering
+                                    color: pr.climateSettings.automaticWatering
                                         ? Colors.white
                                         : Colors.black87),
                               ),
@@ -134,13 +131,13 @@ class _EditWaterSoilState extends State<EditWaterSoil> {
                       ),
                       AnimatedSwitcher(
                         duration: Duration(milliseconds: 200),
-                        child: pr.climateSettings.automatic_watering
+                        child: pr.climateSettings.automaticWatering
                             ? EditVariable(
                                 title: "Automatic",
                                 color: theme.primaryColor,
                                 value: pr.climateSettings.soilMoisture,
                                 isChild: true,
-                                icon: WeatherIcons.earthquake,
+                                icon: WeatherIcons.wi_earthquake,
                                 max: 100,
                                 min: 0,
                                 unit: "%",
@@ -151,7 +148,7 @@ class _EditWaterSoilState extends State<EditWaterSoil> {
                                 color: theme.secondaryColor,
                                 value: pr.climateSettings.waterConsumption,
                                 isChild: true,
-                                icon: WeatherIcons.earthquake,
+                                icon: WeatherIcons.wi_earthquake,
                                 max: 100,
                                 min: 0,
                                 unit: "ml/d",

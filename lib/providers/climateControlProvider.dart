@@ -9,19 +9,26 @@ import 'package:sgs/styles.dart';
 class ClimateControlProvider extends ChangeNotifier {
   ClimateControl climateSettings;
 
+  String sel_phase = GROWPHASEVEGETATION;
+
   ClimateControlProvider(settings) : this.climateSettings = settings;
 
   ClimateControl getSettings() {
     return climateSettings;
   }
 
-  changeTemperature(newTemp) {
-    climateSettings.setTemperature = newTemp;
+  changePhase(new_sel_phase) {
+    sel_phase = new_sel_phase;
     notifyListeners();
   }
 
-  changeHumidity(v) {
-    climateSettings.setHumidity = v;
+  changeTemperature(v, phase) {
+    climateSettings.setTemperature(v, phase);
+    notifyListeners();
+  }
+
+  changeHumidity(v, phase) {
+    climateSettings.setHumidity(v, phase);
     notifyListeners();
   }
 
@@ -40,13 +47,13 @@ class ClimateControlProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  changeSuntime(v) {
-    climateSettings.setSuntime = v;
+  changeSuntime(v, phase) {
+    climateSettings.setSuntime(v, phase);
     notifyListeners();
   }
 
   changeAutomaticWatering(v) {
-    climateSettings.automatic_watering = v;
+    climateSettings.automaticWatering = v;
     notifyListeners();
   }
 }

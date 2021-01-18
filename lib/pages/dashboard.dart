@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:sgs/customwidgets/general/appBarHeader.dart';
 import 'package:sgs/customwidgets/dashboard/carddata.dart';
@@ -15,7 +16,7 @@ import 'package:sgs/providers/dataProvider.dart';
 import 'package:sgs/providers/settingsProvider.dart';
 import 'package:sgs/styles.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:weather_icons/weather_icons.dart';
+
 import 'advanced.dart';
 import 'package:sgs/objects/appTheme.dart';
 
@@ -36,7 +37,7 @@ class Dashboard extends StatelessWidget {
     return Consumer<DataProvider>(
       builder: (context, data, child) {
         LiveData d = data.liveData;
-        var suntime = data.activeClimate.suntime;
+        var suntime = data.activeClimate.getSuntime(GROWPHASEVEGETATION);
 
         var width = MediaQuery.of(context).size.width - 20;
         return AppBarHeader(
@@ -60,7 +61,7 @@ class Dashboard extends StatelessWidget {
               shrinkWrap: true,
               children: <Widget>[
                 CardData(
-                  icon: WeatherIcons.thermometer,
+                  icon: WeatherIcons.wi_thermometer,
                   label: "Temperatur",
                   text: "${d.temperature}°C",
                   iconColor: theme.primaryColor,
@@ -68,7 +69,7 @@ class Dashboard extends StatelessWidget {
                   key: GlobalKey(),
                 ),
                 CardData(
-                  icon: WeatherIcons.humidity,
+                  icon: WeatherIcons.wi_humidity,
                   label: "Luftfeuchtigkeit",
                   text: "${d.humidity}%",
                   iconColor: theme.primaryColor,
@@ -76,7 +77,7 @@ class Dashboard extends StatelessWidget {
                   key: GlobalKey(),
                 ),
                 CardData(
-                  icon: WeatherIcons.barometer,
+                  icon: WeatherIcons.wi_barometer,
                   label: "Bodenfeuchtigkeit",
                   text: "${d.soilMoisture}%",
                   iconColor: theme.primaryColor,

@@ -11,7 +11,6 @@ import 'package:uuid/uuid.dart';
 
 var uuid = Uuid();
 
-
 final firebaseDatabase = FirebaseDatabase.instance;
 
 //
@@ -38,6 +37,10 @@ const String SoilMoisture = 'SoilMoisture';
 Color topColor = gradient4[0]; //Color(0xFF007243);
 Color bottomColor = gradient4[1]; //Color(0xFF396f5f);
 const Color background_t = Color(0x48000000);
+
+const GROWPHASEVEGETATION = "vegation";
+const GROWPHASEFLOWER = "flower";
+const GROWPHASELATEFLOWER = "lateflower";
 
 List<Color> gradient1 = [
   const Color(0xFF4ac29a),

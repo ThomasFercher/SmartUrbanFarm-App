@@ -1,31 +1,112 @@
 import 'package:flutter/cupertino.dart';
+import 'package:sgs/objects/growPhase.dart';
 import 'package:sgs/styles.dart';
 
 class ClimateControl {
+  static const GROWPHASEVEGETATION = "vegation";
+  static const GROWPHASEFLOWER = "flower";
+  static const GROWPHASELATEFLOWER = "vegation";
+
   String id;
   String name;
-  double temperature;
-  double humidity;
+
   double soilMoisture;
-  String suntime;
+
   double waterConsumption;
-  bool automatic_watering;
+  bool automaticWatering;
+  GrowPhase growPhase;
 
-  double get getTemperature => temperature;
+  double getHumidity(String phase) {
+    switch (phase) {
+      case GROWPHASEVEGETATION:
+        return growPhase.vegation_hum;
+        break;
+      case GROWPHASEFLOWER:
+        return growPhase.flower_hum;
+        break;
+      case GROWPHASELATEFLOWER:
+        return growPhase.lateflower_hum;
+        break;
+      default:
+        return 0;
+    }
+  }
 
-  set setTemperature(double temperature) => this.temperature = temperature;
+  void setHumidity(double value, String phase) {
+    switch (phase) {
+      case GROWPHASEVEGETATION:
+        growPhase.vegation_hum = value;
+        break;
+      case GROWPHASEFLOWER:
+        growPhase.flower_hum = value;
+        break;
+      case GROWPHASELATEFLOWER:
+        growPhase.lateflower_hum = value;
+        break;
+    }
+  }
 
-  double get getHumidity => humidity;
+  double getTemperature(String phase) {
+    switch (phase) {
+      case GROWPHASEVEGETATION:
+        return growPhase.vegation_temp;
+        break;
+      case GROWPHASEFLOWER:
+        return growPhase.flower_temp;
+        break;
+      case GROWPHASELATEFLOWER:
+        return growPhase.lateflower_temp;
+        break;
+      default:
+        return 0;
+    }
+  }
 
-  set setHumidity(double humidity) => this.humidity = humidity;
+  void setTemperature(double value, String phase) {
+    switch (phase) {
+      case GROWPHASEVEGETATION:
+        growPhase.vegation_temp = value;
+        break;
+      case GROWPHASEFLOWER:
+        growPhase.flower_temp = value;
+        break;
+      case GROWPHASELATEFLOWER:
+        growPhase.lateflower_temp = value;
+        break;
+    }
+  }
+
+  String getSuntime(String phase) {
+    switch (phase) {
+      case GROWPHASEVEGETATION:
+        return growPhase.vegation_suntime;
+        break;
+      case GROWPHASEFLOWER:
+        return growPhase.flower_suntime;
+        break;
+      case GROWPHASELATEFLOWER:
+        return growPhase.lateflower_suntime;
+        break;
+    }
+  }
+
+  void setSuntime(String value, String phase) {
+    switch (phase) {
+      case GROWPHASEVEGETATION:
+        growPhase.vegation_suntime = value;
+        break;
+      case GROWPHASEFLOWER:
+        growPhase.flower_suntime = value;
+        break;
+      case GROWPHASELATEFLOWER:
+        growPhase.lateflower_suntime = value;
+        break;
+    }
+  }
 
   double get getSoilMoisture => soilMoisture;
 
   set setSoilMoisture(double soilMoisture) => this.soilMoisture = soilMoisture;
-
-  String get getSuntime => suntime;
-
-  set setSuntime(String suntime) => this.suntime = suntime;
 
   double get getWaterConsumption => waterConsumption;
 
@@ -34,7 +115,7 @@ class ClimateControl {
 
   set setName(String name) => this.name = name;
 
-  set setAutomaticWatering(bool aut)=> this.automatic_watering = aut;
+  set setAutomaticWatering(bool aut) => this.automaticWatering = aut;
   String get getName => name;
 
   String get getID => id;
@@ -43,34 +124,29 @@ class ClimateControl {
     return <String, dynamic>{
       "id": id,
       "name": name,
-      "tempSoll": temperature.toString(),
-      "humiditySoll": humidity.toString(),
-      "soilMoistureSoll": soilMoisture.toString(),
-      "suntime": suntime,
+      "soilMoisture": soilMoisture.toString(),
       "waterConsumption": waterConsumption.toString(),
-      "automaticWatering": automatic_watering,
+      "automaticWatering": automaticWatering,
+      "growPhase": growPhase.getJson(),
     };
   }
 
   ClimateControl.fromJson(Map<dynamic, dynamic> json) {
     this.id = json["id"];
     this.name = json["name"];
-    this.temperature = double.parse(json["tempSoll"]);
-    this.humidity = double.parse(json["humiditySoll"]);
-    this.soilMoisture = double.parse(json["soilMoistureSoll"]);
-    this.suntime = json["suntime"];
+    this.soilMoisture = double.parse(json["soilMoisture"]);
     this.waterConsumption = double.parse(json["waterConsumption"]);
-    this.automatic_watering =json["automaticWatering"];
+    this.automaticWatering = json["automaticWatering"];
+    this.growPhase = GrowPhase.fromJson(json["growPhase"]);
   }
 
-  ClimateControl(
-      {@required this.name,
-      @required this.temperature,
-      @required this.humidity,
-      @required this.soilMoisture,
-      @required this.suntime,
-      @required this.waterConsumption,
-      @required this.automatic_watering}) {
+  ClimateControl({
+    @required this.name,
+    @required this.soilMoisture,
+    @required this.waterConsumption,
+    @required this.automaticWatering,
+    @required this.growPhase,
+  }) {
     this.id = uuid.v1(); // create random time based id
   }
 }

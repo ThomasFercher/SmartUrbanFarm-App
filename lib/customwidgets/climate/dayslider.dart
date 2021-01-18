@@ -4,8 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sgs/customwidgets/general/sectionTitle.dart';
 import 'package:sgs/providers/settingsProvider.dart';
-import 'package:weather_icons/weather_icons.dart';
-import '../../styles.dart';
 import 'package:sgs/objects/appTheme.dart';
 
 class DaySlider extends StatefulWidget {
@@ -58,101 +56,93 @@ class _DaySliderState extends State<DaySlider> {
   Widget build(BuildContext context) {
     AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
     return Container(
-      padding: EdgeInsets.only(left: 10, right: 10, top: 2.5, bottom: 80),
-      child: Card(
-        color: theme.cardColor,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        child: Container(
-          padding: EdgeInsets.only(top: 10, bottom: 10, left: 15, right: 15),
-          child: Column(
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SectionTitle(
-                    title: "Suntime",
-                    fontSize: 20,
-                    color: theme.headlineColor,
-                  ),
-                  Text(
-                    "${getTimeString(suntime * 4)} hours",
-                    style: TextStyle(
-                      color: theme.headlineColor,
-                      fontWeight: FontWeight.w100,
-                      fontSize: 30.0,
-                    ),
-                  ),
-                ],
+      padding: EdgeInsets.only(top: 10, bottom: 15, left: 20, right: 20),
+      child: Column(
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SectionTitle(
+                title: "Suntime",
+                fontSize: 20,
+                color: theme.headlineColor,
               ),
-              Container(
-                padding: EdgeInsets.only(top: 10, bottom: 5),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Container(
-                      width: 40,
-                      height: 50,
-                      child: FlareActor(
-                        'assets/flares/sun.flr',
-                        alignment: Alignment.center,
-                        animation: "Moon Rings",
-                        color: Colors.orange,
-
-                        //  color: Colors.yellow[500],
-                      ),
-                    ),
-                    Expanded(
-                      child: SliderTheme(
-                        data: SliderThemeData(
-                          overlayShape:
-                              RoundSliderOverlayShape(overlayRadius: 15),
-                          rangeThumbShape: _CustomRangeThumbShape(
-                            values: labels,
-                            valuesTime: _values,
-                          ),
-                          trackHeight: 2,
-                        ),
-                        child: RangeSlider(
-                            divisions: 96,
-                            values: _values,
-                            min: 0,
-                            max: 96,
-                            activeColor: theme.primaryColor,
-                            inactiveColor: Colors.black12,
-                            onChanged: (values) {
-                              setState(
-                                () {
-                                  if (values.end - values.start >= 16)
-                                    _values = values;
-                                  labels = [
-                                    getTimeString(_values.start),
-                                    getTimeString(_values.end)
-                                  ];
-                                  suntime = _values.end / 4 - _values.start / 4;
-
-                                  widget.onValueChanged(
-                                      labels[0] + " - " + labels[1]);
-                                },
-                              );
-                            }),
-                      ),
-                    ),
-                    Container(
-                      width: 40,
-                      height: 50,
-                      child: FlareActor(
-                        'assets/flares/moon.flr',
-                        alignment: Alignment.center,
-                        animation: "Moon Rings",
-                      ),
-                    ),
-                  ],
+              Text(
+                "${getTimeString(suntime * 4)} hours",
+                style: TextStyle(
+                  color: theme.headlineColor,
+                  fontWeight: FontWeight.w100,
+                  fontSize: 30.0,
                 ),
               ),
             ],
           ),
-        ),
+          Container(
+            padding: EdgeInsets.only(top: 10, bottom: 5),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Container(
+                  width: 40,
+                  height: 50,
+                  child: FlareActor(
+                    'assets/flares/sun.flr',
+                    alignment: Alignment.center,
+                    animation: "Moon Rings",
+                    color: Colors.orange,
+
+                    //  color: Colors.yellow[500],
+                  ),
+                ),
+                Expanded(
+                  child: SliderTheme(
+                    data: SliderThemeData(
+                      overlayShape: RoundSliderOverlayShape(overlayRadius: 15),
+                      rangeThumbShape: _CustomRangeThumbShape(
+                        values: labels,
+                        valuesTime: _values,
+                      ),
+                      trackHeight: 2,
+                    ),
+                    child: RangeSlider(
+                        divisions: 96,
+                        values: _values,
+                        min: 0,
+                        max: 96,
+                        activeColor: theme.primaryColor,
+                        inactiveColor: Colors.black12,
+                        onChanged: (values) {
+                          setState(
+                            () {
+                              if (values.end - values.start >= 16)
+                                _values = values;
+                              labels = [
+                                getTimeString(_values.start),
+                                getTimeString(_values.end)
+                              ];
+                              suntime = _values.end / 4 - _values.start / 4;
+
+                              widget.onValueChanged(
+                                  labels[0] + " - " + labels[1]);
+                            },
+                          );
+                        }),
+                  ),
+                ),
+                Container(
+                  width: 40,
+                  height: 50,
+                  child: FlareActor(
+                    'assets/flares/moon.flr',
+                    alignment: Alignment.center,
+                    animation: "Moon Rings",
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

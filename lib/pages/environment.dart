@@ -1,5 +1,6 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:sgs/customwidgets/general/appBarHeader.dart';
 import 'package:sgs/customwidgets/climate/activeClimateControlItem.dart';
@@ -8,10 +9,10 @@ import 'package:sgs/customwidgets/general/popupMenu.dart';
 import 'package:sgs/customwidgets/general/sectionTitle.dart';
 import 'package:sgs/objects/appTheme.dart';
 import 'package:sgs/objects/climateControl.dart';
+import 'package:sgs/objects/growPhase.dart';
 import 'package:sgs/objects/popupMenuOption.dart';
 import 'package:sgs/providers/dataProvider.dart';
 import 'package:sgs/providers/settingsProvider.dart';
-import 'package:weather_icons/weather_icons.dart';
 
 import '../styles.dart';
 import 'editEnvironment.dart';
@@ -42,16 +43,16 @@ class Environment extends StatelessWidget {
     AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
     var height = MediaQuery.of(context).size.height / 2;
     print(height);
-    height = height>400?400:height;
+    height = height > 400 ? 400 : height;
     var h2 = MediaQuery.of(context).size.height - height - 32;
     print(h2);
     return Consumer<DataProvider>(builder: (context, d, child) {
       List<ClimateControl> climates = d.climates;
       ClimateControl activeClimate = d.activeClimate;
-      var temp = activeClimate.temperature;
-      var hum = activeClimate.humidity;
+      var temp = activeClimate.getTemperature(GROWPHASEFLOWER);
+      var hum = activeClimate.getHumidity(GROWPHASEFLOWER);
       var soil = activeClimate.soilMoisture;
-      var sun = activeClimate.suntime;
+      var sun = activeClimate.getSuntime(GROWPHASEFLOWER);
       var water = activeClimate.waterConsumption;
       return AppBarHeader(
         isPage: true,
@@ -83,14 +84,21 @@ class Environment extends StatelessWidget {
           openBuilder: (_, closeContainer) {
             return EditEnvironment(
               initialSettings: new ClimateControl(
-                name: "",
-                temperature: 0,
-                humidity: 0,
-                soilMoisture: 0,
-                suntime: "06:00 - 18:00",
-                waterConsumption: 0,
-                automatic_watering: true,
-              ),
+                  name: "",
+                  soilMoisture: 0,
+                  waterConsumption: 0,
+                  automaticWatering: true,
+                  growPhase: new GrowPhase(
+                    flower_hum: 50.0,
+                    flower_suntime: "06:00 - 18:00",
+                    flower_temp: 10.0,
+                    vegation_hum: 50.0,
+                    vegation_temp: 10.0,
+                    vegation_suntime: "06:00 - 18:00",
+                    lateflower_hum: 50.0,
+                    lateflower_temp: 10.0,
+                    lateflower_suntime: "06:00 - 18:00",
+                  )),
               create: true,
             );
           },
@@ -133,28 +141,28 @@ class Environment extends StatelessWidget {
                             },
                           )),
                       ActiveClimateControlItem(
-                        icon: WeatherIcons.thermometer,
+                        icon: WeatherIcons.wi_thermometer,
                         lable: "Temperature",
                         value: "$temp°C",
                       ),
                       ActiveClimateControlItem(
-                        icon: WeatherIcons.humidity,
+                        icon: WeatherIcons.wi_humidity,
                         lable: "Humidity",
                         value: "$hum%",
                       ),
-                      activeClimate.automatic_watering
+                      activeClimate.automaticWatering
                           ? ActiveClimateControlItem(
-                              icon: WeatherIcons.barometer,
+                              icon: WeatherIcons.wi_barometer,
                               lable: "Soil Moisture",
                               value: "$soil%",
                             )
                           : ActiveClimateControlItem(
-                              icon: WeatherIcons.rain,
+                              icon: WeatherIcons.wi_day_rain,
                               lable: "Water Consumption",
                               value: "$water" + "l/d",
                             ),
                       ActiveClimateControlItem(
-                        icon: WeatherIcons.day_sunny,
+                        icon: WeatherIcons.wi_day_sunny,
                         lable: "Suntime",
                         value: sun,
                       ),

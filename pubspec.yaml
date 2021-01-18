@@ -9,9 +9,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^0.1.2
-  line_icons: ^0.2.0
-  weather_icons: ^2.0.1
   #image: ^2.1.12
   flare_flutter: ^2.0.6
   firebase_core: ^0.4.0+9
@@ -40,6 +37,7 @@ dependencies:
   animations: ^1.1.2
   connectivity: ^2.0.2
   expandable: ^4.1.4
+  flutter_icons: ^1.1.0
 
 dev_dependencies:
   flutter_launcher_icons: "^0.7.5"
@@ -60,6 +58,7 @@ flutter:
     - assets/icons/
     - assets/images/
     - assets/flares/
+    - assets/json/
     - assets/leaf.svg
   uses-material-design: true
   fonts:

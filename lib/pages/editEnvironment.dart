@@ -3,45 +3,58 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sgs/customwidgets/climate/editWaterSoil.dart';
+import 'package:sgs/customwidgets/climate/growthPhase.dart';
 import 'package:sgs/customwidgets/general/appBarHeader.dart';
 import 'package:sgs/customwidgets/climate/dayslider.dart';
 import 'package:sgs/customwidgets/climate/editVariable.dart';
 import 'package:sgs/customwidgets/climate/input.dart';
 import 'package:sgs/objects/climateControl.dart';
+import 'package:sgs/objects/vpd.dart';
 import 'package:sgs/providers/dataProvider.dart';
 import 'package:sgs/providers/climateControlProvider.dart';
 import 'package:sgs/providers/settingsProvider.dart';
-import 'package:weather_icons/weather_icons.dart';
+
 import '../styles.dart';
 import 'package:sgs/objects/appTheme.dart';
 
-class EditEnvironment extends StatelessWidget {
+class EditEnvironment extends StatefulWidget {
   ClimateControl initialSettings;
   bool create;
 
   EditEnvironment({@required this.initialSettings, @required this.create});
 
+  @override
+  _EditEnvironmentState createState() => _EditEnvironmentState();
+}
+
+class _EditEnvironmentState extends State<EditEnvironment> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   save(ClimateControl settings, context) {
     print(settings);
-    create
+    widget.create
         ? Provider.of<DataProvider>(context, listen: false)
             .createClimate(settings)
         : Provider.of<DataProvider>(context, listen: false)
-            .editClimate(this.initialSettings, settings);
+            .editClimate(this.widget.initialSettings, settings);
     Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    var name = initialSettings.name;
+    var name = widget.initialSettings.name;
+
     return ListenableProvider(
-      create: (_) => ClimateControlProvider(initialSettings),
+      create: (_) => ClimateControlProvider(widget.initialSettings),
       builder: (context, child) {
         AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
         //   EnvironmentSettings settings = d.getSettings();
         return Consumer<ClimateControlProvider>(builder: (context, pr, child) {
           return AppBarHeader(
-            title: create ? "Create Climate" : "Edit $name",
+            title: widget.create ? "Create Climate" : "Edit $name",
             isPage: true,
             contentPadding: false,
             bottomBarColor: theme.cardColor,
@@ -67,7 +80,7 @@ class EditEnvironment extends StatelessWidget {
                   color: theme.primaryColor,
                   textColor: Colors.white,
                   child: Text(
-                    create ? "Create" : "Save",
+                    widget.create ? "Create" : "Save",
                     style: GoogleFonts.nunito(
                         fontSize: 20, fontWeight: FontWeight.w600),
                   ),
@@ -85,61 +98,13 @@ class EditEnvironment extends StatelessWidget {
                 initialValue: pr.climateSettings.name,
                 valChanged: (val) => pr.changeName(val),
               ),
-              EditVariable(
-                value: pr.climateSettings.temperature,
-                color: Colors.redAccent,
-                title: "Temperature",
-                unit: "°C",
-                icon: WeatherIcons.thermometer,
-                min: 0,
-                max: 50,
-                onValueChanged: (v) {
-                  pr.changeTemperature(v);
-                },
-              ),
-              EditVariable(
-                value: pr.climateSettings.humidity,
-                color: Colors.blueAccent,
-                title: "Humidty",
-                unit: "%",
-                icon: WeatherIcons.humidity,
-                min: 0,
-                max: 100,
-                onValueChanged: (v) {
-                  pr.changeHumidity(v);
-                },
-              ),
-             /* EditVariable(
-                value: pr.climateSettings.soilMoisture,
-                color: Colors.brown,
-                title: "Soil Moisture",
-                unit: "%",
-                icon: WeatherIcons.barometer,
-                min: 0,
-                max: 100,
-                onValueChanged: (v) {
-                  pr.changeSoilMoisture(v);
-                },
-              ),*/
-          /*    EditVariable(
-                value: pr.climateSettings.waterConsumption,
-                color: Colors.lightBlueAccent,
-                title: "Water Consumption",
-                unit: "l/d",
-                icon: WeatherIcons.barometer,
-                min: 0,
-                max: 100,
-                onValueChanged: (v) {
-                  pr.changeWaterConsumption(v);
-                },
-              ),*/
+              GrowthPase(),
               EditWaterSoil(
                 pr: pr,
               ),
-              DaySlider(
-                onValueChanged: (v) => pr.changeSuntime(v),
-                initialTimeString: pr.climateSettings.suntime,
-              ),
+              Container(
+                height: 80,
+              )
             ],
           );
         });

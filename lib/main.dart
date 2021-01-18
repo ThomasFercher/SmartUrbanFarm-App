@@ -6,6 +6,7 @@ import 'package:flare_flutter/flare_controls.dart';
 import 'package:flutter/material.dart';
 import 'package:sgs/PushNotificationManager.dart';
 import 'package:sgs/objects/appTheme.dart';
+import 'package:sgs/objects/vpd.dart';
 import 'package:sgs/pages/dashboard.dart';
 import 'package:sgs/providers/notificationProvider.dart';
 import 'package:sgs/providers/settingsProvider.dart';
@@ -67,7 +68,7 @@ class SufMobileApplication extends StatelessWidget {
       color: primaryColor,
       theme: ThemeData(
         primaryColor: primaryColor,
-        primarySwatch:Colors.green,
+        primarySwatch: Colors.green,
         pageTransitionsTheme: const PageTransitionsTheme(
           builders: <TargetPlatform, PageTransitionsBuilder>{
             TargetPlatform.android: SharedAxisPageTransitionsBuilder(
@@ -109,6 +110,8 @@ class SufMobileApplication extends StatelessWidget {
 
 /// This function loads the inital data from the database when the app starts.
 Future<void> loadInitialData(context) async {
+  // Init VPD Class
+  await VPD().loadJson(context);
   // Init PushNotificationsManager for notfications
   await PushNotificationsManager().init();
   // Log into Firebase to be able to access data
