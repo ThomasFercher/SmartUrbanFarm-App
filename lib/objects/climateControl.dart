@@ -3,10 +3,6 @@ import 'package:sgs/objects/growPhase.dart';
 import 'package:sgs/styles.dart';
 
 class ClimateControl {
-  static const GROWPHASEVEGETATION = "vegation";
-  static const GROWPHASEFLOWER = "flower";
-  static const GROWPHASELATEFLOWER = "vegation";
-
   String id;
   String name;
 

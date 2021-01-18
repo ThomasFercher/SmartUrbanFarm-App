@@ -84,21 +84,22 @@ class Environment extends StatelessWidget {
           openBuilder: (_, closeContainer) {
             return EditEnvironment(
               initialSettings: new ClimateControl(
-                  name: "",
-                  soilMoisture: 0,
-                  waterConsumption: 0,
-                  automaticWatering: true,
-                  growPhase: new GrowPhase(
-                    flower_hum: 50.0,
-                    flower_suntime: "06:00 - 18:00",
-                    flower_temp: 10.0,
-                    vegation_hum: 50.0,
-                    vegation_temp: 10.0,
-                    vegation_suntime: "06:00 - 18:00",
-                    lateflower_hum: 50.0,
-                    lateflower_temp: 10.0,
-                    lateflower_suntime: "06:00 - 18:00",
-                  )),
+                name: "",
+                soilMoisture: 0,
+                waterConsumption: 0,
+                automaticWatering: true,
+                growPhase: new GrowPhase(
+                  flower_hum: 50.0,
+                  flower_suntime: "06:00 - 18:00",
+                  flower_temp: 10.0,
+                  vegation_hum: 50.0,
+                  vegation_temp: 10.0,
+                  vegation_suntime: "06:00 - 18:00",
+                  lateflower_hum: 50.0,
+                  lateflower_temp: 10.0,
+                  lateflower_suntime: "06:00 - 18:00",
+                ),
+              ),
               create: true,
             );
           },

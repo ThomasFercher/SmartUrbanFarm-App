@@ -43,10 +43,10 @@ class ClimateControlItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var temperature = settings.getTemperature("vegetation");
-    var humidity = settings.getHumidity("vegetation");
+    var temperature = settings.getTemperature(GROWPHASEVEGETATION);
+    var humidity = settings.getHumidity(GROWPHASEVEGETATION);
     var soilMoisture = settings.getSoilMoisture;
-    var suntime = settings.getSuntime("vegetation");
+    var suntime = settings.getSuntime(GROWPHASEVEGETATION);
     var waterConsumption = settings.getWaterConsumption;
     AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
 

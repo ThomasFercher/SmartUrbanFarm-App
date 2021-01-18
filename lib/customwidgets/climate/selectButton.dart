@@ -9,9 +9,14 @@ class SelectButton extends StatelessWidget {
   final String title;
   final Function onPressed;
   final IconData icon;
-
+  final bool enabled;
   const SelectButton(
-      {Key key, this.color, this.title, this.onPressed, this.icon})
+      {Key key,
+      this.color,
+      this.title,
+      this.onPressed,
+      this.icon,
+      this.enabled})
       : super(key: key);
 
   @override
@@ -25,14 +30,15 @@ class SelectButton extends StatelessWidget {
           children: [
             Icon(
               icon,
-              color: color.shade300,
+              color: enabled ? color.shade300 : Colors.black12,
               size: 36,
             ),
-            SectionTitle(title: title, color: color.shade300)
+            SectionTitle(
+                title: title, color: enabled ? color.shade300 : Colors.black12)
           ],
         ),
         decoration: BoxDecoration(
-          color: color.shade100,
+          color: enabled ? color.shade100 : Colors.black12,
           //     border: Border.all(color: Colors.deepOrange.shade200),
           borderRadius: BorderRadius.all(
             Radius.circular(borderRadius),

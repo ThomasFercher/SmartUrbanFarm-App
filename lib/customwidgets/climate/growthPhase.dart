@@ -60,6 +60,7 @@ class _GrowthPaseState extends State<GrowthPase> {
                         color: Colors.deepPurple,
                         title: "Vegetation",
                         icon: MaterialCommunityIcons.sprout,
+                        enabled: pr.sel_phase == GROWPHASEVEGETATION,
                         onPressed: () {
                           pr.changePhase(GROWPHASEVEGETATION);
                         },
@@ -71,6 +72,7 @@ class _GrowthPaseState extends State<GrowthPase> {
                         color: Colors.green,
                         icon: FontAwesome.pagelines,
                         title: "Early Flower",
+                        enabled: pr.sel_phase == GROWPHASEFLOWER,
                         onPressed: () {
                           pr.changePhase(GROWPHASEFLOWER);
                         },
@@ -81,6 +83,7 @@ class _GrowthPaseState extends State<GrowthPase> {
                       child: SelectButton(
                         color: Colors.amber,
                         icon: FontAwesome.pagelines,
+                        enabled: pr.sel_phase == GROWPHASELATEFLOWER,
                         title: "Late Flower",
                         onPressed: () {
                           pr.changePhase(GROWPHASELATEFLOWER);

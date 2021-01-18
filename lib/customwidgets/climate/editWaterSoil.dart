@@ -56,7 +56,8 @@ class _EditWaterSoilState extends State<EditWaterSoil> {
               children: [
                 Container(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    borderRadius:
+                        BorderRadius.all(Radius.circular(borderRadius)),
                     color: theme.cardColor,
                   ),
                   child: Column(
@@ -87,19 +88,20 @@ class _EditWaterSoilState extends State<EditWaterSoil> {
                                 Icons.tune,
                                 color: !pr.climateSettings.automaticWatering
                                     ? Colors.white
-                                    : Colors.black87,
+                                    : Colors.black26,
                               ),
-                              backgroundColor: theme.textColor,
+                              backgroundColor: Colors.black12,
                               isEnabled: true,
                               selected: !pr.climateSettings.automaticWatering,
                               label: Container(
                                 height: 32,
                                 alignment: Alignment.center,
                                 child: SectionTitle(
-                                    title: "Regulated",
-                                    color: !pr.climateSettings.automaticWatering
-                                        ? Colors.white
-                                        : Colors.black87),
+                                  title: "Regulated",
+                                  color: !pr.climateSettings.automaticWatering
+                                      ? Colors.white
+                                      : Colors.black26,
+                                ),
                               ),
                             ),
                             InputChip(
@@ -111,19 +113,20 @@ class _EditWaterSoilState extends State<EditWaterSoil> {
                                 Icons.tune,
                                 color: pr.climateSettings.automaticWatering
                                     ? Colors.white
-                                    : Colors.black87,
+                                    : Colors.black26,
                               ),
-                              backgroundColor: theme.textColor,
+                              backgroundColor: Colors.black12,
                               selected: pr.climateSettings.automaticWatering,
                               selectedColor: theme.primaryColor,
                               label: Container(
                                 height: 32,
                                 alignment: Alignment.center,
                                 child: SectionTitle(
-                                    title: "Automatic",
-                                    color: pr.climateSettings.automaticWatering
-                                        ? Colors.white
-                                        : Colors.black87),
+                                  title: "Automatic",
+                                  color: pr.climateSettings.automaticWatering
+                                      ? Colors.white
+                                      : Colors.black26,
+                                ),
                               ),
                             )
                           ],
@@ -133,7 +136,7 @@ class _EditWaterSoilState extends State<EditWaterSoil> {
                         duration: Duration(milliseconds: 200),
                         child: pr.climateSettings.automaticWatering
                             ? EditVariable(
-                                title: "Automatic",
+                                title: "Mininum Soil Moisture",
                                 color: theme.primaryColor,
                                 value: pr.climateSettings.soilMoisture,
                                 isChild: true,
@@ -144,7 +147,7 @@ class _EditWaterSoilState extends State<EditWaterSoil> {
                                 onValueChanged: (v) => pr.changeSoilMoisture(v),
                               )
                             : EditVariable(
-                                title: "Regulated",
+                                title: "Water Drainage",
                                 color: theme.secondaryColor,
                                 value: pr.climateSettings.waterConsumption,
                                 isChild: true,

@@ -23,6 +23,8 @@ class GrowthItem extends StatelessWidget {
           VPD.getMinMaxLowFromTemp(pr.climateSettings.getTemperature(phase));
       double minHum = hum.begin;
       double maxHum = hum.end;
+
+      String suntime = pr.climateSettings.getSuntime(phase);
       return Container(
         child: Column(
           children: [
@@ -67,7 +69,7 @@ class GrowthItem extends StatelessWidget {
             ),
             DaySlider(
               onValueChanged: (v) => pr.changeSuntime(v, phase),
-              initialTimeString: pr.climateSettings.getSuntime(phase),
+              initialTimeString: suntime,
             ),
           ],
         ),
