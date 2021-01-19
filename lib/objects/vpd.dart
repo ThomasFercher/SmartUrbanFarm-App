@@ -3,16 +3,32 @@ import 'dart:math';
 
 import 'package:flutter/widgets.dart';
 import 'package:sgs/objects/vpdElement.dart';
+import 'package:sgs/styles.dart';
 
 class VPD {
-  static List<VPDElement> lowTranspiration = []; // Early Vegetation
-  static List<Map<String, double>> medTranspiration; // Early Flower
-  static List<Map<String, double>> highTranspiration; // Late Flower
+  static List<VPDElement> vegetationVPD = []; // Early Vegetation
+  static List<VPDElement> earlyFlowerVPD = []; // Early Flower
+  static List<VPDElement> lateFlowerVPD = []; // Late Flower
 
-  static Tween getMinMaxLowFromTemp(double value) {
+  static Tween getMinMaxLowFromTemp(double value, String phase) {
+    List<VPDElement> phaseVPD;
+    switch (phase) {
+      case GROWPHASEVEGETATION:
+        phaseVPD = vegetationVPD;
+        break;
+      case GROWPHASEFLOWER:
+        phaseVPD = earlyFlowerVPD;
+        break;
+      case GROWPHASELATEFLOWER:
+        phaseVPD = lateFlowerVPD;
+        break;
+      default:
+        phaseVPD = [];
+    }
+
     int temp = value.round();
     VPDElement vpdElement =
-        lowTranspiration.firstWhere((vpdElement) => vpdElement.temp == temp);
+        phaseVPD.firstWhere((vpdElement) => vpdElement.temp == temp);
 
     return Tween(
       begin: vpdElement.minHum,
@@ -20,8 +36,23 @@ class VPD {
     );
   }
 
-  static Tween getMinMaxLowFromHum(double hum) {
-    List<VPDElement> vpdElements = lowTranspiration
+  static Tween getMinMaxLowFromHum(double hum, String phase) {
+    List<VPDElement> phaseVPD;
+    switch (phase) {
+      case GROWPHASEVEGETATION:
+        phaseVPD = vegetationVPD;
+        break;
+      case GROWPHASEFLOWER:
+        phaseVPD = vegetationVPD;
+        break;
+      case GROWPHASELATEFLOWER:
+        phaseVPD = vegetationVPD;
+        break;
+      default:
+        phaseVPD = [];
+    }
+
+    List<VPDElement> vpdElements = phaseVPD
         .where((vpdElement) =>
             vpdElement.minHum <= hum && hum <= vpdElement.maxHum)
         .toList();
@@ -44,13 +75,24 @@ class VPD {
         await DefaultAssetBundle.of(context).loadString("assets/json/vpd.json");
     Map<dynamic, dynamic> jsonData = json.decode(data);
 
-    List<dynamic> low = jsonData["lowTranspiration"];
-    low.forEach(
-      (vpdMap) => lowTranspiration.add(
+    List<dynamic> vegetation = jsonData["vegetation"];
+    List<dynamic> earyflower = jsonData["earlyFlower"];
+    List<dynamic> lateflower = jsonData["lateFlower"];
+
+    vegetation.forEach(
+      (vpdMap) => vegetationVPD.add(
         VPDElement.fromJson(vpdMap),
       ),
     );
-
-    print(lowTranspiration);
+    earyflower.forEach(
+      (vpdMap) => earlyFlowerVPD.add(
+        VPDElement.fromJson(vpdMap),
+      ),
+    );
+    lateflower.forEach(
+      (vpdMap) => lateFlowerVPD.add(
+        VPDElement.fromJson(vpdMap),
+      ),
+    );
   }
 }

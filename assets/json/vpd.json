@@ -1,548 +1,545 @@
 {
-	"lowTranspiration": [
-		{
-			"temperature": 10,
-			"humidity_min": 30,
-			"humidity_max": 60
-		},
-		{
-			"temperature": 11,
-			"humidity_min": 32.5,
-			"humidity_max": 62.5
-		},
-		{
-			"temperature": 12,
-			"humidity_min": 37.5,
-			"humidity_max": 62.5
-		},
-		{
-			"temperature": 13,
-			"humidity_min": 40,
-			"humidity_max": 65
-		},
-		{
-			"temperature": 14,
-			"humidity_min": 45,
-			"humidity_max": 67.5
-		},
-		{
-			"temperature": 15,
-			"humidity_min": 47.5,
-			"humidity_max": 70
-		},
-		{
-			"temperature": 16,
-			"humidity_min": 50,
-			"humidity_max": 70
-		},
-		{
-			"temperature": 17,
-			"humidity_min": 52.5,
-			"humidity_max": 72.5
-		},
-		{
-			"temperature": 18,
-			"humidity_min": 57.5,
-			"humidity_max": 75
-		},
-		{
-			"temperature": 19,
-			"humidity_min": 57.5,
-			"humidity_max": 75
-		},
-		{
-			"temperature": 20,
-			"humidity_min": 62.5,
-			"humidity_max": 75
-		},
-		{
-			"temperature": 21,
-			"humidity_min": 62.5,
-			"humidity_max": 77.5
-		},
-		{
-			"temperature": 22,
-			"humidity_min": 65,
-			"humidity_max": 77.5
-		},
-		{
-			"temperature": 23,
-			"humidity_min": 67.5,
-			"humidity_max": 77.5
-		},
-		{
-			"temperature": 24,
-			"humidity_min": 70,
-			"humidity_max": 80
-		},
-		{
-			"temperature": 25,
-			"humidity_min": 70,
-			"humidity_max": 80
-		},
-		{
-			"temperature": 26,
-			"humidity_min": 72.5,
-			"humidity_max": 82.5
-		},
-		{
-			"temperature": 27,
-			"humidity_min": 72.5,
-			"humidity_max": 82.5
-		},
-		{
-			"temperature": 28,
-			"humidity_min": 75,
-			"humidity_max": 82.5
-		},
-		{
-			"temperature": 29,
-			"humidity_min": 75,
-			"humidity_max": 82.5
-		},
-		{
-			"temperature": 30,
-			"humidity_min": 77.5,
-			"humidity_max": 82.5
-		},
-		{
-			"temperature": 31,
-			"humidity_min": 77.5,
-			"humidity_max": 85
-		},
-		{
-			"temperature": 32,
-			"humidity_min": 80,
-			"humidity_max": 85
-		},
-		{
-			"temperature": 33,
-			"humidity_min": 80,
-			"humidity_max": 85
-		},
-		{
-			"temperature": 34,
-			"humidity_min": 80,
-			"humidity_max": 85
-		},
-		{
-			"temperature": 35,
-			"humidity_min": 82.5,
-			"humidity_max": 87.5
-		},
-		{
-			"temperature": 36,
-			"humidity_min": 82.5,
-			"humidity_max": 87.5
-		},
-		{
-			"temperature": 37,
-			"humidity_min": 82.5,
-			"humidity_max": 87.5
-		},
-		{
-			"temperature": 38,
-			"humidity_min": 85,
-			"humidity_max": 87.5
-		},
-		{
-			"temperature": 39,
-			"humidity_min": 85,
-			"humidity_max": 87.5
-		},
-		{
-			"temperature": 40,
-			"humidity_min": 85,
-			"humidity_max": 87.5
-		},
-		{
-			"temperature": 41,
-			"humidity_min": 85,
-			"humidity_max": 87.5
-		},
-		{
-			"temperature": 42,
-			"humidity_min": 87.5,
-			"humidity_max": 90
-		},
-		{
-			"temperature": 43,
-			"humidity_min": 87.5,
-			"humidity_max": 90
-		},
-		{
-			"temperature": 44,
-			"humidity_min": 87.5,
-			"humidity_max": 90
-		},
-		{
-			"temperature": 45,
-			"humidity_min": 87.5,
-			"humidity_max": 90
-		}
-	],
-	"medTranspiration": [
-		{
-			"temperature": 10,
-			"humidity_min": 30,
-			"humidity_max": 60
-		},
-		{
-			"temperature": 11,
-			"humidity_min": 32.5,
-			"humidity_max": 62.5
-		},
-		{
-			"temperature": 12,
-			"humidity_min": 37.5,
-			"humidity_max": 62.5
-		},
-		{
-			"temperature": 13,
-			"humidity_min": 40,
-			"humidity_max": 65
-		},
-		{
-			"temperature": 14,
-			"humidity_min": 45,
-			"humidity_max": 67.5
-		},
-		{
-			"temperature": 15,
-			"humidity_min": 47.5,
-			"humidity_max": 70
-		},
-		{
-			"temperature": 16,
-			"humidity_min": 50,
-			"humidity_max": 70
-		},
-		{
-			"temperature": 17,
-			"humidity_min": 52.5,
-			"humidity_max": 72.5
-		},
-		{
-			"temperature": 18,
-			"humidity_min": 57.5,
-			"humidity_max": 75
-		},
-		{
-			"temperature": 19,
-			"humidity_min": 57.5,
-			"humidity_max": 75
-		},
-		{
-			"temperature": 20,
-			"humidity_min": 62.5,
-			"humidity_max": 75
-		},
-		{
-			"temperature": 21,
-			"humidity_min": 62.5,
-			"humidity_max": 77.5
-		},
-		{
-			"temperature": 22,
-			"humidity_min": 65,
-			"humidity_max": 77.5
-		},
-		{
-			"temperature": 23,
-			"humidity_min": 67.5,
-			"humidity_max": 77.5
-		},
-		{
-			"temperature": 24,
-			"humidity_min": 70,
-			"humidity_max": 80
-		},
-		{
-			"temperature": 25,
-			"humidity_min": 70,
-			"humidity_max": 80
-		},
-		{
-			"temperature": 26,
-			"humidity_min": 72.5,
-			"humidity_max": 85
-		},
-		{
-			"temperature": 27,
-			"humidity_min": 72.5,
-			"humidity_max": 82.5
-		},
-		{
-			"temperature": 28,
-			"humidity_min": 75,
-			"humidity_max": 82.5
-		},
-		{
-			"temperature": 29,
-			"humidity_min": 75,
-			"humidity_max": 82.5
-		},
-		{
-			"temperature": 30,
-			"humidity_min": 77.5,
-			"humidity_max": 82.5
-		},
-		{
-			"temperature": 31,
-			"humidity_min": 77.5,
-			"humidity_max": 85
-		},
-		{
-			"temperature": 32,
-			"humidity_min": 80,
-			"humidity_max": 85
-		},
-		{
-			"temperature": 33,
-			"humidity_min": 80,
-			"humidity_max": 85
-		},
-		{
-			"temperature": 34,
-			"humidity_min": 80,
-			"humidity_max": 85
-		},
-		{
-			"temperature": 35,
-			"humidity_min": 82.5,
-			"humidity_max": 87.5
-		},
-		{
-			"temperature": 36,
-			"humidity_min": 82.5,
-			"humidity_max": 87.5
-		},
-		{
-			"temperature": 37,
-			"humidity_min": 82.5,
-			"humidity_max": 87.5
-		},
-		{
-			"temperature": 38,
-			"humidity_min": 85,
-			"humidity_max": 87.5
-		},
-		{
-			"temperature": 39,
-			"humidity_min": 85,
-			"humidity_max": 87.5
-		},
-		{
-			"temperature": 40,
-			"humidity_min": 85,
-			"humidity_max": 87.5
-		},
-		{
-			"temperature": 41,
-			"humidity_min": 85,
-			"humidity_max": 87.5
-		},
-		{
-			"temperature": 42,
-			"humidity_min": 87.5,
-			"humidity_max": 90
-		},
-		{
-			"temperature": 43,
-			"humidity_min": 87.5,
-			"humidity_max": 90
-		},
-		{
-			"temperature": 44,
-			"humidity_min": 87.5,
-			"humidity_max": 90
-		},
-		{
-			"temperature": 45,
-			"humidity_min": 87.5,
-			"humidity_max": 90
-		}
-	],
-	"highTranspiration": [
-		{
-			"temperature": 10,
-			"humidity_min": 30,
-			"humidity_max": 60
-		},
-		{
-			"temperature": 11,
-			"humidity_min": 32.5,
-			"humidity_max": 62.5
-		},
-		{
-			"temperature": 12,
-			"humidity_min": 37.5,
-			"humidity_max": 62.5
-		},
-		{
-			"temperature": 13,
-			"humidity_min": 40,
-			"humidity_max": 65
-		},
-		{
-			"temperature": 14,
-			"humidity_min": 45,
-			"humidity_max": 67.5
-		},
-		{
-			"temperature": 15,
-			"humidity_min": 47.5,
-			"humidity_max": 70
-		},
-		{
-			"temperature": 16,
-			"humidity_min": 50,
-			"humidity_max": 70
-		},
-		{
-			"temperature": 17,
-			"humidity_min": 52.5,
-			"humidity_max": 72.5
-		},
-		{
-			"temperature": 18,
-			"humidity_min": 57.5,
-			"humidity_max": 75
-		},
-		{
-			"temperature": 19,
-			"humidity_min": 57.5,
-			"humidity_max": 75
-		},
-		{
-			"temperature": 20,
-			"humidity_min": 62.5,
-			"humidity_max": 75
-		},
-		{
-			"temperature": 21,
-			"humidity_min": 62.5,
-			"humidity_max": 77.5
-		},
-		{
-			"temperature": 22,
-			"humidity_min": 65,
-			"humidity_max": 77.5
-		},
-		{
-			"temperature": 23,
-			"humidity_min": 67.5,
-			"humidity_max": 77.5
-		},
-		{
-			"temperature": 24,
-			"humidity_min": 70,
-			"humidity_max": 80
-		},
-		{
-			"temperature": 25,
-			"humidity_min": 70,
-			"humidity_max": 80
-		},
-		{
-			"temperature": 26,
-			"humidity_min": 72.5,
-			"humidity_max": 85
-		},
-		{
-			"temperature": 27,
-			"humidity_min": 72.5,
-			"humidity_max": 82.5
-		},
-		{
-			"temperature": 28,
-			"humidity_min": 75,
-			"humidity_max": 82.5
-		},
-		{
-			"temperature": 29,
-			"humidity_min": 75,
-			"humidity_max": 82.5
-		},
-		{
-			"temperature": 30,
-			"humidity_min": 77.5,
-			"humidity_max": 82.5
-		},
-		{
-			"temperature": 31,
-			"humidity_min": 77.5,
-			"humidity_max": 85
-		},
-		{
-			"temperature": 32,
-			"humidity_min": 80,
-			"humidity_max": 85
-		},
-		{
-			"temperature": 33,
-			"humidity_min": 80,
-			"humidity_max": 85
-		},
-		{
-			"temperature": 34,
-			"humidity_min": 80,
-			"humidity_max": 85
-		},
-		{
-			"temperature": 35,
-			"humidity_min": 82.5,
-			"humidity_max": 87.5
-		},
-		{
-			"temperature": 36,
-			"humidity_min": 82.5,
-			"humidity_max": 87.5
-		},
-		{
-			"temperature": 37,
-			"humidity_min": 82.5,
-			"humidity_max": 87.5
-		},
-		{
-			"temperature": 38,
-			"humidity_min": 85,
-			"humidity_max": 87.5
-		},
-		{
-			"temperature": 39,
-			"humidity_min": 85,
-			"humidity_max": 87.5
-		},
-		{
-			"temperature": 40,
-			"humidity_min": 85,
-			"humidity_max": 87.5
-		},
-		{
-			"temperature": 41,
-			"humidity_min": 85,
-			"humidity_max": 87.5
-		},
-		{
-			"temperature": 42,
-			"humidity_min": 87.5,
-			"humidity_max": 90
-		},
-		{
-			"temperature": 43,
-			"humidity_min": 87.5,
-			"humidity_max": 90
-		},
-		{
-			"temperature": 44,
-			"humidity_min": 87.5,
-			"humidity_max": 90
-		},
-		{
-			"temperature": 45,
-			"humidity_min": 87.5,
-			"humidity_max": 90
-		}
-	]
+    "vegetation": [{
+            "temperature": 10,
+            "humidity_min": 30,
+            "humidity_max": 60
+        },
+        {
+            "temperature": 11,
+            "humidity_min": 32.5,
+            "humidity_max": 62.5
+        },
+        {
+            "temperature": 12,
+            "humidity_min": 37.5,
+            "humidity_max": 62.5
+        },
+        {
+            "temperature": 13,
+            "humidity_min": 40,
+            "humidity_max": 65
+        },
+        {
+            "temperature": 14,
+            "humidity_min": 45,
+            "humidity_max": 67.5
+        },
+        {
+            "temperature": 15,
+            "humidity_min": 47.5,
+            "humidity_max": 70
+        },
+        {
+            "temperature": 16,
+            "humidity_min": 50,
+            "humidity_max": 70
+        },
+        {
+            "temperature": 17,
+            "humidity_min": 52.5,
+            "humidity_max": 72.5
+        },
+        {
+            "temperature": 18,
+            "humidity_min": 57.5,
+            "humidity_max": 75
+        },
+        {
+            "temperature": 19,
+            "humidity_min": 57.5,
+            "humidity_max": 75
+        },
+        {
+            "temperature": 20,
+            "humidity_min": 62.5,
+            "humidity_max": 75
+        },
+        {
+            "temperature": 21,
+            "humidity_min": 62.5,
+            "humidity_max": 77.5
+        },
+        {
+            "temperature": 22,
+            "humidity_min": 65,
+            "humidity_max": 77.5
+        },
+        {
+            "temperature": 23,
+            "humidity_min": 67.5,
+            "humidity_max": 77.5
+        },
+        {
+            "temperature": 24,
+            "humidity_min": 70,
+            "humidity_max": 80
+        },
+        {
+            "temperature": 25,
+            "humidity_min": 70,
+            "humidity_max": 80
+        },
+        {
+            "temperature": 26,
+            "humidity_min": 72.5,
+            "humidity_max": 82.5
+        },
+        {
+            "temperature": 27,
+            "humidity_min": 72.5,
+            "humidity_max": 82.5
+        },
+        {
+            "temperature": 28,
+            "humidity_min": 75,
+            "humidity_max": 82.5
+        },
+        {
+            "temperature": 29,
+            "humidity_min": 75,
+            "humidity_max": 82.5
+        },
+        {
+            "temperature": 30,
+            "humidity_min": 77.5,
+            "humidity_max": 82.5
+        },
+        {
+            "temperature": 31,
+            "humidity_min": 77.5,
+            "humidity_max": 85
+        },
+        {
+            "temperature": 32,
+            "humidity_min": 80,
+            "humidity_max": 85
+        },
+        {
+            "temperature": 33,
+            "humidity_min": 80,
+            "humidity_max": 85
+        },
+        {
+            "temperature": 34,
+            "humidity_min": 80,
+            "humidity_max": 85
+        },
+        {
+            "temperature": 35,
+            "humidity_min": 82.5,
+            "humidity_max": 87.5
+        },
+        {
+            "temperature": 36,
+            "humidity_min": 82.5,
+            "humidity_max": 87.5
+        },
+        {
+            "temperature": 37,
+            "humidity_min": 82.5,
+            "humidity_max": 87.5
+        },
+        {
+            "temperature": 38,
+            "humidity_min": 85,
+            "humidity_max": 87.5
+        },
+        {
+            "temperature": 39,
+            "humidity_min": 85,
+            "humidity_max": 87.5
+        },
+        {
+            "temperature": 40,
+            "humidity_min": 85,
+            "humidity_max": 87.5
+        },
+        {
+            "temperature": 41,
+            "humidity_min": 85,
+            "humidity_max": 87.5
+        },
+        {
+            "temperature": 42,
+            "humidity_min": 87.5,
+            "humidity_max": 90
+        },
+        {
+            "temperature": 43,
+            "humidity_min": 87.5,
+            "humidity_max": 90
+        },
+        {
+            "temperature": 44,
+            "humidity_min": 87.5,
+            "humidity_max": 90
+        },
+        {
+            "temperature": 45,
+            "humidity_min": 87.5,
+            "humidity_max": 90
+        }
+    ],
+    "earlyFlower": [{
+            "temperature": 10,
+            "humidity_min": 0,
+            "humidity_max": 27.5
+        },
+        {
+            "temperature": 11,
+            "humidity_min": 2.5,
+            "humidity_max": 30
+        },
+        {
+            "temperature": 12,
+            "humidity_min": 7.5,
+            "humidity_max": 35
+        },
+        {
+            "temperature": 13,
+            "humidity_min": 15,
+            "humidity_max": 37.5
+        },
+        {
+            "temperature": 14,
+            "humidity_min": 20,
+            "humidity_max": 42.5
+        },
+        {
+            "temperature": 15,
+            "humidity_min": 25,
+            "humidity_max": 45
+        },
+        {
+            "temperature": 16,
+            "humidity_min": 30,
+            "humidity_max": 47.5
+        },
+        {
+            "temperature": 17,
+            "humidity_min": 32.5,
+            "humidity_max": 50
+        },
+        {
+            "temperature": 18,
+            "humidity_min": 37.5,
+            "humidity_max": 55
+        },
+        {
+            "temperature": 19,
+            "humidity_min": 40,
+            "humidity_max": 55
+        },
+        {
+            "temperature": 20,
+            "humidity_min": 45,
+            "humidity_max": 60
+        },
+        {
+            "temperature": 21,
+            "humidity_min": 47.5,
+            "humidity_max": 60
+        },
+        {
+            "temperature": 22,
+            "humidity_min": 50,
+            "humidity_max": 62.5
+        },
+        {
+            "temperature": 23,
+            "humidity_min": 52.5,
+            "humidity_max": 65
+        },
+        {
+            "temperature": 24,
+            "humidity_min": 55,
+            "humidity_max": 67.5
+        },
+        {
+            "temperature": 25,
+            "humidity_min": 57.5,
+            "humidity_max": 67.5
+        },
+        {
+            "temperature": 26,
+            "humidity_min": 60,
+            "humidity_max": 70
+        },
+        {
+            "temperature": 27,
+            "humidity_min": 62.5,
+            "humidity_max": 70
+        },
+        {
+            "temperature": 28,
+            "humidity_min": 65,
+            "humidity_max": 72.5
+        },
+        {
+            "temperature": 29,
+            "humidity_min": 65,
+            "humidity_max": 72.5
+        },
+        {
+            "temperature": 30,
+            "humidity_min": 67.5,
+            "humidity_max": 75
+        },
+        {
+            "temperature": 31,
+            "humidity_min": 70,
+            "humidity_max": 75
+        },
+        {
+            "temperature": 32,
+            "humidity_min": 70,
+            "humidity_max": 77.5
+        },
+        {
+            "temperature": 33,
+            "humidity_min": 72.5,
+            "humidity_max": 77.5
+        },
+        {
+            "temperature": 34,
+            "humidity_min": 72.5,
+            "humidity_max": 77.5
+        },
+        {
+            "temperature": 35,
+            "humidity_min": 75,
+            "humidity_max": 80
+        },
+        {
+            "temperature": 36,
+            "humidity_min": 75,
+            "humidity_max": 80
+        },
+        {
+            "temperature": 37,
+            "humidity_min": 77.5,
+            "humidity_max": 80
+        },
+        {
+            "temperature": 38,
+            "humidity_min": 77.5,
+            "humidity_max": 82.5
+        },
+        {
+            "temperature": 39,
+            "humidity_min": 80,
+            "humidity_max": 82.5
+        },
+        {
+            "temperature": 40,
+            "humidity_min": 80,
+            "humidity_max": 82.5
+        },
+        {
+            "temperature": 41,
+            "humidity_min": 80,
+            "humidity_max": 82.5
+        },
+        {
+            "temperature": 42,
+            "humidity_min": 82.5,
+            "humidity_max": 85
+        },
+        {
+            "temperature": 43,
+            "humidity_min": 82.5,
+            "humidity_max": 85
+        },
+        {
+            "temperature": 44,
+            "humidity_min": 82.5,
+            "humidity_max": 85
+        },
+        {
+            "temperature": 45,
+            "humidity_min": 82.5,
+            "humidity_max": 85
+        }
+    ],
+    "lateFlower": [{
+            "temperature": 10,
+            "humidity_min": 0,
+            "humidity_max": 0
+        },
+        {
+            "temperature": 11,
+            "humidity_min": 0,
+            "humidity_max": 0
+        },
+        {
+            "temperature": 12,
+            "humidity_min": 0,
+            "humidity_max": 5
+        },
+        {
+            "temperature": 13,
+            "humidity_min": 0,
+            "humidity_max": 12.5
+        },
+        {
+            "temperature": 14,
+            "humidity_min": 0,
+            "humidity_max": 17.5
+        },
+        {
+            "temperature": 15,
+            "humidity_min": 0,
+            "humidity_max": 22.5
+        },
+        {
+            "temperature": 16,
+            "humidity_min": 7.5,
+            "humidity_max": 27.5
+        },
+        {
+            "temperature": 17,
+            "humidity_min": 12.5,
+            "humidity_max": 30
+        },
+        {
+            "temperature": 18,
+            "humidity_min": 17.5,
+            "humidity_max": 35
+        },
+        {
+            "temperature": 19,
+            "humidity_min": 22.5,
+            "humidity_max": 37.5
+        },
+        {
+            "temperature": 20,
+            "humidity_min": 27.5,
+            "humidity_max": 42.5
+        },
+        {
+            "temperature": 21,
+            "humidity_min": 30,
+            "humidity_max": 45
+        },
+        {
+            "temperature": 22,
+            "humidity_min": 35,
+            "humidity_max": 47.5
+        },
+        {
+            "temperature": 23,
+            "humidity_min": 37.5,
+            "humidity_max": 50.0
+        },
+        {
+            "temperature": 24,
+            "humidity_min": 42.5,
+            "humidity_max": 52.5
+        },
+        {
+            "temperature": 25,
+            "humidity_min": 45,
+            "humidity_max": 55
+        },
+        {
+            "temperature": 26,
+            "humidity_min": 47.5,
+            "humidity_max": 57.5
+        },
+        {
+            "temperature": 27,
+            "humidity_min": 50,
+            "humidity_max": 60
+        },
+        {
+            "temperature": 28,
+            "humidity_min": 52.5,
+            "humidity_max": 62.5
+        },
+        {
+            "temperature": 29,
+            "humidity_min": 55,
+            "humidity_max": 62.5
+        },
+        {
+            "temperature": 30,
+            "humidity_min": 57.5,
+            "humidity_max": 65
+        },
+        {
+            "temperature": 31,
+            "humidity_min": 60,
+            "humidity_max": 67.5
+        },
+        {
+            "temperature": 32,
+            "humidity_min": 62.6,
+            "humidity_max": 67.5
+        },
+        {
+            "temperature": 33,
+            "humidity_min": 65,
+            "humidity_max": 70
+        },
+        {
+            "temperature": 34,
+            "humidity_min": 65,
+            "humidity_max": 70
+        },
+        {
+            "temperature": 35,
+            "humidity_min": 67.5,
+            "humidity_max": 72.5
+        },
+        {
+            "temperature": 36,
+            "humidity_min": 70,
+            "humidity_max": 72.5
+        },
+        {
+            "temperature": 37,
+            "humidity_min": 70,
+            "humidity_max": 75
+        },
+        {
+            "temperature": 38,
+            "humidity_min": 72.5,
+            "humidity_max": 75
+        },
+        {
+            "temperature": 39,
+            "humidity_min": 72.5,
+            "humidity_max": 77.5
+        },
+        {
+            "temperature": 40,
+            "humidity_min": 75,
+            "humidity_max": 77.5
+        },
+        {
+            "temperature": 41,
+            "humidity_min": 75,
+            "humidity_max": 77.5
+        },
+        {
+            "temperature": 42,
+            "humidity_min": 77.5,
+            "humidity_max": 80
+        },
+        {
+            "temperature": 43,
+            "humidity_min": 77.5,
+            "humidity_max": 80
+        },
+        {
+            "temperature": 44,
+            "humidity_min": 77.5,
+            "humidity_max": 80
+        },
+        {
+            "temperature": 45,
+            "humidity_min": 80,
+            "humidity_max": 80
+        }
+    ]
 }

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 import 'package:sgs/customwidgets/general/sectionTitle.dart';
+import 'package:sgs/objects/appTheme.dart';
+import 'package:sgs/providers/settingsProvider.dart';
 
 import '../../styles.dart';
 
@@ -21,6 +24,7 @@ class SelectButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
     return InkWell(
       onTap: onPressed,
       child: Container(
@@ -30,15 +34,15 @@ class SelectButton extends StatelessWidget {
           children: [
             Icon(
               icon,
-              color: enabled ? color.shade300 : Colors.black12,
+              color: enabled ? color.shade300 :theme.disabled,
               size: 36,
             ),
             SectionTitle(
-                title: title, color: enabled ? color.shade300 : Colors.black12)
+                title: title, color: enabled ? color.shade300 : theme.disabled)
           ],
         ),
         decoration: BoxDecoration(
-          color: enabled ? color.shade100 : Colors.black12,
+          color: enabled ? color.shade100 :theme.disabled,
           //     border: Border.all(color: Colors.deepOrange.shade200),
           borderRadius: BorderRadius.all(
             Radius.circular(borderRadius),

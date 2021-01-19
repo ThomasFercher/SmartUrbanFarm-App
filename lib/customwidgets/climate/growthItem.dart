@@ -16,11 +16,11 @@ class GrowthItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<ClimateControlProvider>(builder: (context, pr, child) {
       Tween temp =
-          VPD.getMinMaxLowFromHum(pr.climateSettings.getHumidity(phase));
+          VPD.getMinMaxLowFromHum(pr.climateSettings.getHumidity(phase), phase);
       double minTemp = temp.begin;
       double maxTemp = temp.end;
-      Tween hum =
-          VPD.getMinMaxLowFromTemp(pr.climateSettings.getTemperature(phase));
+      Tween hum = VPD.getMinMaxLowFromTemp(
+          pr.climateSettings.getTemperature(phase), phase);
       double minHum = hum.begin;
       double maxHum = hum.end;
 
@@ -40,9 +40,11 @@ class GrowthItem extends StatelessWidget {
               max: 45,
               onValueChanged: (v) {
                 if (v > maxHum) {
-                  pr.changeHumidity(VPD.getMinMaxLowFromTemp(v).begin, phase);
+                  pr.changeHumidity(
+                      VPD.getMinMaxLowFromTemp(v, phase).begin, phase);
                 } else if (v < minHum) {
-                  pr.changeHumidity(VPD.getMinMaxLowFromTemp(v).end, phase);
+                  pr.changeHumidity(
+                      VPD.getMinMaxLowFromTemp(v, phase).end, phase);
                 }
                 pr.changeTemperature(v, phase);
               },
@@ -59,9 +61,11 @@ class GrowthItem extends StatelessWidget {
               max: 90,
               onValueChanged: (v) {
                 if (v > maxHum) {
-                  pr.changeTemperature(VPD.getMinMaxLowFromHum(v).begin, phase);
+                  pr.changeTemperature(
+                      VPD.getMinMaxLowFromHum(v, phase).begin, phase);
                 } else if (v < minHum) {
-                  pr.changeTemperature(VPD.getMinMaxLowFromHum(v).end, phase);
+                  pr.changeTemperature(
+                      VPD.getMinMaxLowFromHum(v, phase).end, phase);
                 }
                 pr.changeHumidity(v, phase);
               },
@@ -70,6 +74,7 @@ class GrowthItem extends StatelessWidget {
             DaySlider(
               onValueChanged: (v) => pr.changeSuntime(v, phase),
               initialTimeString: suntime,
+              key: new Key(phase),
             ),
           ],
         ),

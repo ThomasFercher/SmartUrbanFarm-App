@@ -10,8 +10,10 @@ class AppTheme {
   final Color primaryColor;
   final Color secondaryColor;
   final Color contrast;
+  final Color disabled;
 
   AppTheme({
+    this.disabled,
     this.contrast,
     this.name,
     this.cardColor,

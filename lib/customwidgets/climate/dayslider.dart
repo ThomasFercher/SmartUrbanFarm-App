@@ -9,11 +9,12 @@ import 'package:sgs/objects/appTheme.dart';
 class DaySlider extends StatefulWidget {
   final Function onValueChanged;
   final String initialTimeString;
+ 
 
   /// This widget lets u choose a timerange from 0-24h
   /// The current value is displayed over the slider itself
   /// Also you can use the onValueChanged function to define your own callback function
-  DaySlider({@required this.onValueChanged, @required this.initialTimeString});
+  DaySlider({@required this.onValueChanged, @required this.initialTimeString, Key key}): super(key: key);
 
   @override
   _DaySliderState createState() => _DaySliderState();
@@ -24,6 +25,8 @@ class _DaySliderState extends State<DaySlider> {
   var labels;
   var suntime;
 
+
+
   @override
   void initState() {
     _values = getValueFromTimeString(widget.initialTimeString);
@@ -31,6 +34,7 @@ class _DaySliderState extends State<DaySlider> {
     suntime = (_values.end - _values.start) / 4;
     super.initState();
   }
+
 
   String getTimeString(double quarters) {
     int hours = (quarters / 4).floor();

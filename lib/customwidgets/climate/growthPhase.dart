@@ -94,7 +94,7 @@ class _GrowthPaseState extends State<GrowthPase> {
                 ),
               ),
               Divider(
-                color: Colors.grey[300],
+                color: theme.disabled,
               ),
               Expanded(
                 child: Container(
