@@ -99,6 +99,7 @@ class EditVariable extends StatelessWidget {
                   max: max,
                   min: min,
                   divisions: divisions ?? ((max - min) * 2).round(),
+                  
                 ),
               ),
             ],

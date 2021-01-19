@@ -27,6 +27,7 @@ class SelectButton extends StatelessWidget {
     AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
     return InkWell(
       onTap: onPressed,
+      
       child: Container(
         alignment: Alignment.center,
         child: Column(

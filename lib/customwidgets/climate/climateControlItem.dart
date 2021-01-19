@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:sgs/customwidgets/climate/iconValue.dart';
+import 'package:sgs/customwidgets/climate/selectButton.dart';
 import 'package:sgs/customwidgets/climate/settingsListTile.dart';
 import 'package:sgs/customwidgets/general/sectionTitle.dart';
 import 'package:sgs/objects/appTheme.dart';
@@ -13,7 +15,6 @@ import 'package:sgs/pages/environment.dart';
 import 'package:sgs/providers/dataProvider.dart';
 import 'package:sgs/providers/settingsProvider.dart';
 
-
 import '../../styles.dart';
 import '../general/popupMenu.dart';
 
@@ -23,23 +24,26 @@ class ClimateControlItem extends StatelessWidget {
 
   List<PopupMenuOption> options = [
     PopupMenuOption(
-        "Set Active",
-        Icon(
-          Icons.check,
-          color: primaryColor,
-        )),
+      "Set Active",
+      Icon(
+        Icons.check,
+        color: primaryColor,
+      ),
+    ),
     PopupMenuOption(
-        "Edit",
-        Icon(
-          Icons.edit,
-          color: primaryColor,
-        )),
+      "Edit",
+      Icon(
+        Icons.edit,
+        color: primaryColor,
+      ),
+    ),
     PopupMenuOption(
-        "Delete",
-        Icon(
-          Icons.delete,
-          color: Colors.redAccent,
-        ))
+      "Delete",
+      Icon(
+        Icons.delete,
+        color: Colors.redAccent,
+      ),
+    )
   ];
 
   @override
@@ -80,7 +84,7 @@ class ClimateControlItem extends StatelessWidget {
                 child: Container(
                   child: ListView(
                     padding: EdgeInsets.all(0),
-                    itemExtent: itemheight,
+                    //  itemExtent: itemheight,
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     children: [
@@ -95,6 +99,7 @@ class ClimateControlItem extends StatelessWidget {
                           children: [
                             Expanded(
                               child: Container(
+                                height: 60,
                                 alignment: Alignment.centerLeft,
                                 padding: EdgeInsets.only(left: 15),
                                 child: SectionTitle(
@@ -129,7 +134,145 @@ class ClimateControlItem extends StatelessWidget {
                           ],
                         ),
                       ),
-                      SettingsListTile(
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: borderRadius, vertical: 10),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Container(
+                              alignment: Alignment.centerLeft,
+                              child: SectionTitle(
+                                title: "Grow Phases",
+                                fontSize: 20,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 100,
+                                    child: SelectButton(
+                                      color: Colors.deepPurple,
+                                      title: "Vegetation",
+                                      icon: MaterialCommunityIcons.sprout,
+                                      enabled: true,
+                                      onPressed: () {},
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 100,
+                                    child: SelectButton(
+                                      color: Colors.green,
+                                      title: "Early Flower",
+                                      icon: MaterialCommunityIcons.sprout,
+                                      enabled: true,
+                                      onPressed: () {},
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 100,
+                                    child: SelectButton(
+                                      color: Colors.amber,
+                                      title: "Late Flower",
+                                      icon: MaterialCommunityIcons.sprout,
+                                      enabled: true,
+                                      onPressed: () {},
+                                    ),
+                                  ),
+                                  IconValue(
+                                    color: Colors.amber,
+                                    icon: WeatherIcons.wi_thermometer,
+                                    unit: "°C",
+                                    val: settings.growPhase.lateflower_temp,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              alignment: Alignment.centerLeft,
+                              child: SectionTitle(
+                                title: "Irrigation",
+                                fontSize: 20,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Row(
+                                children: [
+                                  settings.automaticWatering
+                                      ? Chip(
+                                          label: Container(
+                                            height: 32,
+                                            alignment: Alignment.center,
+                                            child: SectionTitle(
+                                              fontSize: 14,
+                                              title: "Automatic",
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          backgroundColor: primaryColor,
+                                          avatar: Icon(
+                                            Icons.tune,
+                                            color: Colors.white,
+                                          ),
+                                        )
+                                      : Chip(
+                                          label: Container(
+                                            height: 32,
+                                            alignment: Alignment.center,
+                                            child: SectionTitle(
+                                              fontSize: 14,
+                                              title: "Regulated",
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          backgroundColor: theme.secondaryColor,
+                                          avatar: Icon(
+                                            Icons.tune,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                  Expanded(
+                                    child: Container(
+                                      alignment: Alignment.centerRight,
+                                      child: Text(
+                                        settings.automaticWatering
+                                            ? "${settings.soilMoisture}%"
+                                            : "${settings.waterConsumption}l/d",
+                                        style: TextStyle(
+                                          color: theme.textColor,
+                                          fontWeight: FontWeight.w100,
+                                          fontSize: 28.0,
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                      /*  SettingsListTile(
                         icon: WeatherIcons.wi_thermometer,
                         color: Colors.redAccent,
                         title: "Temperature",
@@ -164,7 +307,7 @@ class ClimateControlItem extends StatelessWidget {
                         title: "Suntime",
                         value_text: suntime,
                         unit: "",
-                      ),
+                      ),*/
                     ],
                   ),
                 ),

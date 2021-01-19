@@ -9,8 +9,9 @@ import 'package:sgs/providers/climateControlProvider.dart';
 
 class GrowthItem extends StatelessWidget {
   final String phase;
+  final Color color;
 
-  const GrowthItem({Key key, this.phase}) : super(key: key);
+  const GrowthItem({Key key, this.phase, this.color}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,7 @@ class GrowthItem extends StatelessWidget {
           children: [
             EditVariable(
               value: pr.climateSettings.getTemperature(phase),
-              color: Colors.redAccent,
+              color: color,
               title: "Temperature",
               unit: "°C",
               icon: WeatherIcons.wi_thermometer,
@@ -70,11 +71,13 @@ class GrowthItem extends StatelessWidget {
                 pr.changeHumidity(v, phase);
               },
               isChild: true,
+              color: color,
             ),
             DaySlider(
               onValueChanged: (v) => pr.changeSuntime(v, phase),
               initialTimeString: suntime,
               key: new Key(phase),
+              color: color,
             ),
           ],
         ),

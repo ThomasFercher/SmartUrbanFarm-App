@@ -100,9 +100,9 @@ class _GrowthPaseState extends State<GrowthPase> {
                 child: Container(
                   height: 4000,
                   //      color: Colors.red,
-                  child: GrowthItem(
-                    phase: pr.sel_phase,
-                  ),
+                  child: AnimatedSwitcher(
+                      duration: Duration(milliseconds: 100),
+                      child: getGrowthItem(pr.sel_phase)),
                 ),
               ),
             ],
@@ -110,5 +110,29 @@ class _GrowthPaseState extends State<GrowthPase> {
         ),
       );
     });
+  }
+
+  Widget getGrowthItem(String phase) {
+    switch (phase) {
+      case GROWPHASEVEGETATION:
+        return GrowthItem(
+          phase: phase,
+           color: Colors.deepPurple,
+        );
+        break;
+      case GROWPHASEFLOWER:
+        return GrowthItem(
+          phase: phase,
+          color: Colors.green,
+        );
+        break;
+      case GROWPHASELATEFLOWER:
+        return GrowthItem(
+          phase: phase,
+          color: Colors.amber,
+        );
+        break;
+      default:
+    }
   }
 }
