@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:provider/provider.dart';
+import 'package:sgs/customwidgets/general/appBarBanner.dart';
 import 'package:sgs/customwidgets/general/appBarHeader.dart';
 import 'package:sgs/customwidgets/dashboard/carddata.dart';
 import 'package:sgs/customwidgets/dashboard/dayRange.dart';
@@ -44,6 +45,7 @@ class Dashboard extends StatelessWidget {
           isPage: false,
           title: "Smart Urban Farm",
           contentPadding: true,
+          flexibleSpace: AppBarBanner(220, "Smart Urban Farm"),
           body: <Widget>[
             Padding(padding: EdgeInsets.only(top: 20)),
             sectionTitle(
@@ -171,7 +173,9 @@ class Dashboard extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) {
-                        return Environment();
+                        return Environment(
+                          height: MediaQuery.of(context).size.height - 80,
+                        );
                       }),
                     ),
                   },

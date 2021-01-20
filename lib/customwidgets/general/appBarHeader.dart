@@ -19,9 +19,12 @@ class AppBarHeader extends StatelessWidget {
   final bool isPage;
   final Widget actionButton;
   final Widget bottomAction;
+  final Widget flexibleSpace;
   final _controller = ScrollController();
   final PreferredSizeWidget appbarBottom;
   final Color bottomBarColor;
+  final double expandedHeight;
+  final ScrollController scrollController;
   bool contentPadding = true;
 
   AppBarHeader({
@@ -34,6 +37,9 @@ class AppBarHeader extends StatelessWidget {
     this.bottomAction,
     this.appbarBottom,
     this.bottomBarColor,
+    this.flexibleSpace,
+    this.expandedHeight,
+    this.scrollController,
   }) : contentPadding = contentPadding ?? true;
 
   @override
@@ -57,7 +63,7 @@ class AppBarHeader extends StatelessWidget {
           () async => await _controller.animateTo(140,
               duration: Duration(milliseconds: 80), curve: Curves.slowMiddle),
         );
-      } else if (scrollOffset < 140 &&
+      } else if (scrollOffset < 4000 &&
           scrollDirection == ScrollDirection.forward) {
         Timer(
           Duration(milliseconds: 1),
@@ -83,14 +89,18 @@ class AppBarHeader extends StatelessWidget {
         floatingActionButton: actionButton ?? null,
         backgroundColor: theme.background,
         body: CustomScrollView(
-          controller: isPage ? null : _controller,
+          controller: scrollController == null
+              ? isPage
+                  ? null
+                  : _controller
+              : scrollController,
           slivers: <Widget>[
             SliverAppBar(
-              expandedHeight: isPage ? 80 : 220,
+              expandedHeight: isPage ? 80 : expandedHeight ?? 220,
               toolbarHeight: 80,
-              flexibleSpace: !isPage ? AppBarBanner(220, title) : Container(),
+              flexibleSpace: !isPage ? flexibleSpace : Container(),
               floating: true,
-              elevation: 2,
+              elevation: 0,
               pinned: true,
               iconTheme: IconThemeData(color: Colors.white),
               backgroundColor: theme.primaryColor,

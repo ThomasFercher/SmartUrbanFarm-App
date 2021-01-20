@@ -203,6 +203,18 @@ class ClimateControlItem extends StatelessWidget {
                                     unit: "°C",
                                     val: settings.growPhase.lateflower_temp,
                                   ),
+                                  IconValue(
+                                    color: Colors.amber,
+                                    icon: WeatherIcons.wi_thermometer,
+                                    unit: "°C",
+                                    val: settings.growPhase.lateflower_temp,
+                                  ),
+                                  IconValue(
+                                    color: Colors.amber,
+                                    icon: WeatherIcons.wi_thermometer,
+                                    unit: "°C",
+                                    val: settings.growPhase.lateflower_temp,
+                                  ),
                                 ],
                               ),
                             ),
