@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:sgs/customwidgets/climate/iconValue.dart';
 import 'package:sgs/customwidgets/climate/selectButton.dart';
 import 'package:sgs/customwidgets/climate/settingsListTile.dart';
+import 'package:sgs/customwidgets/climate/verticalListTile.dart';
 import 'package:sgs/customwidgets/general/sectionTitle.dart';
 import 'package:sgs/objects/appTheme.dart';
 import 'package:sgs/objects/climateControl.dart';
@@ -48,20 +49,17 @@ class ClimateControlItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var temperature = settings.getTemperature(GROWPHASEVEGETATION);
-    var humidity = settings.getHumidity(GROWPHASEVEGETATION);
-    var soilMoisture = settings.getSoilMoisture;
-    var suntime = settings.getSuntime(GROWPHASEVEGETATION);
-    var waterConsumption = settings.getWaterConsumption;
     AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
 
     return Container(
       // height: 400,
+
       width: MediaQuery.of(context).size.width - 30,
       margin: EdgeInsets.only(top: 10, bottom: 10, left: 15, right: 15),
       child: OpenContainer(
         closedColor: theme.background,
         closedElevation: 0.0,
+        tappable: false,
         openBuilder: (_, closeContainer) {
           return EditEnvironment(
             initialSettings: settings,
@@ -72,8 +70,8 @@ class ClimateControlItem extends StatelessWidget {
           return LayoutBuilder(
             builder: (context, constraints) {
               print(constraints.maxHeight);
-              var itemheight =
-                  ((constraints.maxHeight - 24) / 5).roundToDouble();
+              var h = constraints.maxHeight - 68;
+              var w = constraints.maxWidth - 2 * borderRadius;
 
               return Card(
                 elevation: cardElavation,
@@ -82,11 +80,8 @@ class ClimateControlItem extends StatelessWidget {
                 ),
                 color: theme.cardColor,
                 child: Container(
-                  child: ListView(
-                    padding: EdgeInsets.all(0),
-                    //  itemExtent: itemheight,
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
+                  height: h - 8,
+                  child: Column(
                     children: [
                       Container(
                         decoration: BoxDecoration(
@@ -135,87 +130,69 @@ class ClimateControlItem extends StatelessWidget {
                         ),
                       ),
                       Container(
+                        height: h,
                         padding: EdgeInsets.symmetric(
-                            horizontal: borderRadius, vertical: 10),
+                          horizontal: borderRadius,
+                          vertical: 10,
+                        ),
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          mainAxisSize: MainAxisSize.max,
-                          crossAxisAlignment: CrossAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
                               alignment: Alignment.centerLeft,
                               child: SectionTitle(
                                 title: "Grow Phases",
                                 fontSize: 20,
+                                color: theme.headlineColor,
                               ),
+                              padding: EdgeInsets.only(bottom: 8),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 8.0),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    width: 100,
-                                    child: SelectButton(
-                                      color: Colors.deepPurple,
-                                      title: "Vegetation",
-                                      icon: MaterialCommunityIcons.sprout,
-                                      enabled: true,
-                                      onPressed: () {},
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 8.0),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    width: 100,
-                                    child: SelectButton(
-                                      color: Colors.green,
-                                      title: "Early Flower",
-                                      icon: MaterialCommunityIcons.sprout,
-                                      enabled: true,
-                                      onPressed: () {},
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 8.0),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    width: 100,
-                                    child: SelectButton(
-                                      color: Colors.amber,
-                                      title: "Late Flower",
-                                      icon: MaterialCommunityIcons.sprout,
-                                      enabled: true,
-                                      onPressed: () {},
-                                    ),
-                                  ),
-                                  IconValue(
-                                    color: Colors.amber,
-                                    icon: WeatherIcons.wi_thermometer,
-                                    unit: "°C",
-                                    val: settings.growPhase.lateflower_temp,
-                                  ),
-                                  IconValue(
-                                    color: Colors.amber,
-                                    icon: WeatherIcons.wi_thermometer,
-                                    unit: "°C",
-                                    val: settings.growPhase.lateflower_temp,
-                                  ),
-                                  IconValue(
-                                    color: Colors.amber,
-                                    icon: WeatherIcons.wi_thermometer,
-                                    unit: "°C",
-                                    val: settings.growPhase.lateflower_temp,
-                                  ),
-                                ],
+                            Expanded(
+                              child: Container(
+                                width: w,
+                                child: LayoutBuilder(
+                                    builder: (context, constraints) {
+                                  return GridView.count(
+                                    primary: false,
+                                    crossAxisCount: 3,
+                                    childAspectRatio:
+                                        (w / 3) / (constraints.maxHeight),
+                                    padding: EdgeInsets.all(0),
+                                    crossAxisSpacing: borderRadius / 2,
+                                    children: [
+                                      VerticalListTile(
+                                        title: "Vegetation",
+                                        color: Colors.deepPurple,
+                                        humidity:
+                                            settings.growPhase.vegation_hum,
+                                        temperature:
+                                            settings.growPhase.vegation_temp,
+                                        suntime:
+                                            settings.growPhase.vegation_suntime,
+                                      ),
+                                      VerticalListTile(
+                                        title: "Early Flower",
+                                        color: Colors.green,
+                                        humidity: settings.growPhase.flower_hum,
+                                        temperature:
+                                            settings.growPhase.flower_temp,
+                                        suntime:
+                                            settings.growPhase.flower_suntime,
+                                      ),
+                                      VerticalListTile(
+                                        title: "Late Flower",
+                                        color: Colors.amber,
+                                        humidity:
+                                            settings.growPhase.lateflower_hum,
+                                        temperature:
+                                            settings.growPhase.lateflower_temp,
+                                        suntime: settings
+                                            .growPhase.lateflower_suntime,
+                                      ),
+                                    ],
+                                  );
+                                }),
                               ),
                             ),
                             Container(
@@ -224,16 +201,18 @@ class ClimateControlItem extends StatelessWidget {
                               child: SectionTitle(
                                 title: "Irrigation",
                                 fontSize: 20,
+                                color: theme.headlineColor,
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(top: 8.0),
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 8.0),
                               child: Row(
                                 children: [
                                   settings.automaticWatering
                                       ? Chip(
                                           label: Container(
-                                            height: 32,
+                                            height: 34,
                                             alignment: Alignment.center,
                                             child: SectionTitle(
                                               fontSize: 14,

@@ -26,6 +26,11 @@ class Input extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Card(
         color: theme.cardColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(borderRadius),
+          ),
+        ),
         child: Container(
           padding: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 2.5),
           child: Container(

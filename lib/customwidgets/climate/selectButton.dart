@@ -27,23 +27,23 @@ class SelectButton extends StatelessWidget {
     AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
     return InkWell(
       onTap: onPressed,
-      
       child: Container(
         alignment: Alignment.center,
+        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
               icon,
-              color: enabled ? color.shade300 :theme.disabled,
+              color: enabled ? color.shade200 : theme.disabled,
               size: 36,
             ),
             SectionTitle(
-                title: title, color: enabled ? color.shade300 : theme.disabled)
+                title: title, color: enabled ? color.shade200 : theme.disabled)
           ],
         ),
         decoration: BoxDecoration(
-          color: enabled ? color.shade100 :theme.disabled,
+          color: enabled ? color : theme.disabled,
           //     border: Border.all(color: Colors.deepOrange.shade200),
           borderRadius: BorderRadius.all(
             Radius.circular(borderRadius),

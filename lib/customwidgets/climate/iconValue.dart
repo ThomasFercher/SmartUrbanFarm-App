@@ -6,28 +6,32 @@ import 'package:sgs/providers/settingsProvider.dart';
 class IconValue extends StatelessWidget {
   final IconData icon;
   final Color color;
-  final double val;
+  final String val;
   final String unit;
+  final double fontsize;
 
-  const IconValue({Key key, this.icon, this.color, this.val, this.unit})
+  const IconValue(
+      {Key key, this.icon, this.color, this.val, this.unit, this.fontsize})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
     return Container(
-      child: Row(
+      child: Column(
         children: [
           Icon(
             icon,
             color: color,
+            size: 24,
           ),
+          Padding(padding: EdgeInsets.only(bottom: 10)),
           Text(
             "$val$unit",
             style: TextStyle(
               color: theme.textColor,
               fontWeight: FontWeight.w100,
-              fontSize: 28.0,
+              fontSize: fontsize ?? 20,
             ),
           ),
         ],

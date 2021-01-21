@@ -134,7 +134,8 @@ class AppBarHeader extends StatelessWidget {
                   : null,
               actions: [
                 Padding(
-                  padding: const EdgeInsets.only(right: 10.0),
+                  padding:
+                      const EdgeInsets.only(right: 10.0, top: 14, bottom: 14),
                   child: trailling,
                 )
               ],

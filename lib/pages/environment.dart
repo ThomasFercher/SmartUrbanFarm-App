@@ -61,24 +61,27 @@ class _EnvironmentState extends State<Environment> {
     controller.addListener(() {
       var scrollOffset = controller.position.pixels;
       var scrollDirection = controller.position.userScrollDirection;
-
-      if (scrollOffset > widget.height * 0.6 &&
-          scrollDirection == ScrollDirection.forward) {
+      print(scrollOffset);
+      print(widget.height);
+      if (scrollOffset > (widget.height * 0.6) &&
+          scrollDirection == ScrollDirection.forward &&
+          isTop == false) {
         Timer(
           Duration(milliseconds: 1),
           () async => await controller.animateTo(0,
-              duration: Duration(milliseconds: 200), curve: Curves.easeInOut),
+              duration: Duration(milliseconds: 300), curve: Curves.easeInOut),
         );
         setState(() {
           isTop = true;
         });
       } else if (scrollOffset > 0 &&
           scrollOffset < widget.height * 0.8 &&
-          scrollDirection == ScrollDirection.reverse) {
+          scrollDirection == ScrollDirection.reverse &&
+          isTop == true) {
         Timer(
           Duration(milliseconds: 1),
           () async => await controller.animateTo(widget.height * 1.5,
-              duration: Duration(milliseconds: 200), curve: Curves.easeInOut),
+              duration: Duration(milliseconds: 300), curve: Curves.easeInOut),
         );
         setState(() {
           isTop = false;
@@ -95,7 +98,7 @@ class _EnvironmentState extends State<Environment> {
     var h = widget.height * 0.8;
     var height = MediaQuery.of(context).size.height / 2;
 
-    print(height);
+    print("a$height");
 
     var h2 = h;
 
@@ -123,6 +126,7 @@ class _EnvironmentState extends State<Environment> {
               children: [
                 Expanded(
                   child: OpenContainer(
+                      tappable: false,
                       closedElevation: 0.0,
                       closedColor: primaryColor,
                       openBuilder: (_, closeContainer) {
@@ -203,7 +207,7 @@ class _EnvironmentState extends State<Environment> {
                           Timer(
                             Duration(milliseconds: 1),
                             () async => await controller.animateTo(0,
-                                duration: Duration(milliseconds: 200),
+                                duration: Duration(milliseconds: 300),
                                 curve: Curves.easeInOut),
                           );
                           setState(() {
@@ -240,7 +244,7 @@ class _EnvironmentState extends State<Environment> {
             child: Stack(
               children: [
                 AnimatedContainer(
-                  duration: Duration(milliseconds: 300),
+                  duration: Duration(milliseconds: 200),
                   padding: EdgeInsets.only(top: isTop ? h * 0.2 : 0),
                   child: ListView(
                     shrinkWrap: true,
@@ -259,7 +263,7 @@ class _EnvironmentState extends State<Environment> {
                           Duration(milliseconds: 1),
                           () async => await controller.animateTo(
                             widget.height * 1.6,
-                            duration: Duration(milliseconds: 200),
+                            duration: Duration(milliseconds: 300),
                             curve: Curves.easeInOut,
                           ),
                         );
@@ -293,40 +297,86 @@ class _EnvironmentState extends State<Environment> {
             ),
           )
         ],
-        actionButton: OpenContainer(
-          closedBuilder: (_, openContainer) {
-            return FloatingActionButton(
-              onPressed: openContainer,
-              backgroundColor: theme.cardColor,
-              child: Icon(Icons.add, color: primaryColor),
-              elevation: 2.0,
-            );
-          },
-          closedShape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(100))),
-          closedColor: theme.background,
-          openBuilder: (_, closeContainer) {
-            return EditEnvironment(
-              initialSettings: new ClimateControl(
-                name: "",
-                soilMoisture: 0,
-                waterConsumption: 0,
-                automaticWatering: true,
-                growPhase: new GrowPhase(
-                  flower_hum: 50.0,
-                  flower_suntime: "06:00 - 18:00",
-                  flower_temp: 10.0,
-                  vegation_hum: 50.0,
-                  vegation_temp: 10.0,
-                  vegation_suntime: "06:00 - 18:00",
-                  lateflower_hum: 50.0,
-                  lateflower_temp: 10.0,
-                  lateflower_suntime: "06:00 - 18:00",
+        actionButton: AnimatedAlign(
+          duration: Duration(milliseconds: 300),
+          alignment: Alignment.lerp(Alignment(0.0, 0),
+              Alignment(1.0, isTop ? 0.8 - 84 / h : -1 + 96 / h), 1.0),
+          child: OpenContainer(
+            tappable: false,
+            closedBuilder: (_, openContainer) {
+              return AnimatedCrossFade(
+                secondChild: Container(
+                  width: 96,
+                  height: 48,
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  decoration: BoxDecoration(
+                      color: theme.cardColor,
+                      borderRadius: BorderRadius.all(Radius.circular(16))),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.add,
+                        color: theme.primaryColor,
+                        size: 24,
+                      ),
+                      SectionTitle(
+                        title: "Add",
+                        fontSize: 18,
+                        color: theme.primaryColor,
+                      )
+                    ],
+                  ),
                 ),
-              ),
-              create: true,
-            );
-          },
+                firstChild: Container(
+                  height: 64,
+                  width: 64,
+                  child: FloatingActionButton(
+                    onPressed: openContainer,
+                    backgroundColor: theme.cardColor,
+                    child: Icon(
+                      Icons.add,
+                      color: primaryColor,
+                      size: 28,
+                    ),
+                    elevation: 2.0,
+                  ),
+                ),
+                duration: Duration(milliseconds: 300),
+                crossFadeState: isTop
+                    ? CrossFadeState.showFirst
+                    : CrossFadeState.showSecond,
+              );
+            },
+            closedShape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(64))),
+            closedColor: theme.primaryColor,
+            closedElevation: 0,
+            openBuilder: (_, closeContainer) {
+              return EditEnvironment(
+                initialSettings: new ClimateControl(
+                  name: "",
+                  soilMoisture: 0,
+                  waterConsumption: 0,
+                  automaticWatering: true,
+                  growPhase: new GrowPhase(
+                    flower_hum: 50.0,
+                    flower_suntime: "06:00 - 18:00",
+                    flower_temp: 10.0,
+                    vegation_hum: 50.0,
+                    vegation_temp: 10.0,
+                    vegation_suntime: "06:00 - 18:00",
+                    lateflower_hum: 50.0,
+                    lateflower_temp: 10.0,
+                    lateflower_suntime: "06:00 - 18:00",
+                  ),
+                ),
+                create: true,
+              );
+            },
+          ),
         ),
       );
     });
