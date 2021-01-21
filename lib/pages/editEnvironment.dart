@@ -2,12 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:sgs/customwidgets/climate/editWaterSoil.dart';
-import 'package:sgs/customwidgets/climate/growthPhase.dart';
+import 'package:sgs/customwidgets/climate/edit/editIrrigation.dart';
+import 'package:sgs/customwidgets/climate/edit/growthPhase.dart';
 import 'package:sgs/customwidgets/general/appBarHeader.dart';
-import 'package:sgs/customwidgets/climate/dayslider.dart';
-import 'package:sgs/customwidgets/climate/editVariable.dart';
-import 'package:sgs/customwidgets/climate/input.dart';
+import 'package:sgs/customwidgets/climate/edit/dayslider.dart';
+import 'package:sgs/customwidgets/climate/edit/editVariable.dart';
+import 'package:sgs/customwidgets/climate/edit/input.dart';
 import 'package:sgs/objects/climateControl.dart';
 import 'package:sgs/objects/vpd.dart';
 import 'package:sgs/providers/dataProvider.dart';
@@ -98,8 +98,8 @@ class _EditEnvironmentState extends State<EditEnvironment> {
                 initialValue: pr.climateSettings.name,
                 valChanged: (val) => pr.changeName(val),
               ),
-              GrowthPase(),
-              EditWaterSoil(
+              GrowthPhase(),
+              EditIrrigation(
                 pr: pr,
               ),
               Container(

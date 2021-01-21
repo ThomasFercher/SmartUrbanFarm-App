@@ -38,6 +38,7 @@ dependencies:
   connectivity: ^2.0.2
   expandable: ^4.1.4
   flutter_icons: ^1.1.0
+  carousel_slider: ^2.3.1
 
 dev_dependencies:
   flutter_launcher_icons: "^0.7.5"

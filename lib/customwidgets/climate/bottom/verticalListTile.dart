@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-import 'package:sgs/customwidgets/climate/iconValue.dart';
-import 'package:sgs/customwidgets/climate/selectButton.dart';
+import 'package:sgs/customwidgets/climate/bottom/iconValue.dart';
+import 'package:sgs/customwidgets/climate/edit/selectButton.dart';
 import 'package:sgs/styles.dart';
 
 class VerticalListTile extends StatelessWidget {
@@ -11,19 +11,27 @@ class VerticalListTile extends StatelessWidget {
   double temperature;
   double humidity;
   String suntime;
+  double width;
+  bool isMiddle;
+  BorderRadiusGeometry borderRadiusGeo;
 
-  VerticalListTile(
-      {Key key,
-      this.humidity,
-      this.color,
-      this.suntime,
-      this.temperature,
-      this.title})
-      : super(key: key);
+  VerticalListTile({
+    Key key,
+    this.humidity,
+    this.color,
+    this.suntime,
+    this.temperature,
+    this.title,
+    this.width,
+    this.isMiddle,
+    this.borderRadiusGeo,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    print(width);
     return Container(
+      width: width,
       decoration: BoxDecoration(
         color: color.shade200,
         borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
@@ -39,21 +47,22 @@ class VerticalListTile extends StatelessWidget {
             icon: MaterialCommunityIcons.sprout,
             enabled: true,
             onPressed: () {},
+            borderRadiusGeo: borderRadiusGeo ?? null,
           ),
           IconValue(
-            color: color,
+            color: color.shade600,
             icon: WeatherIcons.wi_thermometer,
             unit: "°C",
             val: temperature.toString(),
           ),
           IconValue(
-            color: color,
+            color: color.shade600,
             icon: WeatherIcons.wi_humidity,
             unit: "%",
             val: humidity.toString(),
           ),
           IconValue(
-            color: color,
+            color: color.shade600,
             icon: WeatherIcons.wi_day_sunny_overcast,
             unit: "",
             val: suntime,

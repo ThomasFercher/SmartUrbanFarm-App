@@ -30,13 +30,10 @@ class DataProvider with ChangeNotifier, DiagnosticableTreeMixin {
   List<ClimateControl> climates = [];
 
   //Reference to the Firebase
- 
-  final ref = firebaseDatabase.reference();
-  
 
-  DataProvider() {
-  
-  }
+  final ref = firebaseDatabase.reference();
+
+  DataProvider() {}
 
   SplayTreeMap<DateTime, double> getTemperatures() {
     return temperatures;
@@ -112,7 +109,7 @@ class DataProvider with ChangeNotifier, DiagnosticableTreeMixin {
       }
 
       list.forEach((key, value) {
-        envList.add(new ClimateControl.fromJson(value));
+        envList.add(new ClimateControl.fromJson(value, false));
       });
     });
     return envList;
@@ -122,15 +119,18 @@ class DataProvider with ChangeNotifier, DiagnosticableTreeMixin {
     ClimateControl env;
     await ref.child("activeClimate").once().then((DataSnapshot data) {
       Map<dynamic, dynamic> activeClimateJson = data.value;
-      env = new ClimateControl.fromJson(activeClimateJson);
+      env = new ClimateControl.fromJson(activeClimateJson, true);
     });
+
     return env;
   }
 
   void editClimate(ClimateControl initial, ClimateControl newClimate) {
+    bool isActive = false;
     // If the active Climate is edited update active climate aswell
     if (initial.getID == activeClimate.getID) {
       setActiveClimate(newClimate);
+      isActive = true;
     }
     // get the local ClimateControl Object by matching the id
     ClimateControl clim =
@@ -142,7 +142,7 @@ class DataProvider with ChangeNotifier, DiagnosticableTreeMixin {
         .reference()
         .child('climates')
         .child(initial.getID)
-        .update(newClimate.getJson());
+        .update(newClimate.getJson(isActive));
 
     notifyListeners();
   }
@@ -155,13 +155,17 @@ class DataProvider with ChangeNotifier, DiagnosticableTreeMixin {
         .reference()
         .child('climates')
         .child(newClimate.getID)
-        .set(newClimate.getJson());
+        .set(newClimate.getJson(false));
     notifyListeners();
   }
 
   void setActiveClimate(ClimateControl climate) {
     activeClimate = climate;
-    firebaseDatabase.reference().child('activeClimate').set(climate.getJson());
+    activeClimate.growPhase.phase = GROWPHASEVEGETATION;
+    firebaseDatabase
+        .reference()
+        .child('activeClimate')
+        .set(climate.getJson(true));
     notifyListeners();
   }
 
@@ -174,6 +178,18 @@ class DataProvider with ChangeNotifier, DiagnosticableTreeMixin {
         .child('climates')
         .child(climate.getID)
         .remove();
+    notifyListeners();
+  }
+
+  void activeClimateChangePhase(String phase) {
+    activeClimate.growPhase.phase = phase;
+    firebaseDatabase
+        .reference()
+        .child('activeClimate')
+        .child("growPhase")
+        .child("phase")
+        .set(phase);
+
     notifyListeners();
   }
 }

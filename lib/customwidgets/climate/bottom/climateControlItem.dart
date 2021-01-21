@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:sgs/customwidgets/climate/iconValue.dart';
-import 'package:sgs/customwidgets/climate/selectButton.dart';
-import 'package:sgs/customwidgets/climate/settingsListTile.dart';
-import 'package:sgs/customwidgets/climate/verticalListTile.dart';
+import 'package:sgs/customwidgets/climate/bottom/iconValue.dart';
+import 'package:sgs/customwidgets/climate/edit/selectButton.dart';
+import 'package:sgs/customwidgets/climate/bottom/verticalListTile.dart';
 import 'package:sgs/customwidgets/general/sectionTitle.dart';
 import 'package:sgs/objects/appTheme.dart';
 import 'package:sgs/objects/climateControl.dart';
@@ -16,8 +15,8 @@ import 'package:sgs/pages/environment.dart';
 import 'package:sgs/providers/dataProvider.dart';
 import 'package:sgs/providers/settingsProvider.dart';
 
-import '../../styles.dart';
-import '../general/popupMenu.dart';
+import '../../../styles.dart';
+import '../../general/popupMenu.dart';
 
 class ClimateControlItem extends StatelessWidget {
   final ClimateControl settings;
@@ -263,42 +262,6 @@ class ClimateControlItem extends StatelessWidget {
                           ],
                         ),
                       )
-                      /*  SettingsListTile(
-                        icon: WeatherIcons.wi_thermometer,
-                        color: Colors.redAccent,
-                        title: "Temperature",
-                        value: temperature,
-                        unit: "°C",
-                      ),
-                      SettingsListTile(
-                        icon: WeatherIcons.wi_humidity,
-                        color: Colors.blueAccent,
-                        title: "Humidity",
-                        value: humidity,
-                        unit: "%",
-                      ),
-                      settings.automaticWatering
-                          ? SettingsListTile(
-                              icon: WeatherIcons.wi_barometer,
-                              color: Colors.green,
-                              title: "Soil Moisture",
-                              value: soilMoisture,
-                              unit: "%",
-                            )
-                          : SettingsListTile(
-                              icon: WeatherIcons.wi_day_rain,
-                              color: Colors.lightBlue,
-                              title: "Water Consumption",
-                              value: waterConsumption,
-                              unit: "l/d",
-                            ),
-                      SettingsListTile(
-                        icon: WeatherIcons.wi_sunrise,
-                        color: Colors.orange[400],
-                        title: "Suntime",
-                        value_text: suntime,
-                        unit: "",
-                      ),*/
                     ],
                   ),
                 ),

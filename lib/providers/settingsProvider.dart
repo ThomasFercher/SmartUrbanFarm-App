@@ -15,7 +15,7 @@ class SettingsProvider extends ChangeNotifier {
   List<AppTheme> themes = [
     new AppTheme(
       name: "light",
-      cardColor: Colors.white,
+      cardColor: Color(0xFFFDFDFD),
       background: Colors.white,
       textColor: Colors.black.withOpacity(0.85),
       secondaryTextColor: Colors.black.withOpacity(0.65),
@@ -23,7 +23,7 @@ class SettingsProvider extends ChangeNotifier {
       secondaryColor: Color(0xFF3f51b5),
       primaryColor: Color(0xFF26C281),
       contrast: Colors.grey[100],
-      disabled: Colors.black12
+      disabled: Colors.black12,
     ),
     new AppTheme(
       name: "dark",
@@ -34,7 +34,7 @@ class SettingsProvider extends ChangeNotifier {
       primaryColor: Color(0xFF26C281),
       secondaryColor: Color(0xFF3f51b5),
       contrast: Colors.grey[850],
-      disabled: Colors.white54
+      disabled: Colors.white54,
     )
   ];
 

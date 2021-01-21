@@ -19,6 +19,9 @@ class SectionTitle extends StatelessWidget {
       child: Text(
         title,
         textAlign: TextAlign.start,
+        softWrap: true,
+        overflow: TextOverflow.fade,
+        maxLines: 2,
         style: GoogleFonts.nunito(
           textStyle: TextStyle(
             color: color,

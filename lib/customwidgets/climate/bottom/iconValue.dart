@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:sgs/objects/appTheme.dart';
@@ -29,7 +30,7 @@ class IconValue extends StatelessWidget {
           Text(
             "$val$unit",
             style: TextStyle(
-              color: theme.textColor,
+              color: color,
               fontWeight: FontWeight.w100,
               fontSize: fontsize ?? 20,
             ),

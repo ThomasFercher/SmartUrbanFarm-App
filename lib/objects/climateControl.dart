@@ -7,7 +7,7 @@ class ClimateControl {
   String name;
 
   double soilMoisture;
-
+  bool isActive;
   double waterConsumption;
   bool automaticWatering;
   GrowPhase growPhase;
@@ -116,27 +116,29 @@ class ClimateControl {
 
   String get getID => id;
 
-  Map<String, dynamic> getJson() {
+  Map<String, dynamic> getJson(bool isActive) {
     return <String, dynamic>{
       "id": id,
       "name": name,
       "soilMoisture": soilMoisture.toString(),
       "waterConsumption": waterConsumption.toString(),
       "automaticWatering": automaticWatering,
-      "growPhase": growPhase.getJson(),
+      "growPhase": growPhase.getJson(isActive),
     };
   }
 
-  ClimateControl.fromJson(Map<dynamic, dynamic> json) {
+  ClimateControl.fromJson(Map<dynamic, dynamic> json, bool isActive) {
     this.id = json["id"];
     this.name = json["name"];
     this.soilMoisture = double.parse(json["soilMoisture"]);
     this.waterConsumption = double.parse(json["waterConsumption"]);
     this.automaticWatering = json["automaticWatering"];
-    this.growPhase = GrowPhase.fromJson(json["growPhase"]);
+    this.growPhase = GrowPhase.fromJson(json["growPhase"], isActive);
+    this.isActive = isActive;
   }
 
   ClimateControl({
+    this.isActive,
     @required this.name,
     @required this.soilMoisture,
     @required this.waterConsumption,

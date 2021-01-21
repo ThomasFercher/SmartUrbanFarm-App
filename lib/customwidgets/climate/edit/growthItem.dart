@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:provider/provider.dart';
-import 'package:sgs/customwidgets/climate/dayslider.dart';
-import 'package:sgs/customwidgets/climate/editVariable.dart';
+import 'package:sgs/customwidgets/climate/edit/dayslider.dart';
+import 'package:sgs/customwidgets/climate/edit/editVariable.dart';
 import 'package:sgs/objects/growPhase.dart';
 import 'package:sgs/objects/vpd.dart';
 import 'package:sgs/providers/climateControlProvider.dart';

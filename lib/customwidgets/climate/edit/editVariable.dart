@@ -5,7 +5,7 @@ import 'package:sgs/customwidgets/general/sectionTitle.dart';
 import 'package:sgs/objects/appTheme.dart';
 import 'package:sgs/providers/settingsProvider.dart';
 
-import '../../styles.dart';
+import '../../../styles.dart';
 
 class EditVariable extends StatelessWidget {
   final double value;
@@ -99,7 +99,6 @@ class EditVariable extends StatelessWidget {
                   max: max,
                   min: min,
                   divisions: divisions ?? ((max - min) * 2).round(),
-                  
                 ),
               ),
             ],

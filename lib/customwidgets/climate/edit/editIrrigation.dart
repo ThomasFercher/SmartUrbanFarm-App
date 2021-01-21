@@ -4,23 +4,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:provider/provider.dart';
-import 'package:sgs/customwidgets/climate/editVariable.dart';
+import 'package:sgs/customwidgets/climate/edit/editVariable.dart';
+import 'package:sgs/customwidgets/general/info.dart';
 import 'package:sgs/customwidgets/general/sectionTitle.dart';
 import 'package:sgs/objects/appTheme.dart';
 import 'package:sgs/providers/climateControlProvider.dart';
 import 'package:sgs/providers/settingsProvider.dart';
 import 'package:sgs/styles.dart';
 
-class EditWaterSoil extends StatefulWidget {
+class EditIrrigation extends StatefulWidget {
   final ClimateControlProvider pr;
 
-  EditWaterSoil({Key key, this.pr}) : super(key: key);
+  EditIrrigation({Key key, this.pr}) : super(key: key);
 
   @override
-  _EditWaterSoilState createState() => _EditWaterSoilState();
+  _EditIrrigationState createState() => _EditIrrigationState();
 }
 
-class _EditWaterSoilState extends State<EditWaterSoil> {
+class _EditIrrigationState extends State<EditIrrigation> {
   @override
   void initState() {
     super.initState();
@@ -62,15 +63,26 @@ class _EditWaterSoilState extends State<EditWaterSoil> {
                   ),
                   child: Column(
                     children: [
-                      Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-                        alignment: Alignment.centerLeft,
-                        child: SectionTitle(
-                          title: "Irrigation",
-                          color: theme.headlineColor,
-                          fontSize: 24,
-                        ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 15, vertical: 20),
+                              alignment: Alignment.centerLeft,
+                              child: SectionTitle(
+                                title: "Irrigation",
+                                color: theme.headlineColor,
+                                fontSize: 24,
+                              ),
+                            ),
+                          ),
+                          InfoDialog(
+                            title: "Irrigation",
+                            text:
+                                "Here you can decide whether you want SUF to automatically water the plant, so the soil moisture is at a specified percentage. Or you can specify how much liters a day should be watered to the plant.",
+                          )
+                        ],
                       ),
                       Container(
                         padding:

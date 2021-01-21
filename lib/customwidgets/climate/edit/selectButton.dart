@@ -5,7 +5,7 @@ import 'package:sgs/customwidgets/general/sectionTitle.dart';
 import 'package:sgs/objects/appTheme.dart';
 import 'package:sgs/providers/settingsProvider.dart';
 
-import '../../styles.dart';
+import '../../../styles.dart';
 
 class SelectButton extends StatelessWidget {
   final MaterialColor color;
@@ -13,14 +13,16 @@ class SelectButton extends StatelessWidget {
   final Function onPressed;
   final IconData icon;
   final bool enabled;
-  const SelectButton(
-      {Key key,
-      this.color,
-      this.title,
-      this.onPressed,
-      this.icon,
-      this.enabled})
-      : super(key: key);
+  final BorderRadiusGeometry borderRadiusGeo;
+  const SelectButton({
+    Key key,
+    this.color,
+    this.title,
+    this.onPressed,
+    this.icon,
+    this.enabled,
+    this.borderRadiusGeo,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,15 +41,19 @@ class SelectButton extends StatelessWidget {
               size: 36,
             ),
             SectionTitle(
-                title: title, color: enabled ? color.shade200 : theme.disabled)
+              title: title,
+              color: enabled ? color.shade200 : theme.disabled,
+              fontSize: 14,
+            )
           ],
         ),
         decoration: BoxDecoration(
           color: enabled ? color : theme.disabled,
           //     border: Border.all(color: Colors.deepOrange.shade200),
-          borderRadius: BorderRadius.all(
-            Radius.circular(borderRadius),
-          ),
+          borderRadius: borderRadiusGeo ??
+              BorderRadius.all(
+                Radius.circular(borderRadius),
+              ),
         ),
       ),
     );

@@ -10,6 +10,7 @@ class GrowPhase {
   double lateflower_temp;
   double lateflower_hum;
   String lateflower_suntime;
+
   String phase;
 
   GrowPhase({
@@ -24,8 +25,8 @@ class GrowPhase {
     this.vegation_temp,
   });
 
-  Map<String, dynamic> getJson() {
-    return <String, dynamic>{
+  Map<String, dynamic> getJson(bool isActive) {
+    Map<String, dynamic> json = {
       "vegation_temp": vegation_temp,
       "vegation_hum": vegation_hum,
       "vegation_suntime": vegation_suntime,
@@ -36,9 +37,13 @@ class GrowPhase {
       "lateflower_hum": lateflower_hum,
       "lateflower_suntime": lateflower_suntime,
     };
+    if (isActive) {
+      json["phase"] = phase ?? GROWPHASEVEGETATION;
+    }
+    return json;
   }
 
-  GrowPhase.fromJson(Map<dynamic, dynamic> json) {
+  GrowPhase.fromJson(Map<dynamic, dynamic> json, bool isActive) {
     this.vegation_temp = (json["vegation_temp"] as num).toDouble();
     this.vegation_hum = (json["vegation_hum"] as num).toDouble();
     this.vegation_suntime = json["vegation_suntime"];
@@ -48,5 +53,9 @@ class GrowPhase {
     this.lateflower_temp = (json["lateflower_temp"] as num).toDouble();
     this.lateflower_hum = (json["lateflower_hum"] as num).toDouble();
     this.lateflower_suntime = json["lateflower_suntime"];
+
+    if (isActive) {
+      this.phase = json["phase"];
+    }
   }
 }

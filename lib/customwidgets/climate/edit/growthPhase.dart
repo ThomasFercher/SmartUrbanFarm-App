@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:provider/provider.dart';
-import 'package:sgs/customwidgets/climate/dayslider.dart';
-import 'package:sgs/customwidgets/climate/editVariable.dart';
-import 'package:sgs/customwidgets/climate/growthItem.dart';
-import 'package:sgs/customwidgets/climate/selectButton.dart';
+import 'package:sgs/customwidgets/climate/edit/dayslider.dart';
+import 'package:sgs/customwidgets/climate/edit/editVariable.dart';
+import 'package:sgs/customwidgets/climate/edit/growthItem.dart';
+import 'package:sgs/customwidgets/climate/edit/selectButton.dart';
+import 'package:sgs/customwidgets/general/info.dart';
 import 'package:sgs/customwidgets/general/sectionTitle.dart';
 import 'package:sgs/objects/appTheme.dart';
 import 'package:sgs/objects/growPhase.dart';
@@ -14,12 +15,12 @@ import 'package:sgs/providers/climateControlProvider.dart';
 import 'package:sgs/providers/settingsProvider.dart';
 import 'package:sgs/styles.dart';
 
-class GrowthPase extends StatefulWidget {
+class GrowthPhase extends StatefulWidget {
   @override
-  _GrowthPaseState createState() => _GrowthPaseState();
+  _GrowthPhaseState createState() => _GrowthPhaseState();
 }
 
-class _GrowthPaseState extends State<GrowthPase> {
+class _GrowthPhaseState extends State<GrowthPhase> {
   @override
   Widget build(BuildContext context) {
     AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
@@ -36,14 +37,25 @@ class _GrowthPaseState extends State<GrowthPase> {
           ),
           child: Column(
             children: [
-              Container(
-                padding: EdgeInsets.all(borderRadius),
-                alignment: Alignment.centerLeft,
-                child: SectionTitle(
-                  title: "Grow Phases",
-                  color: theme.headlineColor,
-                  fontSize: 24,
-                ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.all(borderRadius),
+                      alignment: Alignment.centerLeft,
+                      child: SectionTitle(
+                        title: "Grow Phases",
+                        color: theme.headlineColor,
+                        fontSize: 24,
+                      ),
+                    ),
+                  ),
+                  InfoDialog(
+                    title: "Grow Phases",
+                    text:
+                        "Because a plant has different needs in different periods of time, you can specify the Temperature, the Humidity and the Suntime for each the Vegetation, Early Flower and Late Flower Phase",
+                  )
+                ],
               ),
               Container(
                 padding: EdgeInsets.all(borderRadius),
@@ -117,7 +129,7 @@ class _GrowthPaseState extends State<GrowthPase> {
       case GROWPHASEVEGETATION:
         return GrowthItem(
           phase: phase,
-           color: Colors.deepPurple,
+          color: Colors.deepPurple,
         );
         break;
       case GROWPHASEFLOWER:
