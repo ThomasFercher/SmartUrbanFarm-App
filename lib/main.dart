@@ -4,6 +4,7 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flare_flutter/flare_cache.dart';
 import 'package:flare_flutter/flare_controls.dart';
 import 'package:flutter/material.dart';
+import 'package:rive/rive.dart';
 import 'package:sgs/PushNotificationManager.dart';
 import 'package:sgs/objects/appTheme.dart';
 import 'package:sgs/objects/vpd.dart';
@@ -55,10 +56,40 @@ void main() {
   );
 }
 
-class SufMobileApplication extends StatelessWidget {
+class SufMobileApplication extends StatefulWidget {
   // This widget is the root of your application.
 
-  FlareControls flrctrl = new FlareControls();
+  @override
+  _SufMobileApplicationState createState() => _SufMobileApplicationState();
+}
+
+class _SufMobileApplicationState extends State<SufMobileApplication> {
+  RiveAnimationController _controller;
+
+  Artboard splashscreen;
+  @override
+  void initState() {
+    super.initState();
+
+    // Load the animation file from the bundle, note that you could also
+    // download this. The RiveFile just expects a list of bytes.
+    rootBundle.load('assets/flares/splashscreen.riv').then(
+      (data) async {
+        final file = RiveFile();
+
+        // Load the RiveFile from the binary data.
+        if (file.import(data)) {
+          final artboard = file.mainArtboard;
+          _controller = SimpleAnimation('Growing')
+            ..isActiveChanged.addListener(() {
+              print(_controller.isActive);
+            });
+          artboard.addController(_controller);
+          setState(() => splashscreen = artboard);
+        }
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,15 +117,13 @@ class SufMobileApplication extends StatelessWidget {
               projectSnap.connectionState == ConnectionState.waiting) {
             // Splashscreen using a Flare2d as a loading Animation
             return Container(
-              color: primaryColor,
-              child: FlareActor(
-                'assets/flares/splashscreen.flr',
-                alignment: Alignment.center,
-                animation: "Loading",
-                controller: flrctrl,
-                callback: (s) {
-                  flrctrl.play("Wind");
-                },
+              color: Colors.transparent,
+              child: Center(
+                child: splashscreen == null
+                    ? const SizedBox()
+                    : Rive(
+                        artboard: splashscreen,
+                      ),
               ),
             );
           } else {

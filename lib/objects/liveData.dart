@@ -18,11 +18,11 @@ class LiveData {
   }
 
   LiveData.fromJson(Map<dynamic, dynamic> json) {
-    this.temperature = double.parse(json["temperature"]);
-    this.humidity = double.parse(json["humidity"]);
-    this.soilMoisture = double.parse(json["soilMoisture"]);
-    this.growProgress = double.parse(json["growProgress"]);
-    this.waterTankLevel = double.parse(json["waterTankLevel"]);
+    this.temperature = json["temperature"] * 1.0;
+    this.humidity = json["humidity"] * 1.0;
+    this.soilMoisture = json["soilMoisture"] * 1.0;
+    this.growProgress = json["growProgress"] * 1.0;
+    this.waterTankLevel = json["waterTankLevel"] * 1.0;
   }
 
   LiveData({

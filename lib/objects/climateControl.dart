@@ -53,8 +53,6 @@ class ClimateControl {
       case GROWPHASELATEFLOWER:
         return growPhase.lateflower_temp;
         break;
-      default:
-        return 0;
     }
   }
 

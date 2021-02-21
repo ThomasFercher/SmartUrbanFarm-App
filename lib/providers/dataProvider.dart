@@ -55,6 +55,8 @@ class DataProvider with ChangeNotifier, DiagnosticableTreeMixin {
     LiveData initialLiveData;
     // Load the inital value
     await ref.child("liveClimate").once().then((DataSnapshot data) {
+      print(data.value);
+
       initialLiveData = new LiveData.fromJson(data.value);
     });
 

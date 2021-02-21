@@ -66,7 +66,10 @@ class AppBarBanner extends StatelessWidget {
                     width: (width / 3) * h > 80 ? (width / 3) * h : 80,
                     //constraints: BoxConstraints(maxHeight: 64),
 
-                    child: Image.asset("assets/images/logobanner.png"),
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Image.asset("assets/images/logobanner.png"),
+                    ),
                   ),
                 ),
                 Positioned(
