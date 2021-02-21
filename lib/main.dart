@@ -64,7 +64,8 @@ class SufMobileApplication extends StatefulWidget {
 }
 
 class _SufMobileApplicationState extends State<SufMobileApplication> {
-  RiveAnimationController _controller;
+  RiveAnimationController grow;
+  RiveAnimationController wind;
 
   Artboard splashscreen;
   @override
@@ -80,11 +81,11 @@ class _SufMobileApplicationState extends State<SufMobileApplication> {
         // Load the RiveFile from the binary data.
         if (file.import(data)) {
           final artboard = file.mainArtboard;
-          _controller = SimpleAnimation('Growing')
-            ..isActiveChanged.addListener(() {
-              print(_controller.isActive);
-            });
-          artboard.addController(_controller);
+          grow = SimpleAnimation('Growing');
+          wind = SimpleAnimation('Wind');
+          artboard.addController(grow);
+          artboard.addController(wind);
+          //  artboard.addController(wind);
           setState(() => splashscreen = artboard);
         }
       },
