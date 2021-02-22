@@ -17,7 +17,7 @@ class Advanced extends StatelessWidget {
       Container(
         key: const Key("temp"),
         child: DataChart(
-          title: "TEMPERATURES",
+          title: "Temperatures",
           data: d.getTemperatures(),
           gradientColors: temperatureGradient,
           unit: "°C",
@@ -26,9 +26,18 @@ class Advanced extends StatelessWidget {
       Container(
         key: const Key("humi"),
         child: DataChart(
-          title: "HUMIDITIES",
+          title: "Humiditys",
           data: d.getHumiditys(),
           gradientColors: humidityGradient,
+          unit: "%",
+        ),
+      ),
+      Container(
+        key: const Key("soil"),
+        child: DataChart(
+          title: "Soil Moistures",
+          data: d.getHumiditys(),
+          gradientColors: [Colors.deepOrange, Colors.deepOrangeAccent],
           unit: "%",
         ),
       ),

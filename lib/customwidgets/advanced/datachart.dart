@@ -134,11 +134,11 @@ class _DataChartState extends State<DataChart> {
 
     return Consumer<DataProvider>(
       builder: (context, d, child) {
-        return Padding(
-          padding: const EdgeInsets.only(left: 10.0, right: 25),
-          child: Container(
-            child: Column(children: [
-              Row(
+        return Container(
+          child: Column(children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: Row(
                 children: [
                   Expanded(
                     child: SectionTitle(
@@ -160,16 +160,16 @@ class _DataChartState extends State<DataChart> {
                   )
                 ],
               ),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                padding: EdgeInsets.only(bottom: 10),
-                child: LineChart(
-                  mainData(context, spots),
-                  swapAnimationDuration: Duration(milliseconds: 200),
-                ),
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.only(bottom: 10, right: 22, left: 4),
+              child: LineChart(
+                mainData(context, spots),
+                swapAnimationDuration: Duration(milliseconds: 200),
               ),
-            ]),
-          ),
+            ),
+          ]),
         );
       },
     );

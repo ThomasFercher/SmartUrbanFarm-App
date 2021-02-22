@@ -22,7 +22,7 @@ class DataProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
   //Lists
   SplayTreeMap<DateTime, double> temperatures = new SplayTreeMap();
-  SplayTreeMap<DateTime, double> humudities = new SplayTreeMap();
+  SplayTreeMap<DateTime, double> humiditys = new SplayTreeMap();
   SplayTreeMap<DateTime, double> moistures = new SplayTreeMap();
 
   //Climates
@@ -40,7 +40,7 @@ class DataProvider with ChangeNotifier, DiagnosticableTreeMixin {
   }
 
   SplayTreeMap<DateTime, double> getHumiditys() {
-    return humudities;
+    return humiditys;
   }
 
   Future<SplayTreeMap<DateTime, double>> loadMap(String child) async {
@@ -75,7 +75,7 @@ class DataProvider with ChangeNotifier, DiagnosticableTreeMixin {
     Map<DateTime, double> parsedData = data.map(
       (key, value) => MapEntry(
         DateTime.parse(key),
-        value.runtimeType == double ? value : double.parse(value),
+        value * 1.0,
       ),
     );
     // Sort Map using the DateTime Comparator
@@ -97,7 +97,7 @@ class DataProvider with ChangeNotifier, DiagnosticableTreeMixin {
 
     // Load all Lists
     temperatures = await loadMap("temperatures");
-    humudities = await loadMap("humiditys");
+    humiditys = await loadMap("humiditys");
 
     notifyListeners();
   }
