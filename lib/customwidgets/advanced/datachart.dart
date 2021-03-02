@@ -15,7 +15,7 @@ class DataChart extends StatefulWidget {
   final List<Color> gradientColors;
   final SplayTreeMap<DateTime, double> data;
   final String title;
-  final List<String> filter_options = ["Current", "Day", "Month"];
+  final List<String> filterOptions = ["Current", "Day", "Month"];
   final String unit;
 
   static DateTime today = DateTime.now();
@@ -50,7 +50,7 @@ class _DataChartState extends State<DataChart> {
 
   @override
   void initState() {
-    filter = widget.filter_options[0];
+    filter = widget.filterOptions[0];
     super.initState();
   }
 
@@ -149,7 +149,7 @@ class _DataChartState extends State<DataChart> {
                   ),
                   PopupMenu(
                     color: theme.textColor,
-                    options: widget.filter_options
+                    options: widget.filterOptions
                         .map((filter) => PopupMenuOption(filter, null))
                         .toList(),
                     onSelected: (v) {
