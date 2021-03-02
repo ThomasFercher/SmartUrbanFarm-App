@@ -1,49 +1,116 @@
-import 'package:firebase_database/firebase_database.dart';
+import 'package:animations/animations.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flare_flutter/flare_actor.dart';
+import 'package:flare_flutter/flare_cache.dart';
+import 'package:flare_flutter/flare_controls.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:line_icons/line_icons.dart';
-import 'package:sgs/pages/advanced.dart';
-import 'package:sgs/pages/gallery.dart';
-import 'package:sgs/pages/home.dart';
+import 'package:rive/rive.dart';
+import 'package:sgs/PushNotificationManager.dart';
+import 'package:sgs/objects/appTheme.dart';
+import 'package:sgs/objects/vpd.dart';
+import 'package:sgs/pages/dashboard.dart';
+import 'package:sgs/providers/notificationProvider.dart';
+import 'package:sgs/providers/settingsProvider.dart';
 import 'package:sgs/providers/storageProvider.dart';
-import 'providers/dashboardProvider.dart';
+import 'providers/dataProvider.dart';
 import 'styles.dart';
 import 'dart:async';
-import 'dart:ui' as UI;
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'pages/settings.dart';
 
-void main() => {
-      WidgetsFlutterBinding.ensureInitialized(),
-      runApp(
-        MultiProvider(
-          providers: [
-            ChangeNotifierProvider<DashboardProvider>(
-              lazy: false,
-              create: (_) => DashboardProvider(),
-            ),
-            ChangeNotifierProvider<StorageProvider>(
-              lazy: false,
-              create: (_) => StorageProvider(),
-            ),
-          ],
-          child: MyApp(),
+import 'styles.dart';
+import 'styles.dart';
+
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+    [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
+  );
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      systemNavigationBarColor: primaryColor,
+    ),
+  );
+  firebaseDatabase.setPersistenceEnabled(true);
+  firebaseDatabase.setPersistenceCacheSizeBytes(10000000);
+  FlareCache.doesPrune = false;
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<DataProvider>(
+          lazy: false,
+          create: (_) => DataProvider(),
         ),
-      )
-    };
+        ChangeNotifierProvider<StorageProvider>(
+          lazy: true,
+          create: (_) => StorageProvider(),
+        ),
+        ChangeNotifierProvider<SettingsProvider>(
+          lazy: false,
+          create: (_) => SettingsProvider(),
+        ),
+      ],
+      child: SufMobileApplication(),
+    ),
+  );
+}
 
-class MyApp extends StatelessWidget {
-  final String assetName = 'assets/up_arrow.svg';
-
+class SufMobileApplication extends StatefulWidget {
   // This widget is the root of your application.
+
+  @override
+  _SufMobileApplicationState createState() => _SufMobileApplicationState();
+}
+
+class _SufMobileApplicationState extends State<SufMobileApplication> {
+  RiveAnimationController grow;
+  RiveAnimationController wind;
+
+  Artboard splashscreen;
+  @override
+  void initState() {
+    super.initState();
+
+    // Load the animation file from the bundle, note that you could also
+    // download this. The RiveFile just expects a list of bytes.
+    rootBundle.load('assets/flares/splashscreen.riv').then(
+      (data) async {
+        final file = RiveFile();
+
+        // Load the RiveFile from the binary data.
+        if (file.import(data)) {
+          final artboard = file.mainArtboard;
+          grow = SimpleAnimation('Growing');
+          wind = SimpleAnimation('Wind');
+          artboard.addController(grow);
+          artboard.addController(wind);
+          //  artboard.addController(wind);
+          setState(() => splashscreen = artboard);
+        }
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    Provider.of<DashboardProvider>(context, listen: false).loadData();
+    //  AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
     return MaterialApp(
-      theme: lightThemeData,
-      darkTheme: darkThemData,
+      debugShowCheckedModeBanner: false,
+      color: primaryColor,
+      theme: ThemeData(
+        primaryColor: primaryColor,
+        primarySwatch: Colors.green,
+        pageTransitionsTheme: const PageTransitionsTheme(
+          builders: <TargetPlatform, PageTransitionsBuilder>{
+            TargetPlatform.android: SharedAxisPageTransitionsBuilder(
+              transitionType: SharedAxisTransitionType.scaled,
+              fillColor: Colors.transparent,
+            ),
+            TargetPlatform.iOS: FadeThroughPageTransitionsBuilder()
+          },
+        ),
+      ),
       home: FutureBuilder(
         builder: (context, projectSnap) {
           if (projectSnap.connectionState == ConnectionState.none ||
@@ -51,223 +118,47 @@ class MyApp extends StatelessWidget {
               projectSnap.connectionState == ConnectionState.waiting) {
             // Splashscreen using a Flare2d as a loading Animation
             return Container(
-              color: isDark(context) ? Colors.black : Colors.white,
-              child: FlareActor(
-                'assets/plant.flr',
-                alignment: Alignment.center,
-                animation: "Growing",
+              color: Colors.transparent,
+              child: Center(
+                child: splashscreen == null
+                    ? const SizedBox()
+                    : Rive(
+                        artboard: splashscreen,
+                      ),
               ),
             );
           } else {
             // Once loaded the main page will be displayed
-            return MyHomePage(
-              title: "Smart Grow System",
-            );
+            return Dashboard();
           }
         },
-        future: loadData(context),
+        future: loadInitialData(context),
       ),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title, this.temperature}) : super(key: key);
-
-  final temperature;
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  // currently selected tab
-  int index = 0;
-
-  // This function returns the Tab of the given index
-  Widget getTab(context, index) {
-    return [
-      new Home(),
-      new Advanced(),
-      new Gallery(),
-      new SettingsPage(),
-    ].elementAt(index);
-  }
-
-  // This function sets the new index value
-  void setIndex(int i) {
-    setState(() {
-      index = i;
-    });
-  }
-
-  // This function return the Backgroundpainter for the given tab
-  CustomPainter getPainter(var i) {
-    switch (i) {
-      case 0:
-        return HomePainter();
-        break;
-      case 1:
-        return AdvancedPainter();
-        break;
-      default:
-        return AdvancedPainter();
-    }
-  }
-
-  Widget bottomNavigationBar() {
-    final List<BottomNavigationBarItem> items = [
-      BottomNavigationBarItem(
-        icon: const Icon(LineIcons.leaf),
-        title: const Text("Dashboard"),
-      ),
-      BottomNavigationBarItem(
-        icon: const Icon(Icons.details),
-        title: const Text("Advanced"),
-      ),
-      BottomNavigationBarItem(
-        icon: const Icon(Icons.photo_album),
-        title: const Text("Gallery"),
-      ),
-      BottomNavigationBarItem(
-        icon: const Icon(Icons.settings),
-        title: const Text("Settings"),
-      ),
-    ];
-
-    return Container(
-      child: BottomNavigationBar(
-        items: items,
-        currentIndex: index,
-        elevation: 2,
-        iconSize: 34,
-        type: BottomNavigationBarType.fixed,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        unselectedItemColor: isDark(context) ? Colors.white12 : Colors.black26,
-        selectedItemColor: primaryColor,
-        onTap: (i) => setIndex(i),
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: isDark(context) ? backgroundColor_d : primaryColor,
-        elevation: 0,
-        title: Container(color: Colors.green),
-        actions: [
-          Container(
-            width: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.only(left: 10),
-            child: Row(
-              children: [
-                Container(
-                  width: 35,
-                  padding: EdgeInsets.only(bottom: 5, right: 5),
-                  child: SvgPicture.asset(
-                    "assets/leaf.svg",
-                    color: Colors.white,
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.only(top: 5, left: 10),
-                  alignment: Alignment.center,
-                  child: Text(
-                    widget.title,
-                    style: Theme.of(context).textTheme.headline6,
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-      body: CustomPaint(
-        painter: isDark(context) ? null : getPainter(index),
-        child: Container(
-          margin: isDark(context) ? EdgeInsets.only(top: 25) : null,
-          child: getTab(context, index),
-        ),
-      ),
-      bottomNavigationBar: bottomNavigationBar(),
     );
   }
 }
 
 /// This function loads the inital data from the database when the app starts.
-Future<void> loadData(context) async {
-  Stopwatch stopwatch = new Stopwatch()..start();
-  await Provider.of<DashboardProvider>(context, listen: false).loadData();
-  await Provider.of<StorageProvider>(context, listen: false).loadImages();
-  stopwatch.stop();
+Future<void> loadInitialData(context) async {
+  // Init VPD Class
+  await VPD().loadJson(context);
+  // Init PushNotificationsManager for notfications
+  await PushNotificationsManager().init();
+  // Log into Firebase to be able to access data
+  await FirebaseAuth.instance.signInAnonymously();
 
+  Stopwatch stopwatch = new Stopwatch()..start();
+  await Provider.of<DataProvider>(context, listen: false).loadData();
+  await Provider.of<StorageProvider>(context, listen: false)
+      .loadPhotos(context);
+  await Provider.of<StorageProvider>(context, listen: false).loadFlares();
+  await Provider.of<StorageProvider>(context, listen: false).loadTimeLapses();
+  await Provider.of<SettingsProvider>(context, listen: false).loadSettings();
+
+  stopwatch.stop();
+  print("Time needed ${stopwatch.elapsedMilliseconds}");
   //add a delay so the animation plays through
   return Future.delayed(
     Duration(milliseconds: 3000 - stopwatch.elapsedMilliseconds),
   );
-}
-
-Future<UI.Image> loadImageAsset(String assetName) async {
-  final data = await rootBundle.load(assetName);
-  return decodeImageFromList(data.buffer.asUint8List());
-}
-
-class HomePainter extends CustomPainter {
-  //drawing
-  @override
-  void paint(Canvas canvas, Size size) {
-    var paint = Paint();
-    paint.color = primaryColor;
-    paint.style = PaintingStyle.fill;
-
-    var height = 200.0;
-    var path = Path();
-
-    path.moveTo(0, height);
-    path.quadraticBezierTo(
-        size.width * 0.25, height - 30, size.width * 0.5, height);
-    path.quadraticBezierTo(
-        size.width * 0.75, height + 30, size.width * 1.0, height);
-    path.lineTo(size.width, 0);
-    path.lineTo(0, 0);
-
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return true;
-  }
-}
-
-class AdvancedPainter extends CustomPainter {
-  //drawing
-  @override
-  void paint(Canvas canvas, Size size) {
-    var paint = Paint();
-    paint.color = primaryColor;
-    paint.style = PaintingStyle.fill;
-    var height = 20.0;
-    var path = Path();
-
-    path.moveTo(0, height);
-    path.quadraticBezierTo(
-        size.width * 0.25, height - 15, size.width * 0.5, height);
-    path.quadraticBezierTo(
-        size.width * 0.75, height + 15, size.width * 1.0, height);
-    path.lineTo(size.width, 0);
-    path.lineTo(0, 0);
-
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return true;
-  }
 }

@@ -6,29 +6,73 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:ui' as ui;
+import 'package:sgs/objects/appTheme.dart';
+import 'package:uuid/uuid.dart';
+
+var uuid = Uuid();
+
+final firebaseDatabase = FirebaseDatabase.instance;
+
+//
+const Color backgroundColor = Color(0xFFFCFCFC);
 
 const Color accentColor = Colors.white; //Color(0xFFe2e2e2);
-const Color primaryColor = Color(0xFF1db954);
-const Color backgroundColor_d = Color(0xFF000000);
-const Color accentColor_d = Color(0xFF212121);
-const Color backgroundColor = Color(0xFFFFFFFF);
-const double cardElavation = 1.0;
-const double borderRadius = 8.0;
+const Color primaryColor = Color(0xFF26C281);
+const Color backgroundColor_d = Color(0xff065446);
+const Color accentColor_d = Color(0xFF323232);
+
+const double cardElavation = 0.5;
+const double borderRadius = 16.0;
 const double screen_width = 231;
 const Color text_gray = Color(0xFF646464);
 const Color dark_gray = Color(0xFFb4b4b4);
+const Color d_text_gray = Color(0xFFedeae4);
 Image logo = new Image(image: null);
-final fb = FirebaseDatabase.instance;
+const Color gray = Color(0xFF1f1f1f);
+
+const String Temperature = 'Temperature';
+const String Humidity = 'Humidity';
+const String SoilMoisture = 'SoilMoisture';
+
+Color topColor = gradient4[0]; //Color(0xFF007243);
+Color bottomColor = gradient4[1]; //Color(0xFF396f5f);
+const Color background_t = Color(0x48000000);
+
+const GROWPHASEVEGETATION = "vegation";
+const GROWPHASEFLOWER = "flower";
+const GROWPHASELATEFLOWER = "lateflower";
+
+List<Color> gradient1 = [
+  const Color(0xFF4ac29a),
+  const Color(0xFFbdfff3),
+];
+
+List<Color> gradient2 = [
+  Colors.teal[800],
+  Colors.green[300],
+];
+
+List<Color> gradient3 = [
+  Colors.blueAccent,
+  const Color(0xFF000000),
+];
+
+List<Color> gradient4 = [
+  /*Color(0xFFb2dfdb)*/ Color(0xFF26C281), Colors.white
+  //const Color(0xFF1d976c),
+  //Colors.white,
+];
 
 List<Color> temperatureGradient = [
   primaryColor,
   const Color(0xff02d39a),
 ];
 
-TextStyle sectionTitleStyle(context, Color color) => GoogleFonts.lato(
+TextStyle sectionTitleStyle(context, Color color) => GoogleFonts.nunito(
       textStyle: TextStyle(
         color: color,
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w700,
+        fontSize: 22,
       ),
     );
 
@@ -39,12 +83,16 @@ TextStyle normal(context) => GoogleFonts.lato(
       ),
     );
 
+TextStyle buttonTextStyle = GoogleFonts.nunito(
+    fontSize: 20, fontWeight: FontWeight.w600, color: Colors.white);
+
 Widget sectionTitle(BuildContext context, String title, Color color) {
   return Container(
-    padding: EdgeInsets.only(left: 4, bottom: 15),
+    padding: EdgeInsets.only(left: 4, bottom: 8),
     alignment: Alignment.centerLeft,
     child: Text(
       title,
+      textAlign: TextAlign.start,
       style: sectionTitleStyle(context, color),
     ),
   );
@@ -66,76 +114,8 @@ double getHeight(context) {
 }
 
 double getCardElavation(context) {
-  return isDark(context) ? 0 : cardElavation;
+  return cardElavation;
 }
-
-SplayTreeMap<DateTime, double> sortData(Map<dynamic, dynamic> data) {
-  Map<DateTime, double> d = data.map((key, value) => MapEntry(
-      DateTime.parse(key),
-      value.runtimeType == double ? value : double.parse(value)));
-  SplayTreeMap<DateTime, double> sorted =
-      new SplayTreeMap<DateTime, double>.from(d, (a, b) => a.compareTo(b));
-  return sorted;
-}
-
-ThemeData lightThemeData = ThemeData(
-  brightness: Brightness.light,
-  primarySwatch: Colors.green,
-  primaryColor: primaryColor,
-  accentColor: accentColor,
-  primaryTextTheme: Typography.material2018(platform: TargetPlatform.iOS).white,
-  textTheme: TextTheme(
-    subtitle2: TextStyle(
-      color: Colors.white,
-    ),
-    headline2: TextStyle(
-      color: text_gray,
-      fontSize: 13.0,
-      fontWeight: FontWeight.w400,
-    ),
-    headline3: TextStyle(
-      color: text_gray,
-      fontSize: 15.0,
-      fontWeight: FontWeight.w600,
-    ),
-    headline6: TextStyle(
-      color: accentColor,
-      fontSize: 24,
-      fontFamily: "Lato",
-    ),
-    headline1: TextStyle(
-      color: Colors.black87,
-      fontSize: 30.0,
-    ),
-  ),
-);
-
-ThemeData darkThemData = ThemeData(
-  brightness: Brightness.dark,
-  primarySwatch: Colors.green,
-  accentColor: accentColor_d,
-  primaryColor: backgroundColor_d,
-  canvasColor: backgroundColor_d,
-  textTheme: TextTheme(
-    headline5: TextStyle(color: accentColor),
-    headline6: TextStyle(
-      color: accentColor,
-      fontFamily: "lato",
-      fontSize: 24,
-    ),
-    subtitle1: TextStyle(color: accentColor),
-    subtitle2: TextStyle(color: Colors.white),
-    headline2: TextStyle(
-      color: text_gray,
-      fontSize: 13.0,
-      fontWeight: FontWeight.w400,
-    ),
-    headline1: TextStyle(
-      color: dark_gray,
-      fontSize: 30.0,
-    ),
-  ),
-);
 
 EdgeInsets lerp(EdgeInsets a, EdgeInsets b, double t) {
   assert(t != null);

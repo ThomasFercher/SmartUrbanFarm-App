@@ -3,31 +3,42 @@ import 'dart:collection';
 import 'dart:ui';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:implicitly_animated_reorderable_list/transitions.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:sgs/customwidgets/datachart.dart';
-import 'package:sgs/customwidgets/dashboarddraglist.dart';
-import 'package:sgs/providers/dashboardProvider.dart';
+import 'package:sgs/customwidgets/general/appBarHeader.dart';
+import 'package:sgs/customwidgets/advanced/datachart.dart';
+import 'package:sgs/providers/dataProvider.dart';
 import '../styles.dart';
 
 class Advanced extends StatelessWidget {
-  List<Widget> getItems(DashboardProvider d) {
+  List<Widget> getItems(DataProvider d) {
     return [
+      Padding(padding: EdgeInsets.only(top: borderRadius)),
       Container(
         key: const Key("temp"),
         child: DataChart(
-          title: "TEMPERATURES",
+          title: "Temperatures",
           data: d.getTemperatures(),
           gradientColors: temperatureGradient,
+          unit: "°C",
         ),
       ),
       Container(
         key: const Key("humi"),
         child: DataChart(
-          title: "HUMIDITIES",
+          title: "Humiditys",
           data: d.getHumiditys(),
           gradientColors: humidityGradient,
+          unit: "%",
+        ),
+      ),
+      Container(
+        key: const Key("soil"),
+        child: DataChart(
+          title: "Soil Moistures",
+          data: d.getHumiditys(),
+          gradientColors: [Colors.deepOrange, Colors.deepOrangeAccent],
+          unit: "%",
         ),
       ),
     ];
@@ -35,16 +46,16 @@ class Advanced extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding:
-          isDark(context) ? EdgeInsets.only(top: 10) : EdgeInsets.only(top: 30),
-      child: Consumer<DashboardProvider>(
-        builder: (context, d, child) {
-          return DashboardDragList(
-            items: getItems(d),
-          );
-        },
-      ),
+    return Consumer<DataProvider>(
+      builder: (context, d, child) {
+        return AppBarHeader(
+          title: "Advanced Data",
+          isPage: true,
+          //     theme: getTheme(),
+          body: getItems(d),
+          contentPadding: false,
+        );
+      },
     );
   }
 }
