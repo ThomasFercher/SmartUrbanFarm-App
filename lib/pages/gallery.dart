@@ -7,7 +7,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sgs/customwidgets/general/appBarHeader.dart';
@@ -72,7 +71,6 @@ class _GalleryState extends State<Gallery> {
   }
 
   takePhoto() async {
-    print("take Photo");
     Provider.of<StorageProvider>(context, listen: false).takePhoto();
   }
 

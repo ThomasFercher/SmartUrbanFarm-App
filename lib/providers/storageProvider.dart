@@ -50,7 +50,7 @@ class StorageProvider extends ChangeNotifier {
     });
   }
 
-  void takePhoto() {
+  Future<void> takePhoto() {
     firebase.child("photo").set(true);
   }
 
@@ -65,9 +65,9 @@ class StorageProvider extends ChangeNotifier {
     //load other photos from the database which dont exist locally yet
     photoRefs = await getPhotoReferences();
     await Future.wait(
-      photoRefs.keys.map(
-        (key) async => photoUrls[key] = await photoRefs[key].getDownloadURL(),
-      ),
+      photoRefs.keys.map((key) async {
+        photoUrls[key] = await photoRefs[key].getDownloadURL();
+      }),
     );
 
     http.Client client = new http.Client();
