@@ -3,11 +3,13 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:sgs/objects/appTheme.dart';
-import 'package:sgs/providers/dataProvider.dart';
-import 'package:sgs/providers/settingsProvider.dart';
-import 'package:sgs/styles.dart';
+
 import 'package:flutter/cupertino.dart';
+
+import '../../objects/appTheme.dart';
+import '../../providers/dataProvider.dart';
+import '../../providers/settingsProvider.dart';
+import '../../styles.dart';
 
 class CardData extends StatelessWidget {
   final IconData icon;

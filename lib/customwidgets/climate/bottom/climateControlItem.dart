@@ -3,20 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:sgs/customwidgets/climate/bottom/iconValue.dart';
-import 'package:sgs/customwidgets/climate/edit/selectButton.dart';
-import 'package:sgs/customwidgets/climate/bottom/verticalListTile.dart';
-import 'package:sgs/customwidgets/general/sectionTitle.dart';
-import 'package:sgs/objects/appTheme.dart';
-import 'package:sgs/objects/climateControl.dart';
-import 'package:sgs/objects/popupMenuOption.dart';
-import 'package:sgs/pages/editEnvironment.dart';
-import 'package:sgs/pages/environment.dart';
-import 'package:sgs/providers/dataProvider.dart';
-import 'package:sgs/providers/settingsProvider.dart';
 
+import '../../../objects/appTheme.dart';
+import '../../../objects/climateControl.dart';
+import '../../../objects/popupMenuOption.dart';
+import '../../../pages/editEnvironment.dart';
+import '../../../providers/dataProvider.dart';
+import '../../../providers/settingsProvider.dart';
 import '../../../styles.dart';
 import '../../general/popupMenu.dart';
+import '../../general/sectionTitle.dart';
+import 'verticalListTile.dart';
 
 class ClimateControlItem extends StatelessWidget {
   final ClimateControl settings;

@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -10,13 +8,12 @@ import 'package:flare_flutter/provider/asset_flare.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart';
-import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:sgs/objects/photo.dart';
-import 'package:sgs/objects/timeLapse.dart';
-import 'package:sgs/styles.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
+
+import '../objects/photo.dart';
+import '../objects/timeLapse.dart';
 
 class StorageProvider extends ChangeNotifier {
   //This class is used for the storage and processing of images and timelapses

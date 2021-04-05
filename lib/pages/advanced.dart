@@ -1,13 +1,8 @@
-import 'dart:async';
-import 'dart:collection';
-import 'dart:ui';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:sgs/customwidgets/general/appBarHeader.dart';
-import 'package:sgs/customwidgets/advanced/datachart.dart';
-import 'package:sgs/providers/dataProvider.dart';
+import '../customwidgets/advanced/datachart.dart';
+import '../customwidgets/general/appBarHeader.dart';
+import '../providers/dataProvider.dart';
 import '../styles.dart';
 
 class Advanced extends StatelessWidget {
@@ -36,7 +31,7 @@ class Advanced extends StatelessWidget {
         key: const Key("soil"),
         child: DataChart(
           title: "Soil Moistures",
-          data: d.getHumiditys(),
+          data: d.moistures,
           gradientColors: [Colors.deepOrange, Colors.deepOrangeAccent],
           unit: "%",
         ),

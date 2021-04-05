@@ -2,9 +2,10 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:sgs/customwidgets/general/sectionTitle.dart';
-import 'package:sgs/providers/settingsProvider.dart';
-import 'package:sgs/objects/appTheme.dart';
+
+import '../../../objects/appTheme.dart';
+import '../../../providers/settingsProvider.dart';
+import '../../general/sectionTitle.dart';
 
 class DaySlider extends StatefulWidget {
   final Function onValueChanged;

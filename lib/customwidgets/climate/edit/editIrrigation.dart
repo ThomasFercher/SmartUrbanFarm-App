@@ -4,13 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:provider/provider.dart';
-import 'package:sgs/customwidgets/climate/edit/editVariable.dart';
-import 'package:sgs/customwidgets/general/info.dart';
-import 'package:sgs/customwidgets/general/sectionTitle.dart';
-import 'package:sgs/objects/appTheme.dart';
-import 'package:sgs/providers/climateControlProvider.dart';
-import 'package:sgs/providers/settingsProvider.dart';
-import 'package:sgs/styles.dart';
+
+import '../../../objects/appTheme.dart';
+import '../../../providers/climateControlProvider.dart';
+import '../../../providers/settingsProvider.dart';
+import '../../../styles.dart';
+import '../../general/info.dart';
+import '../../general/sectionTitle.dart';
+import 'editVariable.dart';
 
 class EditIrrigation extends StatefulWidget {
   final ClimateControlProvider pr;
@@ -153,8 +154,8 @@ class _EditIrrigationState extends State<EditIrrigation> {
                                 value: pr.climateSettings.soilMoisture,
                                 isChild: true,
                                 icon: WeatherIcons.wi_earthquake,
-                                max: 100,
-                                min: 0,
+                                max: 80,
+                                min: 20,
                                 unit: "%",
                                 onValueChanged: (v) => pr.changeSoilMoisture(v),
                               )
@@ -164,9 +165,9 @@ class _EditIrrigationState extends State<EditIrrigation> {
                                 value: pr.climateSettings.waterConsumption,
                                 isChild: true,
                                 icon: WeatherIcons.wi_earthquake,
-                                max: 100,
+                                max: 5,
                                 min: 0,
-                                unit: "ml/d",
+                                unit: "l/d",
                                 onValueChanged: (v) =>
                                     pr.changeWaterConsumption(v),
                               ),

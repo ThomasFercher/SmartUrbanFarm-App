@@ -1,25 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:provider/provider.dart';
-import 'package:sgs/customwidgets/general/appBarBanner.dart';
-import 'package:sgs/customwidgets/general/appBarHeader.dart';
-import 'package:sgs/customwidgets/dashboard/carddata.dart';
-import 'package:sgs/customwidgets/dashboard/dayRange.dart';
-import 'package:sgs/customwidgets/dashboard/actionCard.dart';
-import 'package:sgs/customwidgets/dashboard/growProgress.dart';
-import 'package:sgs/customwidgets/dashboard/waterTankLevel.dart';
-import 'package:sgs/objects/liveData.dart';
-import 'package:sgs/pages/advanced.dart';
-import 'package:sgs/pages/environment.dart';
-import 'package:sgs/pages/gallery.dart';
-import 'package:sgs/pages/settings.dart';
-import 'package:sgs/providers/dataProvider.dart';
-import 'package:sgs/providers/settingsProvider.dart';
-import 'package:sgs/styles.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../customwidgets/dashboard/actionCard.dart';
+import '../customwidgets/dashboard/carddata.dart';
+import '../customwidgets/dashboard/dayRange.dart';
+import '../customwidgets/dashboard/growProgress.dart';
+import '../customwidgets/dashboard/waterTankLevel.dart';
+import '../customwidgets/general/appBarBanner.dart';
+import '../customwidgets/general/appBarHeader.dart';
+import '../objects/appTheme.dart';
+import '../objects/liveData.dart';
+import '../providers/dataProvider.dart';
+import '../providers/settingsProvider.dart';
+import '../styles.dart';
 import 'advanced.dart';
-import 'package:sgs/objects/appTheme.dart';
+import 'environment.dart';
+import 'gallery.dart';
+import 'settings.dart';
 
 class Dashboard extends StatelessWidget {
   static const String EnvironmentSettings = 'Environment';

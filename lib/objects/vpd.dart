@@ -2,8 +2,9 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/widgets.dart';
-import 'package:sgs/objects/vpdElement.dart';
-import 'package:sgs/styles.dart';
+
+import '../styles.dart';
+import 'vpdElement.dart';
 
 class VPD {
   static List<VPDElement> vegetationVPD = []; // Early Vegetation

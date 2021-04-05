@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sgs/customwidgets/climate/edit/selectButton.dart';
-import 'package:sgs/customwidgets/climate/bottom/verticalListTile.dart';
-import 'package:sgs/customwidgets/general/sectionTitle.dart';
-import 'package:sgs/objects/appTheme.dart';
-import 'package:sgs/providers/dataProvider.dart';
-import 'package:sgs/providers/settingsProvider.dart';
-import 'package:sgs/styles.dart';
+
+import '../../../providers/dataProvider.dart';
+import '../../../styles.dart';
+import '../../general/sectionTitle.dart';
 
 class GrowPhaseSelect extends StatelessWidget {
   final String title;
@@ -32,7 +29,6 @@ class GrowPhaseSelect extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
     return Consumer<DataProvider>(builder: (context, data, child) {
       bool isSelected = data.activeClimate.growPhase.phase == phase;
 

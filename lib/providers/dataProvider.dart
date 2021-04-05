@@ -4,10 +4,9 @@ import 'dart:collection';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:sgs/main.dart';
-import 'package:sgs/objects/climateControl.dart';
-import 'package:sgs/objects/liveData.dart';
 
+import '../objects/climateControl.dart';
+import '../objects/liveData.dart';
 import '../styles.dart';
 
 class DataProvider with ChangeNotifier, DiagnosticableTreeMixin {
@@ -47,7 +46,28 @@ class DataProvider with ChangeNotifier, DiagnosticableTreeMixin {
     SplayTreeMap<DateTime, double> map;
     await ref.child(child).once().then((DataSnapshot data) {
       map = sortData(data.value);
+
+      ref.child(child).onChildAdded.listen((event) {
+        var c = event.snapshot;
+        var k = DateTime.parse(c.key);
+        var v = c.value.toDouble();
+
+        switch (child) {
+          case "temperatures":
+            temperatures[k] = v;
+            break;
+          case "soilMoistures":
+            moistures[k] = v;
+            break;
+          case "humiditys":
+            humiditys[k] = v;
+            break;
+        }
+
+        notifyListeners();
+      });
     });
+
     return map;
   }
 
@@ -98,6 +118,7 @@ class DataProvider with ChangeNotifier, DiagnosticableTreeMixin {
     // Load all Lists
     temperatures = await loadMap("temperatures");
     humiditys = await loadMap("humiditys");
+    moistures = await loadMap("soilMoistures");
 
     notifyListeners();
   }

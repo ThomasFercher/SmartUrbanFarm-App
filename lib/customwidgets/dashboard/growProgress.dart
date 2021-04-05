@@ -4,9 +4,10 @@ import 'package:flare_flutter/flare_controls.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-import 'package:sgs/objects/appTheme.dart';
-import 'package:sgs/providers/settingsProvider.dart';
-import 'package:sgs/styles.dart';
+
+import '../../objects/appTheme.dart';
+import '../../providers/settingsProvider.dart';
+import '../../styles.dart';
 
 class GrowProgress extends StatelessWidget {
   final double progress;

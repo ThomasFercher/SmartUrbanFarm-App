@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:sgs/objects/appTheme.dart';
-import 'package:sgs/objects/popupMenuOption.dart';
-import 'package:sgs/providers/settingsProvider.dart';
-
+import '../../objects/appTheme.dart';
+import '../../objects/popupMenuOption.dart';
+import '../../providers/settingsProvider.dart';
 import '../../styles.dart';
 
 class PopupMenu extends StatelessWidget {

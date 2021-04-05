@@ -1,11 +1,9 @@
-import 'dart:io';
-
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:sgs/objects/appTheme.dart';
-import 'package:sgs/objects/settings.dart';
-import 'package:sgs/styles.dart';
+
+import '../objects/appTheme.dart';
+import '../objects/settings.dart';
+import '../styles.dart';
 
 class SettingsProvider extends ChangeNotifier {
   Settings settings;

@@ -1,10 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sgs/objects/appTheme.dart';
-import 'package:sgs/providers/dataProvider.dart';
-import 'package:sgs/providers/settingsProvider.dart';
-import 'package:sgs/styles.dart';
 import 'dart:math';
 import 'dart:ui' as ui;
 import 'package:vector_math/vector_math.dart' as Vector;
@@ -13,6 +9,10 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
+
+import '../../objects/appTheme.dart';
+import '../../providers/settingsProvider.dart';
+import '../../styles.dart';
 
 class WaterTankLevel extends StatelessWidget {
   final double fullness;

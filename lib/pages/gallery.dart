@@ -1,28 +1,15 @@
-import 'dart:async';
-import 'dart:collection';
-import 'dart:io';
-import 'dart:isolate';
 import 'package:animations/animations.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:sgs/customwidgets/general/appBarHeader.dart';
-import 'package:sgs/customwidgets/gallery/imageListItem.dart';
-import 'package:sgs/customwidgets/general/popupMenu.dart';
-import 'package:sgs/customwidgets/gallery/timeLapseItem.dart';
-import 'package:sgs/customwidgets/gallery/dateRangeSelect.dart';
-import 'package:sgs/main.dart';
-import 'package:sgs/objects/appTheme.dart';
-import 'package:sgs/objects/photo.dart';
-import 'package:sgs/objects/popupMenuOption.dart';
-import 'package:sgs/objects/timeLapse.dart';
-import 'package:sgs/providers/settingsProvider.dart';
-import 'package:sgs/providers/storageProvider.dart';
-import 'package:video_player/video_player.dart';
-
+import '../customwidgets/gallery/dateRangeSelect.dart';
+import '../customwidgets/gallery/imageListItem.dart';
+import '../customwidgets/gallery/timeLapseItem.dart';
+import '../customwidgets/general/appBarHeader.dart';
+import '../objects/appTheme.dart';
+import '../objects/photo.dart';
+import '../objects/timeLapse.dart';
+import '../providers/settingsProvider.dart';
+import '../providers/storageProvider.dart';
 import '../styles.dart';
 
 class Gallery extends StatefulWidget {

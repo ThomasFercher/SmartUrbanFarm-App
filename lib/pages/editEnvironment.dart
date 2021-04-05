@@ -2,20 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:sgs/customwidgets/climate/edit/editIrrigation.dart';
-import 'package:sgs/customwidgets/climate/edit/growthPhase.dart';
-import 'package:sgs/customwidgets/general/appBarHeader.dart';
-import 'package:sgs/customwidgets/climate/edit/dayslider.dart';
-import 'package:sgs/customwidgets/climate/edit/editVariable.dart';
-import 'package:sgs/customwidgets/climate/edit/input.dart';
-import 'package:sgs/objects/climateControl.dart';
-import 'package:sgs/objects/vpd.dart';
-import 'package:sgs/providers/dataProvider.dart';
-import 'package:sgs/providers/climateControlProvider.dart';
-import 'package:sgs/providers/settingsProvider.dart';
 
-import '../styles.dart';
-import 'package:sgs/objects/appTheme.dart';
+import '../customwidgets/climate/edit/editIrrigation.dart';
+import '../customwidgets/climate/edit/growthPhase.dart';
+import '../customwidgets/climate/edit/input.dart';
+import '../customwidgets/general/appBarHeader.dart';
+import '../objects/appTheme.dart';
+import '../objects/climateControl.dart';
+import '../providers/climateControlProvider.dart';
+import '../providers/dataProvider.dart';
+import '../providers/settingsProvider.dart';
 
 class EditEnvironment extends StatefulWidget {
   ClimateControl initialSettings;

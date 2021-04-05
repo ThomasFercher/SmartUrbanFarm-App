@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:sgs/objects/growPhase.dart';
-import 'package:sgs/styles.dart';
+
+import '../styles.dart';
+import 'growPhase.dart';
 
 class ClimateControl {
   String id;

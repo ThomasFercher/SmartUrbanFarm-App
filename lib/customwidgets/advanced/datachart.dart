@@ -2,14 +2,16 @@ import 'dart:collection';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sgs/customwidgets/general/popupMenu.dart';
-import 'package:sgs/customwidgets/general/sectionTitle.dart';
-import 'package:sgs/objects/popupMenuOption.dart';
-import 'package:sgs/providers/dataProvider.dart';
-import 'package:sgs/providers/settingsProvider.dart';
+
+import '../../objects/appTheme.dart';
+import '../../objects/popupMenuOption.dart';
+import '../../providers/dataProvider.dart';
+import '../../providers/settingsProvider.dart';
 import '../../styles.dart';
 import 'dart:math';
-import 'package:sgs/objects/appTheme.dart';
+
+import '../general/popupMenu.dart';
+import '../general/sectionTitle.dart';
 
 class DataChart extends StatefulWidget {
   final List<Color> gradientColors;

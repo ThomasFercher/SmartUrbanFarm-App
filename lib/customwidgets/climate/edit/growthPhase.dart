@@ -2,18 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:provider/provider.dart';
-import 'package:sgs/customwidgets/climate/edit/dayslider.dart';
-import 'package:sgs/customwidgets/climate/edit/editVariable.dart';
-import 'package:sgs/customwidgets/climate/edit/growthItem.dart';
-import 'package:sgs/customwidgets/climate/edit/selectButton.dart';
-import 'package:sgs/customwidgets/general/info.dart';
-import 'package:sgs/customwidgets/general/sectionTitle.dart';
-import 'package:sgs/objects/appTheme.dart';
-import 'package:sgs/objects/growPhase.dart';
-import 'package:sgs/objects/vpd.dart';
-import 'package:sgs/providers/climateControlProvider.dart';
-import 'package:sgs/providers/settingsProvider.dart';
-import 'package:sgs/styles.dart';
+
+import '../../../objects/appTheme.dart';
+import '../../../providers/climateControlProvider.dart';
+import '../../../providers/settingsProvider.dart';
+import '../../../styles.dart';
+import '../../general/info.dart';
+import '../../general/sectionTitle.dart';
+import 'growthItem.dart';
+import 'selectButton.dart';
 
 class GrowthPhase extends StatefulWidget {
   @override

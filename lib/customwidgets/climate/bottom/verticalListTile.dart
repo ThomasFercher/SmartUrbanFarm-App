@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-import 'package:sgs/customwidgets/climate/bottom/iconValue.dart';
-import 'package:sgs/customwidgets/climate/edit/selectButton.dart';
-import 'package:sgs/styles.dart';
+
+import '../../../styles.dart';
+import '../edit/selectButton.dart';
+import 'iconValue.dart';
 
 class VerticalListTile extends StatelessWidget {
   String title;

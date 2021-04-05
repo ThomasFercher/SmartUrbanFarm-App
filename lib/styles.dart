@@ -1,12 +1,9 @@
 library sgs.styles;
 
-import 'dart:collection';
-
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'dart:ui' as ui;
-import 'package:sgs/objects/appTheme.dart';
 import 'package:uuid/uuid.dart';
 
 var uuid = Uuid();
