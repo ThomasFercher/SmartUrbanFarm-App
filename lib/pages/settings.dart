@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_skeleton/flutter_skeleton.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sgs/customwidgets/general/appBarHeader.dart';
@@ -82,16 +79,12 @@ class SettingsPage extends StatelessWidget {
               width: 50,
               height: 50,
               padding: EdgeInsets.only(bottom: 5, right: 5),
-              child: SvgPicture.asset(
-                "assets/leaf.svg",
-                color: Colors.green,
-              ),
+              child: Container(),
             ),
             applicationLegalese: "",
             applicationVersion: "0.4.4",
             useRootNavigator: true,
             applicationName: "SGS",
-            
           );
         },
       ),

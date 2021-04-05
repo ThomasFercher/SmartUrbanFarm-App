@@ -96,6 +96,7 @@ class _SufMobileApplicationState extends State<SufMobileApplication> {
   Widget build(BuildContext context) {
     //  AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
     return MaterialApp(
+      title: "Smart Urban Farm",
       debugShowCheckedModeBanner: false,
       color: primaryColor,
       theme: ThemeData(

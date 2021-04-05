@@ -19,7 +19,6 @@ dependencies:
   firebase_messaging: ^5.1.2
   fl_chart: ^0.9.4
   google_fonts: ^1.1.0
-  flutter_svg: ^0.18.1
   xml: ^4.2.0
   outline_material_icons: ^0.1.1
   provider: ^4.3.2
