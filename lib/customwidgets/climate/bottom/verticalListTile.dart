@@ -51,19 +51,19 @@ class VerticalListTile extends StatelessWidget {
             borderRadiusGeo: borderRadiusGeo ?? null,
           ),
           IconValue(
-            color: color.shade600,
+            color: color.shade800,
             icon: WeatherIcons.wi_thermometer,
             unit: "°C",
             val: temperature.toString(),
           ),
           IconValue(
-            color: color.shade600,
+            color: color.shade800,
             icon: WeatherIcons.wi_humidity,
             unit: "%",
             val: humidity.toString(),
           ),
           IconValue(
-            color: color.shade600,
+            color: color.shade800,
             icon: WeatherIcons.wi_day_sunny_overcast,
             unit: "",
             val: suntime,

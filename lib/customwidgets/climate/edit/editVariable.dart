@@ -41,7 +41,7 @@ class EditVariable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AppTheme theme = Provider.of<SettingsProvider>(context).getTheme();
-
+    print(value);
     return Container(
       padding: isChild
           ? const EdgeInsets.all(0)

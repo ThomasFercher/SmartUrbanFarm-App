@@ -86,14 +86,6 @@ class ImageItem extends StatelessWidget {
                 style: sectionTitleStyle(context, theme.headlineColor),
               ),
             ),
-            Container(
-              padding: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-              alignment: Alignment.topLeft,
-              child: Text(
-                "some text containing data from the time of the photo",
-                style: TextStyle(color: theme.headlineColor),
-              ),
-            )
           ],
         ),
       ),

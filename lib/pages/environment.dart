@@ -152,8 +152,9 @@ class _EnvironmentState extends State<Environment> {
                                 end: Alignment.bottomCenter,
                               ),
                             ),
-                            padding:
-                                EdgeInsets.symmetric(horizontal: borderRadius),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 8,
+                            ),
                             margin: EdgeInsets.only(bottom: 8),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -205,16 +206,20 @@ class _EnvironmentState extends State<Environment> {
                                         children: [
                                           GrowPhaseSelect(
                                             phase: GROWPHASEVEGETATION,
-                                            disabledWidth: (width - 32) * 0.2,
+                                            disabledWidth:
+                                                (width - 16) * 0.2 + 4,
                                             color: Colors.deepPurple,
                                             title: "Vegetation",
-                                            expandedWidth: (width - 32) * 0.6,
+                                            expandedWidth:
+                                                (width - 16) * 0.6 - 6,
                                             right_phase: GROWPHASEFLOWER,
                                             icon: MaterialCommunityIcons.sprout,
                                           ),
                                           GrowPhaseSelect(
-                                            disabledWidth: (width - 32) * 0.2,
-                                            expandedWidth: (width - 32) * 0.6,
+                                            disabledWidth:
+                                                (width - 16) * 0.2 + 4,
+                                            expandedWidth:
+                                                (width - 16) * 0.6 - 6,
                                             title: "Early Flower",
                                             color: Colors.green,
                                             phase: GROWPHASEFLOWER,
@@ -227,8 +232,10 @@ class _EnvironmentState extends State<Environment> {
                                             phase: GROWPHASELATEFLOWER,
                                             title: "Late Flower",
                                             color: Colors.amber,
-                                            disabledWidth: (width - 32) * 0.2,
-                                            expandedWidth: (width - 32) * 0.6,
+                                            disabledWidth:
+                                                (width - 16) * 0.2 + 4,
+                                            expandedWidth:
+                                                (width - 16) * 0.6 - 6,
                                             icon: MaterialCommunityIcons.sprout,
                                           ),
                                         ],

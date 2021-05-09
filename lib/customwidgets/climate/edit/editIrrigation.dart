@@ -154,8 +154,8 @@ class _EditIrrigationState extends State<EditIrrigation> {
                                 value: pr.climateSettings.soilMoisture,
                                 isChild: true,
                                 icon: WeatherIcons.wi_earthquake,
-                                max: 80,
-                                min: 20,
+                                max: 100,
+                                min: 0,
                                 unit: "%",
                                 onValueChanged: (v) => pr.changeSoilMoisture(v),
                               )
